@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailwind - CSSS</title>
+    <style>
+        .meu-botao{
+            background-color: color rgb(44, 44, 192);
+            padding: 8px 10px;
+            border-radius: 4px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-300">
+    <button class="meu-botao">Botão CSS puro</button>
+    
+    <br><br><br>
+    
+    <button class=" bg-pink-600 px-4 py-2 rounded">Botão com Tailwand</button>
+    
+    <br><br><br>
+
+    <div class="p-6 max-w-sm">
+        <h2 class="text-2xl font-bold">Titulo do Card</h2>
+        <p class="text-sm leading-relaxed">Este paragrafo blablabla....</p>
+    </div>
+
+    <br><br><br>
+
+    <nav class="flex justify-between items-center p-4 bg-gray-100">
+        <span class="font-bold">Logo</span>
+        <div class="flex gap-4">
+            <a href="#" class="text-blue-600">Home</a>
+            <a href="#" class="text-blue-600">Sobre</a>
+        </div>
+    </nav>
+
+    <br><br><br>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button>Enviar</button>
+    </div>
+
+    
+</body>
+</html>
