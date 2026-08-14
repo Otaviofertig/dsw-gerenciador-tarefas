@@ -16,6 +16,11 @@ app.get("/api/health", (req, res) => {
     res.json({ status: "ok", message: "Servidor do Gestor de Tarefas ativo!" });
 });
 
+// Rota da versão do sistema (Version Check)
+app.get("/api/version", (req, res) => {
+    res.json({ appName: "Gerenciador de Tarefas Multi-Usuários", version: "1.0.0" });
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor rodando em: http://localhost:${PORT}`);
 });
