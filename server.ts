@@ -1,10 +1,36 @@
 import express from "express";
+import Database from "better-sqlite3";
 
 const app = express();
 const PORT = 3000;
 
 // Middleware para ler o corpo das requisições em formato JSON
 app.use(express.json());
+
+const db = new Database("tarefas.db")
+
+db.exec(`
+    CREATE TABLE IF NOT EXISTS tarefas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        titulo TEXT NOT NULL,
+        status TEXT DEFAULT 'pending'
+    );
+
+    CREATE TABLE IF NOT EXISTS usuarios (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT NOT NULL,
+        senha TEXT NOT NULL
+    );
+`)
+
+const usuariosExistentes = db.prepare("SELECT COUNT(*) AS count FROM usuarios").get() as any;
+if(usuariosExistentes.count === 0) {
+    db.exec(`
+        INSERT INTO usuarios (email, senha) VALUES ('otavio@gmail.com', 'senha_super_maluca')
+        `);
+    }
+
+console.log("Banco de Dados inicializado!!!");
 
 // Banco de Dados provisório em RAM
 let bancoDeDadosProvisorio = [
