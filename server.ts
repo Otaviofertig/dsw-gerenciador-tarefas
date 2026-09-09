@@ -70,12 +70,12 @@ db.exec(`
     );
 `)
 
-const usuariosExistentes = db.prepare("SELECT COUNT(*) AS count FROM usuarios").get() as any;
-if(usuariosExistentes.count === 0) {
-    db.exec(`
-        INSERT INTO usuarios (email, senha) VALUES ('otavio@gmail.com', 'senha_super_maluca')
-        `);
-    }
+// Bom: Tipagem correta sem usar "as any"
+const usuariosExistentes = stmtContarUsuarios.get() as { count: number };
+if (usuariosExistentes.count === 0) {
+    // Bom: Usamos a busca já preparada e passamos os dados de forma parametrizada
+    stmtInserirUsuario.run("otavio@gmail.com", "senha_super_maluca");
+}
 
 console.log("Banco de Dados inicializado!!!");
 
