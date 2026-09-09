@@ -81,20 +81,22 @@ console.log("Banco de Dados inicializado!!!");
 
 // Listar as tarefas (Tasks)
 app.get("/api/tasks", (req, res) => {
-    const { search } = req.query;
+    // 1. Coerção Segura: Forçamos a variável a ser uma String vazia caso tentem nos enviar um Array
+    const search = typeof req.query.search === "string" ? req.query.search : "";
+
     try {
         if (search) {
-    // Prepared Statement: O '?' protege contra Injeção de SQL.
-    const sql = "SELECT * FROM tarefas WHERE titulo LIKE ?";
-    const tarefas = db.prepare(sql).all(`%${search}%`);
-    res.json(tarefas);
+            // 2. Proteção: O '%' entra DEPOIS, apenas dentro do parâmetro
+            const tarefas = stmtBuscarPorTitulo.all(`%${search}%`);
+            res.json(tarefas);
         } else {
-            const tarefas = db.prepare("SELECT * FROM tarefas").all();
+            // 3. Performance: Usamos a busca compilada lá do Passo 2
+            const tarefas = stmtListarTodas.all();
             res.json(tarefas);
         }
-    } catch (erro) {
-        // Exibir o erro real ajuda a compreender a quebra de sintaxe gerada pelo ataque
-        res.status(500).json({ error: erro instanceof Error ? erro.message : "Erro desconhecido" });
+    } catch {
+        // 4. Erro Controlado: Se algo quebrar, damos uma mensagem genérica para não vazar a estrutura do banco
+        res.status(500).json({ error: "Erro interno ao processar a listagem." });
     }
 });
 
