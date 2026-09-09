@@ -4,6 +4,43 @@ import Database from "better-sqlite3";
 const app = express();
 const PORT = 3000;
 
+// 1. Criamos um "molde" (Interface) para nossas tarefas
+interface Tarefa {
+    id: number;
+    titulo: string;
+    status: string;
+    prioridade: string;
+}
+
+// 2. Centralizamos as regras. Se a regra mudar, mudamos em um só lugar!
+const PRIORIDADES = ["low", "medium", "high"] as const;
+const STATUS_VALIDOS = ["pending", "completed"] as const;
+
+// 3. Funções ajudantes (Helpers). Escrevemos a validação uma vez e usamos em todo lugar.
+const tituloValido = (t: unknown): t is string =>
+    typeof t === "string" && t.trim().length >= 3;
+
+const normalizarPrioridade = (p: unknown) => {
+    const listaPrioridades = PRIORIDADES as readonly string[];
+    return typeof p === "string" && listaPrioridades.includes(p)
+        ? p
+        : "medium";
+};
+
+const normalizarStatus = (s: unknown) => {
+    const listaStatus = STATUS_VALIDOS as readonly string[];
+    return typeof s === "string" && listaStatus.includes(s)
+        ? s
+        : "pending";
+};
+
+// 4. Um ajudante só para transformar e validar IDs
+const parsearId = (idParam: string): number | null => {
+    const id = Number(idParam);
+    // Number("12abc") vira NaN imediatamente, o que é mais seguro!
+    return isNaN(id) ? null : id;
+};
+
 // Middleware para ler o corpo das requisições em formato JSON
 app.use(express.json());
 
