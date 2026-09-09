@@ -46,15 +46,6 @@ app.use(express.json());
 
 const db = new Database("tarefas.db")
 
-// Escrevemos (compilamos) as buscas UMA ÚNICA VEZ e guardamos na memória.
-const stmtContarUsuarios = db.prepare("SELECT COUNT(*) as count FROM usuarios");
-const stmtInserirUsuario = db.prepare("INSERT INTO usuarios (email, senha) VALUES (?, ?)");
-const stmtListarTodas = db.prepare("SELECT * FROM tarefas");
-const stmtBuscarPorTitulo = db.prepare("SELECT * FROM tarefas WHERE titulo LIKE ?");
-const stmtBuscarPorId = db.prepare("SELECT * FROM tarefas WHERE id = ?");
-const stmtInserirTarefa = db.prepare("INSERT INTO tarefas (titulo, status, prioridade) VALUES (?, 'pending', ?)");
-const stmtDeletarTarefa = db.prepare("DELETE FROM tarefas WHERE id = ?");
-
 db.exec(`
     CREATE TABLE IF NOT EXISTS tarefas (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -69,6 +60,18 @@ db.exec(`
         senha TEXT NOT NULL
     );
 `)
+
+// Escrevemos (compilamos) as buscas UMA ÚNICA VEZ e guardamos na memória.
+// Precisa vir depois do db.exec() acima: o better-sqlite3 valida cada
+// prepare() contra o schema já existente, então as tabelas precisam
+// existir antes de compilarmos as buscas que apontam para elas.
+const stmtContarUsuarios = db.prepare("SELECT COUNT(*) as count FROM usuarios");
+const stmtInserirUsuario = db.prepare("INSERT INTO usuarios (email, senha) VALUES (?, ?)");
+const stmtListarTodas = db.prepare("SELECT * FROM tarefas");
+const stmtBuscarPorTitulo = db.prepare("SELECT * FROM tarefas WHERE titulo LIKE ?");
+const stmtBuscarPorId = db.prepare("SELECT * FROM tarefas WHERE id = ?");
+const stmtInserirTarefa = db.prepare("INSERT INTO tarefas (titulo, status, prioridade) VALUES (?, 'pending', ?)");
+const stmtDeletarTarefa = db.prepare("DELETE FROM tarefas WHERE id = ?");
 
 // Bom: Tipagem correta sem usar "as any"
 const usuariosExistentes = stmtContarUsuarios.get() as { count: number };
