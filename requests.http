@@ -19,7 +19,7 @@ POST http://localhost:3000/api/tasks
 Content-Type: application/json
 
 {
-    "title": "Minha nova tarefa do dia 14/08/2026"
+    "titulo": "Minha nova tarefa do dia 14/08/2026"
 }
 
 ### Deletar tarefa por Id (DELETE), http://URL/endpoint/id
@@ -38,7 +38,7 @@ POST http://localhost:3000/api/tasks
 Content-Type: application/json
 
 {
-    "title": "Estudar Node.js e SQLite",
+    "titulo": "Estudar Node.js e SQLite",
     "prioridade": "high"
 }
 
@@ -48,7 +48,7 @@ POST http://localhost:3000/api/tasks
 Content-Type: application/json
 
 {
-    "title": "   ",
+    "titulo": "   ",
     "prioridade": "low"
 }
 
@@ -58,7 +58,7 @@ POST http://localhost:3000/api/tasks
 Content-Type: application/json
 
 {
-    "title": "Oi", 
+    "titulo": "Oi", 
     "prioridade": "high"
 }
 
@@ -78,7 +78,7 @@ PUT http://localhost:3000/api/tasks/1
 Content-Type: application/json
 
 {
-  "title": "Estudar Node.js, SQLite e fazer deploy",
+  "titulo": "Estudar Node.js, SQLite e fazer deploy",
   "prioridade": "high",
   "status": "completed"
 }
@@ -88,28 +88,28 @@ Content-Type: application/json
 PUT http://localhost:3000/api/tasks/1
 Content-Type: application/json
 
-{ "title": "   ", "prioridade": "low" }
+{ "titulo": "   ", "prioridade": "low" }
 
 
 ### Cenário 3: Erro - Título curto (Abaixo de 3 caracteres)
 PUT http://localhost:3000/api/tasks/1
 Content-Type: application/json
 
-{ "title": "Go", "prioridade": "medium" }
+{ "titulo": "Go", "prioridade": "medium" }
 
 
 ### Cenário 4: Erro - ID inexistente (Deve retornar 404)
 PUT http://localhost:3000/api/tasks/9999
 Content-Type: application/json
 
-{ "title": "Tarefa fantasma", "prioridade": "medium", "status": "pending" }
+{ "titulo": "Tarefa fantasma", "prioridade": "medium", "status": "pending" }
 
 
 ### Cenário 5: Erro - ID de texto inválido (Deve retornar 400)
 PUT http://localhost:3000/api/tasks/abc
 Content-Type: application/json
 
-{ "title": "ID incorreto na rota", "prioridade": "medium" }
+{ "titulo": "ID incorreto na rota", "prioridade": "medium" }
 
 ### ============================================ 
 ### DESAFIO CRUD: Atualização Parcial (PATCH)
@@ -127,14 +127,14 @@ Content-Type: application/json
 PATCH http://localhost:3000/api/tasks/1
 Content-Type: application/json
 
-{ "title": "Novo título atualizado via PATCH" }
+{ "titulo": "Novo título atualizado via PATCH" }
 
 
 ### Cenário 3: Erro - PATCH com título inválido
 PATCH http://localhost:3000/api/tasks/1
 Content-Type: application/json
 
-{ "title": "  Ab  " }
+{ "titulo": "  Ab  " }
 
 
 ### Cenário 4: Erro - Prioridade inexistente
