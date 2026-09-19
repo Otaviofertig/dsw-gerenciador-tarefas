@@ -127,26 +127,23 @@ app.post("/api/tasks", (req, res) => {
 
 // Rota para deletar fisicamente uma tarefa do banco
 app.delete("/api/tasks/:id", (req, res) => {
-    const { id } = req.params;
+    // Validação de ID padronizada (igual PUT/PATCH)
+    const idParaDeletar = parsearId(req.params.id);
+
+    if (idParaDeletar === null) {
+        return res.status(400).json({ error: "ID inválido." });
+    }
+
     try {
-        const sql = "DELETE FROM tarefas WHERE id = ?";
-        const resultado = db.prepare(sql).run(id);
-        
-        // No SQLite, o sucesso é medido pelo número de 
-        // linhas afetadas (changes)
+        const resultado = stmtDeletarTarefa.run(idParaDeletar);
+
         if (resultado.changes === 0) {
-            res.status(404).json(
-                { error: "Tarefa não localizada para exclusão." }
-            );
-            return;
+            return res.status(404).json({ error: "Tarefa não localizada para exclusão." });
         }
-        res.json(
-            { message: "Tarefa excluída do banco SQLite com sucesso!" }
-        );
-    } catch (erro) { 
-        res.status(500).json(
-        { error: erro instanceof Error ? erro.message : "Erro desconhecido" }
-        );
+
+        res.json({ message: "Tarefa excluída do banco SQLite com sucesso!" });
+    } catch {
+        res.status(500).json({ error: "Erro interno ao processar a exclusão." });
     }
 });
 
