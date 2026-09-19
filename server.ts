@@ -2,7 +2,7 @@ import express from "express";
 import Database from "better-sqlite3";
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 // 1. Criamos um "molde" (Interface) para nossas tarefas
 interface Tarefa {
