@@ -105,25 +105,22 @@ app.get("/api/tasks", (req, res) => {
 
 // Criar nova tarefa (New Task)
 app.post("/api/tasks", (req, res) => {
-    const { title, prioridade } = req.body;
-    const prioridadeValida = ['low', 'medium', 'high'].includes(prioridade) ? prioridade : 'medium';
-    
-    // Validação rígida: Título obrigatório, não vazio e com tamanho mínimo
-    // Sanitizamos com .trim() ANTES de checar o length, aplicando a regra de negócio
-    if (!title || title.trim().length < 3) {
-        return res.status(400).json({ 
-            error: "O título da tarefa é obrigatório e deve conter pelo menos 3 caracteres válidos." 
+    const { titulo, prioridade } = req.body;
+    const prioridadeValida = normalizarPrioridade(prioridade);
+
+    // Validação via helper (type guard)
+    if (!tituloValido(titulo)) {
+        return res.status(400).json({
+            error: "O título da tarefa é obrigatório e deve conter pelo menos 3 caracteres válidos."
         });
     }
 
     try {
-        const sql = "INSERT INTO tarefas (titulo, status, prioridade) VALUES (?, 'pending', ?)";
-        const resultado = db.prepare(sql).run(title.trim(), prioridadeValida);
-        
-        // Retorna o objeto recém-criado usando o ID gerado (lastInsertRowid).
-        const novaTarefa = db.prepare("SELECT * FROM tarefas WHERE id = ?").get(resultado.lastInsertRowid);
+        const resultado = stmtInserirTarefa.run(titulo.trim(), prioridadeValida);
+        const novaTarefa = stmtBuscarPorId.get(resultado.lastInsertRowid) as Tarefa;
+
         return res.status(201).json(novaTarefa);
-    } catch (erro) {
+    } catch {
         return res.status(500).json({ error: "Erro ao processar persistência" });
     }
 });
