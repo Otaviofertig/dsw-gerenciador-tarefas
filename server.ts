@@ -1,8 +1,13 @@
 import express from "express";
 import Database from "better-sqlite3";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
+
+// Chave usada para assinar os tokens JWT (deve vir de variável de ambiente em produção)
+const JWT_SECRET = process.env.JWT_SECRET || "super_secreto_desenvolvimento";
 
 // 1. Criamos um "molde" (Interface) para nossas tarefas
 interface Tarefa {
@@ -10,6 +15,12 @@ interface Tarefa {
     titulo: string;
     status: string;
     prioridade: string;
+}
+
+interface Usuario {
+    id: number;
+    email: string;
+    senha: string;
 }
 
 // 2. Centralizamos as regras. Se a regra mudar, mudamos em um só lugar!
@@ -56,7 +67,7 @@ db.exec(`
 
     CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        email TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
         senha TEXT NOT NULL
     );
 `)
@@ -67,6 +78,8 @@ db.exec(`
 // existir antes de compilarmos as buscas que apontam para elas.
 const stmtContarUsuarios = db.prepare("SELECT COUNT(*) as count FROM usuarios");
 const stmtInserirUsuario = db.prepare("INSERT INTO usuarios (email, senha) VALUES (?, ?)");
+const stmtBuscarUsuarioPorId = db.prepare("SELECT * FROM usuarios WHERE id = ?");
+const stmtBuscarUsuarioPorEmail = db.prepare("SELECT * FROM usuarios WHERE email = ?");
 const stmtListarTodas = db.prepare("SELECT * FROM tarefas");
 const stmtBuscarPorTitulo = db.prepare("SELECT * FROM tarefas WHERE titulo LIKE ?");
 const stmtBuscarPorId = db.prepare("SELECT * FROM tarefas WHERE id = ?");
@@ -77,7 +90,8 @@ const stmtDeletarTarefa = db.prepare("DELETE FROM tarefas WHERE id = ?");
 const usuariosExistentes = stmtContarUsuarios.get() as { count: number };
 if (usuariosExistentes.count === 0) {
     // Bom: Usamos a busca já preparada e passamos os dados de forma parametrizada
-    stmtInserirUsuario.run("otavio@gmail.com", "senha_super_maluca");
+    // A senha nunca é gravada em texto puro, mesmo para o usuário semente
+    stmtInserirUsuario.run("otavio@gmail.com", bcrypt.hashSync("senha_super_maluca", 10));
 }
 
 console.log("Banco de Dados inicializado!!!");
