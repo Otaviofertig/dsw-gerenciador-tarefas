@@ -122,6 +122,33 @@ app.post("/api/auth/register", (req, res) => {
     }
 });
 
+// Autenticar usuário (Login)
+app.post("/api/auth/login", (req, res) => {
+    const { email, senha } = req.body;
+
+    if (typeof email !== "string" || typeof senha !== "string") {
+        return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
+    }
+
+    const usuario = stmtBuscarUsuarioPorEmail.get(email.trim()) as Usuario | undefined;
+
+    // Compara SEMPRE com um hash (mesmo se o usuário não existir) para não
+    // vazar, pelo tempo de resposta, quais e-mails estão cadastrados
+    const hashEsperado = usuario?.senha ?? "$2a$10$fakehashparanaquebrarcomparacao";
+    const senhaOk = bcrypt.compareSync(senha, hashEsperado);
+
+    if (!usuario || !senhaOk) {
+        return res.status(401).json({ error: "Credenciais inválidas." });
+    }
+
+    // Gerando o "crachá" de acesso
+    const token = jwt.sign({ id: usuario.id, email: usuario.email }, JWT_SECRET, {
+        expiresIn: "2h",
+    });
+
+    return res.json({ token });
+});
+
 // Listar as tarefas (Tasks)
 app.get("/api/tasks", (req, res) => {
     // 1. Coerção Segura: Forçamos a variável a ser uma String vazia caso tentem nos enviar um Array
