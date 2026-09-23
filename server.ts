@@ -96,6 +96,32 @@ if (usuariosExistentes.count === 0) {
 
 console.log("Banco de Dados inicializado!!!");
 
+// Registrar novo usuário (Register)
+app.post("/api/auth/register", (req, res) => {
+    const { email, senha } = req.body;
+
+    if (typeof email !== "string" || typeof senha !== "string") {
+        return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
+    }
+
+    if (senha.trim().length < 6) {
+        return res.status(400).json({ error: "A senha deve ter ao menos 6 caracteres." });
+    }
+
+    // Criando a "impressão digital" da senha: nunca guardamos o texto original
+    const hash = bcrypt.hashSync(senha, 10);
+
+    try {
+        const resultado = stmtInserirUsuario.run(email.trim(), hash);
+        const usuario = stmtBuscarUsuarioPorId.get(resultado.lastInsertRowid) as Usuario;
+
+        return res.status(201).json({ id: usuario.id, email: usuario.email });
+    } catch {
+        // A trava UNIQUE do banco falha se o e-mail já existir
+        return res.status(409).json({ error: "E-mail já cadastrado." });
+    }
+});
+
 // Listar as tarefas (Tasks)
 app.get("/api/tasks", (req, res) => {
     // 1. Coerção Segura: Forçamos a variável a ser uma String vazia caso tentem nos enviar um Array
