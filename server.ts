@@ -1,8 +1,13 @@
 import express from "express";
 import Database from "better-sqlite3";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
+
+// Chave usada para assinar os tokens JWT (deve vir de variável de ambiente em produção)
+const JWT_SECRET = process.env.JWT_SECRET || "super_secreto_desenvolvimento";
 
 // 1. Criamos um "molde" (Interface) para nossas tarefas
 interface Tarefa {
@@ -10,6 +15,12 @@ interface Tarefa {
     titulo: string;
     status: string;
     prioridade: string;
+}
+
+interface Usuario {
+    id: number;
+    email: string;
+    senha: string;
 }
 
 // 2. Centralizamos as regras. Se a regra mudar, mudamos em um só lugar!
@@ -56,7 +67,7 @@ db.exec(`
 
     CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        email TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
         senha TEXT NOT NULL
     );
 `)
@@ -67,6 +78,8 @@ db.exec(`
 // existir antes de compilarmos as buscas que apontam para elas.
 const stmtContarUsuarios = db.prepare("SELECT COUNT(*) as count FROM usuarios");
 const stmtInserirUsuario = db.prepare("INSERT INTO usuarios (email, senha) VALUES (?, ?)");
+const stmtBuscarUsuarioPorId = db.prepare("SELECT * FROM usuarios WHERE id = ?");
+const stmtBuscarUsuarioPorEmail = db.prepare("SELECT * FROM usuarios WHERE email = ?");
 const stmtListarTodas = db.prepare("SELECT * FROM tarefas");
 const stmtBuscarPorTitulo = db.prepare("SELECT * FROM tarefas WHERE titulo LIKE ?");
 const stmtBuscarPorId = db.prepare("SELECT * FROM tarefas WHERE id = ?");
@@ -77,10 +90,64 @@ const stmtDeletarTarefa = db.prepare("DELETE FROM tarefas WHERE id = ?");
 const usuariosExistentes = stmtContarUsuarios.get() as { count: number };
 if (usuariosExistentes.count === 0) {
     // Bom: Usamos a busca já preparada e passamos os dados de forma parametrizada
-    stmtInserirUsuario.run("otavio@gmail.com", "senha_super_maluca");
+    // A senha nunca é gravada em texto puro, mesmo para o usuário semente
+    stmtInserirUsuario.run("otavio@gmail.com", bcrypt.hashSync("senha_super_maluca", 10));
 }
 
 console.log("Banco de Dados inicializado!!!");
+
+// Registrar novo usuário (Register)
+app.post("/api/auth/register", (req, res) => {
+    const { email, senha } = req.body;
+
+    if (typeof email !== "string" || typeof senha !== "string") {
+        return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
+    }
+
+    if (senha.trim().length < 6) {
+        return res.status(400).json({ error: "A senha deve ter ao menos 6 caracteres." });
+    }
+
+    // Criando a "impressão digital" da senha: nunca guardamos o texto original
+    const hash = bcrypt.hashSync(senha, 10);
+
+    try {
+        const resultado = stmtInserirUsuario.run(email.trim(), hash);
+        const usuario = stmtBuscarUsuarioPorId.get(resultado.lastInsertRowid) as Usuario;
+
+        return res.status(201).json({ id: usuario.id, email: usuario.email });
+    } catch {
+        // A trava UNIQUE do banco falha se o e-mail já existir
+        return res.status(409).json({ error: "E-mail já cadastrado." });
+    }
+});
+
+// Autenticar usuário (Login)
+app.post("/api/auth/login", (req, res) => {
+    const { email, senha } = req.body;
+
+    if (typeof email !== "string" || typeof senha !== "string") {
+        return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
+    }
+
+    const usuario = stmtBuscarUsuarioPorEmail.get(email.trim()) as Usuario | undefined;
+
+    // Compara SEMPRE com um hash (mesmo se o usuário não existir) para não
+    // vazar, pelo tempo de resposta, quais e-mails estão cadastrados
+    const hashEsperado = usuario?.senha ?? "$2a$10$fakehashparanaquebrarcomparacao";
+    const senhaOk = bcrypt.compareSync(senha, hashEsperado);
+
+    if (!usuario || !senhaOk) {
+        return res.status(401).json({ error: "Credenciais inválidas." });
+    }
+
+    // Gerando o "crachá" de acesso
+    const token = jwt.sign({ id: usuario.id, email: usuario.email }, JWT_SECRET, {
+        expiresIn: "2h",
+    });
+
+    return res.json({ token });
+});
 
 // Listar as tarefas (Tasks)
 app.get("/api/tasks", (req, res) => {
