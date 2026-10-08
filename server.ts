@@ -2,8 +2,10 @@ import express from "express";
 import Database from "better-sqlite3";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import cors from "cors";
 
 const app = express();
+app.use(cors()); // Libera o CORS para todas as rotas
 const PORT = Number(process.env.PORT) || 3000;
 
 // Chave usada para assinar os tokens JWT (deve vir de variável de ambiente em produção)
