@@ -5,6 +5,7 @@ function App() {
 
     const[tarefas, setTarefas] = useState([]);
     const[novoTitulo, setNovoTitulo] = useState('')
+    const [categoria, setCategoria] = useState('Estudo')
 
     function AdicionarTarefa(evento) {
         evento.preventDefault();
@@ -18,7 +19,8 @@ function App() {
         const novaTarefa = {
             id: Date.now(),
             titulo: tituloLimpo,
-            concluida: false
+            concluida: false,
+            categoria: categoria
         };
 
         setTarefas(listaAtual => [...listaAtual, novaTarefa])
@@ -64,6 +66,12 @@ function App() {
                 onChange={evento => setNovoTitulo(evento.target.value)}
                 placeholder='Estudando...'
                 />
+
+                <select name="categoria" id="categoria" value={categoria} onChange={evento => setCategoria(evento.target.value)}>
+                    <option value="Estudo">Estudo</option>
+                    <option value="Trabalho">Trabalho</option>
+                    <option value="Pessoal">Pessoal</option>
+                </select>
 
                 <button type='submit'>Adicionar</button>
 

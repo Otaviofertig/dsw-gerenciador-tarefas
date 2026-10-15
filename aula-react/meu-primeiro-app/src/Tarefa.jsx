@@ -6,7 +6,7 @@ function Tarefa({tarefa, onAlterar, onRemover}) {
                     textDecoration: tarefa.concluida ? 'line-through' : 'none'
                 }}
             >
-                {tarefa.titulo}
+                {tarefa.titulo} [{tarefa.categoria}]
             </span>
             {''}
             <button onClick={() => onAlterar(tarefa.id)}>
