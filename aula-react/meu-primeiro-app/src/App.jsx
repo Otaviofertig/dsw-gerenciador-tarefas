@@ -1,32 +1,91 @@
 import { useState } from 'react';
+import Tarefa from './Tarefa';  
 
 function App() {
-  const [estaLigado, setEstaLigado] = useState(false);
 
-  return (
-    <div style={{
-      padding: '40px',
-      fontFamily: 'sans-serif',
-      textAlign: 'center',
-      backgroundColor: estaLigado ? '#fff3cd' : '#343a40',
-      color: estaLigado ? 'black' : 'white',
-      height: '100vh'
-    }}>
-      <h1>A lâmpada está: {estaLigado ? ' ACESA' : ' APAGADA'}</h1>
-      <button
-        onClick={() => setEstaLigado(!estaLigado)}
-        style={{
-          padding: '12px 24px',
-          fontSize: '16px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          marginTop: '20px'
-        }}
-      >
-        {estaLigado ? 'Apagar Luz' : 'Ligar Luz'}
-      </button>
-    </div >
-  );
+    const[tarefas, setTarefas] = useState([]);
+    const[novoTitulo, setNovoTitulo] = useState('')
+
+    function AdicionarTarefa(evento) {
+        evento.preventDefault();
+
+        const tituloLimpo = novoTitulo.trim();
+
+        if (tituloLimpo === '') {
+            return;
+        }
+
+        const novaTarefa = {
+            id: Date.now(),
+            titulo: tituloLimpo,
+            concluida: false
+        };
+
+        setTarefas(listaAtual => [...listaAtual, novaTarefa])
+        setNovoTitulo(''); 
+    }
+
+    function AlternarTarefa(id) {
+        setTarefas(listaAtual => 
+            listaAtual.map(tarefa => 
+                tarefa.id === id
+                    ? { ...tarefa, concluida: !tarefa.concluida }
+                    : tarefa
+
+            )
+        );
+    }
+
+
+    function removerTarefa(id) {
+        setTarefas(listaAtual =>
+            listaAtual.filter(tarefa => tarefa.id !== id)
+        );
+    }
+
+    const totalPendentes = tarefas.filter(
+        tarefa => !tarefa.concluida
+    ).length;
+
+    const todasConcluidas = tarefas.length > 0 && totalPendentes === 0;
+
+    return (
+        <main>
+            <h1>Minhas tarefas</h1>
+            <p>Organize sua rotina...</p>
+
+            <form onSubmit={AdicionarTarefa}>
+                <label htmlFor="tituloTarefa"> Nova tarefa </label>
+                <br />
+                <input 
+                id='tituloTarefa'
+                type="text" 
+                value={novoTitulo}
+                onChange={evento => setNovoTitulo(evento.target.value)}
+                placeholder='Estudando...'
+                />
+
+                <button type='submit'>Adicionar</button>
+
+            </form>
+
+            <ul>
+                {tarefas.map((tarefa) => (
+                    <Tarefa
+                        key={tarefa.id}
+                        tarefa={tarefa}
+                        onAlterar={AlternarTarefa}
+                        onRemover={removerTarefa}
+                    />
+                ))}
+            </ul>
+
+            <p>Total de tarefas: {tarefas.length}</p>
+            <p>Tarefas pendentes: {todasConcluidas ? 'Parabéns!!! você é um campeão!' : totalPendentes}</p>
+
+            
+        </main>
+    );
+
 }
-
-export default App;
+export default App
