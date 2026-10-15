@@ -22,6 +22,7 @@ Gerenciador de tarefas completo e multi-usuário, com back-end em **Node.js + Ex
 ## Como rodar
 
 ```bash
+cd api
 npm install
 npm run dev     # desenvolvimento, reinicia ao salvar (tsx watch)
 npm start       # execução simples
@@ -41,15 +42,21 @@ O servidor sobe em `http://localhost:3000`. O banco `tarefas.db` é criado autom
 ## Estrutura do projeto
 
 ```
-├── server.ts                  # API completa (rotas, banco, autenticação)
-├── requests.http              # cenários de teste (REST Client)
-├── GUIA_DE_ESTUDOS.md         # resumo consolidado de toda a disciplina
-├── Diário de conhecimento/    # anotações de cada aula
-├── Desafios_aula/             # desafio prático das aulas 3 e 4 (Tailwind)
+├── api/                       # back-end independente (Express + SQLite)
+│   ├── server.ts              # API completa (rotas, banco, autenticação)
+│   ├── requests.http          # cenários de teste (REST Client)
+│   ├── package.json
+│   └── tsconfig.json
+├── web/                       # front-end React + TypeScript (Vite)
+├── aula-react/meu-primeiro-app/  # exercícios da aula de introdução ao React
+├── html-estatico/             # páginas HTML/Tailwind e anotações (dicas.txt)
 ├── Gerenciador_Tarefas/       # protótipo de front-end
-├── package.json
-└── tsconfig.json
+├── Desafios_aula/             # desafio prático das aulas 3 e 4 (Tailwind)
+├── Diário de conhecimento/    # anotações de cada aula
+└── GUIA_DE_ESTUDOS.md         # resumo consolidado de toda a disciplina
 ```
+
+Cada pasta (`api`, `web`, `aula-react/meu-primeiro-app`) tem seu próprio `package.json` e `node_modules`. Rode `npm install` dentro da pasta desejada.
 
 ## Endpoints da API
 
@@ -149,7 +156,7 @@ Na primeira execução, se não houver usuários, é criado um usuário semente 
 
 ## Front-end
 
-As telas estão em [index.html](index.html) e em [Gerenciador_Tarefas/gt.html/gt.html](Gerenciador_Tarefas/gt.html/gt.html), feitas com Tailwind CSS via CDN: cabeçalho, formulário de acesso ("Acesso ao Sistema") e área de tarefas em grade responsiva. Por enquanto são páginas estáticas e ainda não consomem a API. Basta abri-las no navegador. A [tailwindCSS.html](tailwindCSS.html) e o [dicas.txt](dicas.txt) guardam os experimentos e a tabela de equivalência CSS puro → Tailwind usada nas aulas 3 e 4.
+As telas estão em [index.html](html-estatico/index.html) e em [Gerenciador_Tarefas/gt.html/gt.html](Gerenciador_Tarefas/gt.html/gt.html), feitas com Tailwind CSS via CDN: cabeçalho, formulário de acesso ("Acesso ao Sistema") e área de tarefas em grade responsiva. Por enquanto são páginas estáticas e ainda não consomem a API. Basta abri-las no navegador. A [tailwindCSS.html](html-estatico/tailwindCSS.html) e o [dicas.txt](html-estatico/dicas.txt) guardam os experimentos e a tabela de equivalência CSS puro → Tailwind usada nas aulas 3 e 4.
 
 ## Segurança aplicada
 
@@ -177,7 +184,7 @@ As telas estão em [index.html](index.html) e em [Gerenciador_Tarefas/gt.html/gt
 
 ## Testes com REST Client
 
-O arquivo [requests.http](requests.http) reúne os cenários de sucesso e de falha de cada aula (validação, ataques, registro e login). Com a extensão **REST Client** instalada, clique em "Send Request" acima de cada bloco.
+O arquivo [requests.http](api/requests.http) reúne os cenários de sucesso e de falha de cada aula (validação, ataques, registro e login). Com a extensão **REST Client** instalada, clique em "Send Request" acima de cada bloco.
 
 Dica: separe cada requisição com `###`, senão a extensão não identifica os requests.
 
