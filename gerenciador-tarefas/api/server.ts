@@ -159,7 +159,7 @@ const stmtBuscarUsuarioPorEmail = db.prepare("SELECT * FROM usuarios WHERE email
 // Bom: Tipagem correta sem usar "as any"
 const usuariosExistentes = stmtContarUsuarios.get() as { count: number };
 if (usuariosExistentes.count === 0) {
-    const hashAdmin = bcrypt.hashSync("senha_super_secreta_123", 10);
+    const hashAdmin = bcrypt.hashSync("123456", 10);
     stmtInserirUsuario.run("admin@senai.com", hashAdmin);
 }
 
