@@ -14,7 +14,11 @@ app-react/
 └── web/                   # front-end React + TypeScript conectado à API
     └── src/
         ├── main.tsx
-        └── App.tsx        # componentes, contador, fetch do health check e lista
+        ├── App.tsx        # decide entre a tela de login e a lista de tarefas
+        ├── Login.tsx      # login e registro (um componente, dois modos)
+        ├── Tarefas.tsx    # lista, criação, conclusão, exclusão e busca de tarefas
+        ├── api.ts         # único lugar que conhece o endereço da API e o token JWT
+        └── index.css      # entrada do Tailwind CSS (tema escuro)
 ```
 
 ## meu-primeiro-app: lista de tarefas
@@ -36,7 +40,9 @@ pnpm lint       # oxlint
 
 ## web: front-end conectado à API
 
-Base do front-end do [Gerenciador de Tarefas](../gerenciador-tarefas/). Hoje mostra um componente de saudação, um contador, uma lista renderizada com `.map()` e o status do servidor, buscado em `GET /api/health` com `useEffect` + `fetch`.
+Front-end do [Gerenciador de Tarefas](../gerenciador-tarefas/), feito com React, TypeScript e Tailwind CSS. Tem tela de login e registro, e a lista de tarefas do usuário logado, com criação, conclusão, exclusão e busca. O token JWT fica no `localStorage` e é enviado em `Authorization: Bearer <token>`.
+
+Em desenvolvimento (`pnpm dev`) o `api.ts` fala com `http://localhost:3000`. Depois do `pnpm build`, o `api.ts` usa caminhos relativos, e a própria API entrega o `dist/` (veja o [README do Gerenciador](../gerenciador-tarefas/README.md)).
 
 ```bash
 # 1. em um terminal, suba a API
@@ -50,7 +56,7 @@ pnpm lint       # eslint
 pnpm build      # checa tipos e gera dist/
 ```
 
-Se a API não estiver rodando, a tela mostra "Erro ao conectar com o servidor". A API já libera o CORS para essa origem.
+Se a API não estiver rodando, a tela mostra o erro de conexão. A API libera o CORS para essa origem, necessário só no desenvolvimento, quando tela (`:5173`) e API (`:3000`) são origens diferentes.
 
 ## Tecnologias
 

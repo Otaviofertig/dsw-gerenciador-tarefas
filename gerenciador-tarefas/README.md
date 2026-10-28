@@ -24,6 +24,18 @@ pnpm start      # execução simples
 
 O servidor sobe em `http://localhost:3000`. O banco `tarefas.db` é criado automaticamente dentro de `api/` na primeira execução, junto com um usuário semente.
 
+### Servindo o front-end pela API
+
+A API também entrega o front React (`app-react/web`). Como tela e API saem da mesma origem, o CORS deixa de ser necessário nesse modo.
+
+```bash
+pnpm build:web   # gera app-react/web/dist
+pnpm dev         # a tela abre em http://localhost:3000
+pnpm dev:all     # alternativa: API e Vite juntos (tela em http://localhost:5173)
+```
+
+A ordem das peças no final do `server.ts` importa: primeiro o 404 em JSON para `/api/*` que não existe, depois o `express.static` com o `dist`, e por último o SPA fallback, que devolve o `index.html` para qualquer outro caminho. Ao subir, a API avisa se o build não existe ou está mais velho que `app-react/web/src`.
+
 ### Variáveis de ambiente
 
 | Variável | Padrão | Descrição |
@@ -164,9 +176,8 @@ A tela em [prototipo-html/index.html](prototipo-html/index.html) foi feita com T
 
 ## Limitações atuais
 
-- **As rotas de tarefas estão abertas:** o token JWT já é gerado, mas nenhuma rota o exige ainda.
-- **As tarefas não têm dono:** a tabela `tarefas` não tem `usuario_id`, então todos os usuários veem as mesmas tarefas. O sistema ainda não é, de fato, multi-usuário.
-- **O protótipo HTML é estático:** os formulários de login e de tarefas ainda não chamam a API.
+- **O banco é um arquivo local:** o `tarefas.db` fica no disco, que some a cada deploy em hospedagens comuns. A próxima etapa é migrar para um banco em nuvem (Turso / libSQL).
+- **O protótipo HTML é estático:** os formulários de login e de tarefas não chamam a API. A tela de verdade está em `app-react/web`.
 - **`JWT_SECRET` tem valor padrão de desenvolvimento:** deve ser definida por variável de ambiente fora do ambiente local.
 - **Sem testes automatizados:** a verificação é manual, pelo `requests.http`.
 

@@ -42,10 +42,12 @@ O repositório usa **pnpm** em todos os projetos. Cada projeto tem o próprio `p
 | --- | --- | --- |
 | API | `cd gerenciador-tarefas/api && pnpm install && pnpm dev` | http://localhost:3000 |
 | React + API (`web`) | `cd app-react/web && pnpm install && pnpm dev` | http://localhost:5173 |
+| API + front juntos (1 terminal) | `cd gerenciador-tarefas/api && pnpm dev:all` | http://localhost:5173 (tela) e :3000 (API) |
+| Front servido pela API | `cd gerenciador-tarefas/api && pnpm build:web && pnpm dev` | http://localhost:3000 |
 | Lista de tarefas React | `cd app-react/meu-primeiro-app && pnpm install && pnpm dev` | http://localhost:5173 |
 | Protótipo e exercícios | abrir o arquivo `.html` no navegador | — |
 
-Para ver o `web` conversando com o back-end, deixe a API rodando em um terminal e o front-end em outro.
+Para ver o `web` conversando com o back-end, deixe a API rodando em um terminal e o front-end em outro, ou use o `pnpm dev:all`, que sobe os dois juntos. Em `:5173` o Vite lê o código ao vivo; em `:3000` a API entrega o build (`app-react/web/dist`), então depois de mexer no front é preciso rodar `pnpm build:web` de novo.
 
 ## Tecnologias
 
@@ -68,7 +70,8 @@ Para ver o `web` conversando com o back-end, deixe a API rodando em um terminal 
 | 13 | 23/09 | Autenticação: registro, login, bcrypt e JWT | [23/09](diario-de-bordo/2026-09-23.md) |
 | React 1 | 07/10 | Introdução ao React: componentes, `useState`, `useEffect`, `fetch` e CORS | [07/10](diario-de-bordo/2026-10-07.md) |
 | React 2 | 14/10 | Lista de tarefas com estado, formulário controlado e componente `Tarefa` | [14/10](diario-de-bordo/2026-10-14.md) |
-| Próxima | — | Middleware de autorização (`Authorization: Bearer <token>`) | — |
+| Lab | 28/10 | Laboratório prático: ajustes com Tailwind, lacunas de lógica e o back servindo o front (`express.static` e SPA fallback) | [28/10](diario-de-bordo/2026-10-28.md) |
+| Próxima | — | Banco de dados em nuvem (Turso / libSQL) | — |
 
 Os pontos em aberto e o roadmap do projeto estão no [README do Gerenciador](gerenciador-tarefas/README.md#limitações-atuais).
 
