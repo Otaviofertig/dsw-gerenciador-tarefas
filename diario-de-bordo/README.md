@@ -19,6 +19,7 @@ Anotações curtas do que aprendi em cada aula de DSW, escritas com as minhas pa
 | --- | --- |
 | [07/10/2026](2026-10-07.md) | Introdução ao React: componentes, useState, useEffect e CORS |
 | [14/10/2026](2026-10-14.md) | Estado e componentes no React: lista de tarefas e formulário controlado |
+| [28/10/2026](2026-10-28.md) | Laboratório prático: ajustes com Tailwind, lacunas de lógica e o back servindo o front |
 
 ## Como registrar uma nova aula
 
