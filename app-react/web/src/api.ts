@@ -233,9 +233,7 @@ export const registrar = async (
 export const listarTarefas = async (search = ""): Promise<Tarefa[]> => {
     const url = `${API_BASE}/api/tasks${search ? `?search=${encodeURIComponent(search)}` : ""
         }`;
-    // TODO: MISSÃO 2 - Faça o fetch chamando a url acima e passando o authHeaders()
-    // DICA: const res = await fetch(...);
-    
+    // O authHeaders() envia o token; sem ele a API responde 401.
     const res = await fetch(url, { headers: authHeaders() });
 
     

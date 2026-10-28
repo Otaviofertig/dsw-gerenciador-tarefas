@@ -82,7 +82,7 @@ export default function Tarefas({ usuario, aoSair }: TarefasProps) {
 
     // --- formulário de criação ----------------------------------------------
     const [titulo, setTitulo] = useState("");
-    // TODO: MISSÃO 1 - Mude o estado inicial de prioridade para começar sempre no "high" (Alta)
+    // Toda nova tarefa começa com prioridade Alta.
     const [prioridade, setPrioridade] = useState<Prioridade>("high");
     const [criando, setCriando] = useState(false);
 
@@ -215,7 +215,7 @@ export default function Tarefas({ usuario, aoSair }: TarefasProps) {
         try {
             await criarTarefa(tituloLimpo, prioridade);
             setTitulo("");
-            setPrioridade("medium");
+            setPrioridade("high");
             await carregar();
         } catch (e) {
             setErro(mensagemDe(e, "Não foi possível criar a tarefa."));

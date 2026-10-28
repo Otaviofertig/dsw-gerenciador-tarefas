@@ -151,8 +151,7 @@ export default function Login({ aoLogar }: LoginProps) {
                         {carregando ? "Aguarde..." : ehLogin ? "Entrar" : "Criar conta"}
                     </button>
 					
-					{/* TODO: MISSÃO 2 - Falta algo neste botão! Ele está recarregando a página e perdendo o estado.
-					 Adicione a propriedade type="button" para evitar o comportamento padrão do form. */}
+					{/* type="button": dentro do <form>, um botão sem type vira submit e recarrega a página. */}
 					<button
                         type="button"
 						onClick={() => {
