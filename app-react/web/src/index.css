@@ -1,22 +1,195 @@
- /* Tailwind CSS v4 - o ponto de entrada do framework.
-    O Tailwind v4 usa configuracao via CSS: nao existe mais tailwind.config.js.
-    Basta importar "tailwindcss" aqui e usar as classes utilitarias direto no JSX. */
- @import "tailwindcss";
+/* Tailwind CSS v4 - o ponto de entrada do framework.
+   O Tailwind v4 usa configuracao via CSS: nao existe mais tailwind.config.js.
+   Basta importar "tailwindcss" aqui e usar as classes utilitarias direto no JSX. */
+@import "tailwindcss";
 
- /* O tema escuro e o cenario base do projeto. Declaramos o fundo e a cor
-    do texto no proprio elemento <body> para que toda a tela nasca escura. */
- body {
-   background-color: var(--color-slate-950);
-   color: var(--color-slate-100);
- }
+/* ---------------------------------------------------------------------------
+   Tema "caderno de estudos": mesa de madeira, capa de livro, folha de papel
+   e tinta. Tudo o que o tema precisa vira variavel aqui e, ao declarar dentro
+   de @theme, o Tailwind gera as classes (bg-paper, text-ink, font-hand...).
+   --------------------------------------------------------------------------- */
+@theme {
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Lora", Georgia, "Times New Roman", serif;
+  --font-hand: "Caveat", "Segoe Print", "Bradley Hand", cursive;
 
- /* Acessibilidade: respeita quem desligou as animacoes no sistema. */
- @media (prefers-reduced-motion: reduce) {
+  --color-paper: #f5edd9;
+  --color-paper-deep: #e8dcbd;
+  --color-ink: #2b2118;
+  --color-ink-soft: #5a4837;
+  --color-leather: #1d4637;
+  --color-leather-dark: #123226;
+  --color-gold: #d4ae55;
+  --color-desk: #2a1d16;
+  --color-ribbon: #a3263a;
+}
 
-   *,
-   *::before,
-   *::after {
-     animation-duration: 0.01ms !important;
-     transition-duration: 0.01ms !important;
-   }
- }
+/* Textura de papel: ruido bem fraco desenhado em SVG, sem baixar imagem. */
+:root {
+  --textura-papel: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .36  0 0 0 0 .26  0 0 0 0 .14  0 0 0 .1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+html {
+  background-color: var(--color-desk);
+}
+
+/* A mesa: madeira escura com um brilho suave no alto, como uma luminaria. */
+body {
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background-color: var(--color-desk);
+  background-image:
+    radial-gradient(ellipse at 50% -10%, rgba(255, 214, 150, 0.16), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.018) 0 2px, transparent 2px 9px),
+    linear-gradient(180deg, #3a281e 0%, var(--color-desk) 55%, #1b120d 100%);
+  background-attachment: fixed;
+}
+
+@layer base {
+  /* Foco sempre visivel para quem navega pelo teclado. */
+  :focus-visible {
+    outline: 2px solid var(--color-emerald-700);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: rgba(212, 174, 85, 0.5);
+  }
+}
+
+@layer components {
+  /* --- A folha do caderno ------------------------------------------------ */
+  .caderno {
+    --margem: 3.4rem;
+    position: relative;
+    padding: 1.75rem 1rem 2rem calc(var(--margem) + 1rem);
+    background-color: var(--color-paper);
+    background-image: var(--textura-papel);
+    border-radius: 6px 16px 16px 6px;
+    /* As duas sombras deslocadas parecem as folhas de baixo. */
+    box-shadow:
+      0 24px 50px rgba(0, 0, 0, 0.5),
+      5px 4px 0 -1px #e3d6b6,
+      9px 8px 0 -2px #d3c39d;
+  }
+
+  /* A linha vermelha da margem. */
+  .caderno::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--margem);
+    width: 2px;
+    background: rgba(163, 38, 58, 0.4);
+    pointer-events: none;
+  }
+
+  /* Os furos do caderno de argolas. */
+  .caderno::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0.7rem;
+    width: 22px;
+    background: radial-gradient(
+        circle at center,
+        var(--color-desk) 0 6px,
+        rgba(0, 0, 0, 0.3) 7px,
+        transparent 9px
+      )
+      center top / 22px 76px repeat-y;
+    pointer-events: none;
+  }
+
+  @media (min-width: 640px) {
+    .caderno {
+      --margem: 4.5rem;
+      padding: 2.5rem 2rem 2.5rem calc(var(--margem) + 1.75rem);
+    }
+  }
+
+  /* --- A capa do livro (tela de login) ----------------------------------- */
+  .capa {
+    position: relative;
+    background-color: var(--color-leather);
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.035) 0 2px, transparent 2px 5px),
+      repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.07) 0 2px, transparent 2px 5px);
+    border-radius: 8px 18px 18px 8px;
+    border-left: 14px solid var(--color-leather-dark);
+    box-shadow:
+      inset 0 0 0 2px rgba(212, 174, 85, 0.55),
+      inset 0 0 0 7px var(--color-leather),
+      inset 0 0 0 8px rgba(212, 174, 85, 0.3),
+      0 30px 60px rgba(0, 0, 0, 0.55);
+  }
+
+  /* A fita marcadora que sai de dentro do livro. */
+  .fita {
+    position: absolute;
+    top: -6px;
+    right: 2.25rem;
+    width: 26px;
+    height: 104px;
+    background: linear-gradient(90deg, #8c1f31, var(--color-ribbon) 50%, #8c1f31);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+  }
+
+  /* A etiqueta de papel colada na capa, onde fica o formulario. */
+  .etiqueta {
+    background-color: var(--color-paper);
+    background-image: var(--textura-papel);
+    border-radius: 4px;
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.3),
+      0 3px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  /* --- Marcador de pagina (etiqueta de prioridade) ----------------------- */
+  .marcador {
+    display: inline-block;
+    padding: 0.1rem 1.1rem 0.1rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 50%, 100% 100%, 0 100%);
+  }
+
+  /* --- Campo de escrever: so a linha de baixo, como no papel pautado ------ */
+  .campo {
+    @apply w-full border-0 border-b-2 border-ink/40 bg-transparent px-1 py-2 text-ink transition-colors placeholder:text-ink-soft/70 focus:border-emerald-700;
+  }
+
+  /* --- Botoes ------------------------------------------------------------ */
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-primario {
+    @apply bg-emerald-700 text-white shadow-sm hover:bg-emerald-600;
+  }
+
+  .btn-contorno {
+    @apply border border-ink/40 bg-transparent text-ink-soft hover:border-ink hover:bg-paper-deep hover:text-ink;
+  }
+
+  .btn-perigo {
+    @apply bg-rose-700 text-white hover:bg-rose-600;
+  }
+
+  .btn-contorno-perigo {
+    @apply border border-rose-700/50 bg-transparent text-rose-800 hover:border-rose-700 hover:bg-rose-100;
+  }
+}
+
+/* Acessibilidade: respeita quem desligou as animacoes no sistema. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
