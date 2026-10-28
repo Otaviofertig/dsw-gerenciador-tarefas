@@ -1,15 +1,75 @@
-import express from "express";
-import Database from "better-sqlite3";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import cors from "cors";
+import cors from 'cors';
+import express, { type Request, type Response, type NextFunction } from "express";
+import Database from "better-sqlite3";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const app = express();
 app.use(cors()); // Libera o CORS para todas as rotas
 const PORT = Number(process.env.PORT) || 3000;
-
-// Chave usada para assinar os tokens JWT (deve vir de variável de ambiente em produção)
 const JWT_SECRET = process.env.JWT_SECRET || "super_secreto_desenvolvimento";
+
+// O projeto usa "type": "module" no package.json, ou seja, roda como ESM.
+// Nesse modo não existe a variável __dirname que o Node antigo oferecia: o
+// caminho do arquivo atual precisa ser reconstruído a partir de
+// import.meta.url, e é o que o fileURLToPath faz por nós.
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/**
+ * Pasta do projeto React. Neste repositório o front não fica ao lado do
+ * server.ts: a API está em gerenciador-tarefas/api e o React em app-react/web.
+ */
+const FRONT_DIR = path.join(__dirname, "..", "..", "app-react", "web");
+
+/** Pasta que o `pnpm build` do Vite cria dentro do projeto React. */
+const FRONT_DIST = path.join(FRONT_DIR, "dist");
+
+/** O arquivo de entrada que o SPA fallback entrega. */
+const FRONT_INDEX = path.join(FRONT_DIST, "index.html");
+
+/**
+ * Resposta que aparece quando alguém abre a página e a pasta web/dist ainda
+ * não existe. Um erro de "Cannot GET /" não ajuda ninguém a descobrir que
+ * faltou um `npm run build`, então a mensagem diz exatamente o que fazer.
+ */
+const SEM_BUILD = [
+    "Ainda não existe o build do front-end.",
+    "",
+    "Procurei este arquivo:",
+    `  ${FRONT_INDEX}`,
+    "",
+    "Gere-o com (a partir de gerenciador-tarefas/api):",
+    "  pnpm build:web",
+    "",
+    "Se for a primeira vez, instale antes as dependências do front:",
+    "  cd ../../app-react/web",
+    "  pnpm install",
+    "",
+    "Enquanto isso, a API continua funcionando em /api/health.",
+].join("\n");
+
+/**
+ * Devolve a data de modificação mais recente de uma pasta, olhando dentro das
+ * subpastas também. Serve para comparar os fontes do front com o build.
+ */
+function maisRecente(dir: string): number {
+    let maior = 0;
+
+    for (const entrada of fs.readdirSync(dir, { withFileTypes: true })) {
+        const caminho = path.join(dir, entrada.name);
+
+        if (entrada.isDirectory()) {
+            maior = Math.max(maior, maisRecente(caminho));
+        } else {
+            maior = Math.max(maior, fs.statSync(caminho).mtimeMs);
+        }
+    }
+
+    return maior;
+}
 
 // 1. Criamos um "molde" (Interface) para nossas tarefas
 interface Tarefa {
@@ -25,6 +85,10 @@ interface Usuario {
     senha: string;
 }
 
+interface AuthRequest extends Request {
+    usuarioId?: number; // Injetaremos o ID aqui após validar o token
+}
+
 // 2. Centralizamos as regras. Se a regra mudar, mudamos em um só lugar!
 const PRIORIDADES = ["low", "medium", "high"] as const;
 const STATUS_VALIDOS = ["pending", "completed"] as const;
@@ -35,6 +99,7 @@ const tituloValido = (t: unknown): t is string =>
 
 const normalizarPrioridade = (p: unknown) => {
     const listaPrioridades = PRIORIDADES as readonly string[];
+
     return typeof p === "string" && listaPrioridades.includes(p)
         ? p
         : "medium";
@@ -42,6 +107,7 @@ const normalizarPrioridade = (p: unknown) => {
 
 const normalizarStatus = (s: unknown) => {
     const listaStatus = STATUS_VALIDOS as readonly string[];
+
     return typeof s === "string" && listaStatus.includes(s)
         ? s
         : "pending";
@@ -57,123 +123,99 @@ const parsearId = (idParam: string): number | null => {
 // Middleware para ler o corpo das requisições em formato JSON
 app.use(express.json());
 
-const db = new Database("tarefas.db")
+const db = new Database("tarefas.db");
 
 db.exec(`
-    CREATE TABLE IF NOT EXISTS tarefas (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        titulo TEXT NOT NULL,
-        status TEXT DEFAULT 'pending',
-        prioridade TEXT DEFAULT 'medium'
-    );
-
     CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         email TEXT UNIQUE NOT NULL,
         senha TEXT NOT NULL
     );
-`)
+
+    CREATE TABLE IF NOT EXISTS tarefas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        titulo TEXT NOT NULL,
+        status TEXT DEFAULT 'pending',
+        prioridade TEXT DEFAULT 'medium',
+        usuario_id INTEGER NOT NULL, /* <-- ADICIONAMOS O VÍNCULO AQUI */
+        FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
+    );
+`);
 
 // Escrevemos (compilamos) as buscas UMA ÚNICA VEZ e guardamos na memória.
-// Precisa vir depois do db.exec() acima: o better-sqlite3 valida cada
-// prepare() contra o schema já existente, então as tabelas precisam
-// existir antes de compilarmos as buscas que apontam para elas.
 const stmtContarUsuarios = db.prepare("SELECT COUNT(*) as count FROM usuarios");
 const stmtInserirUsuario = db.prepare("INSERT INTO usuarios (email, senha) VALUES (?, ?)");
+
+const stmtListarTodas = db.prepare("SELECT * FROM tarefas WHERE usuario_id = ?");
+const stmtBuscarPorTitulo = db.prepare("SELECT * FROM tarefas WHERE titulo LIKE ? AND usuario_id = ?");
+const stmtBuscarPorId = db.prepare("SELECT * FROM tarefas WHERE id = ? AND usuario_id = ?");
+const stmtInserirTarefa = db.prepare("INSERT INTO tarefas (titulo, status, prioridade, usuario_id) VALUES (?, 'pending', ?, ?)");
+const stmtDeletarTarefa = db.prepare("DELETE FROM tarefas WHERE id = ? AND usuario_id = ?");
+
 const stmtBuscarUsuarioPorId = db.prepare("SELECT * FROM usuarios WHERE id = ?");
 const stmtBuscarUsuarioPorEmail = db.prepare("SELECT * FROM usuarios WHERE email = ?");
-const stmtListarTodas = db.prepare("SELECT * FROM tarefas");
-const stmtBuscarPorTitulo = db.prepare("SELECT * FROM tarefas WHERE titulo LIKE ?");
-const stmtBuscarPorId = db.prepare("SELECT * FROM tarefas WHERE id = ?");
-const stmtInserirTarefa = db.prepare("INSERT INTO tarefas (titulo, status, prioridade) VALUES (?, 'pending', ?)");
-const stmtDeletarTarefa = db.prepare("DELETE FROM tarefas WHERE id = ?");
 
+// Inserindo dados falsos para serem vazados
 // Bom: Tipagem correta sem usar "as any"
 const usuariosExistentes = stmtContarUsuarios.get() as { count: number };
 if (usuariosExistentes.count === 0) {
-    // Bom: Usamos a busca já preparada e passamos os dados de forma parametrizada
-    // A senha nunca é gravada em texto puro, mesmo para o usuário semente
-    stmtInserirUsuario.run("otavio@gmail.com", bcrypt.hashSync("senha_super_maluca", 10));
+    const hashAdmin = bcrypt.hashSync("senha_super_secreta_123", 10);
+    stmtInserirUsuario.run("admin@senai.com", hashAdmin);
 }
 
-console.log("Banco de Dados inicializado!!!");
+console.log("Banco de dados SQLite inicializado com sucesso!");
 
-// Registrar novo usuário (Register)
-app.post("/api/auth/register", (req, res) => {
-    const { email, senha } = req.body;
+// Middleware de Autenticação
+const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
+    const header = req.headers.authorization;
 
-    if (typeof email !== "string" || typeof senha !== "string") {
-        return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
+    if (!header || !header.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Token ausente ou mal formatado." });
     }
 
-    if (senha.trim().length < 6) {
-        return res.status(400).json({ error: "A senha deve ter ao menos 6 caracteres." });
-    }
-
-    // Criando a "impressão digital" da senha: nunca guardamos o texto original
-    const hash = bcrypt.hashSync(senha, 10);
+    const token = header.split(" ")[1]; // Pega só o token após a palavra 'Bearer'
 
     try {
-        const resultado = stmtInserirUsuario.run(email.trim(), hash);
-        const usuario = stmtBuscarUsuarioPorId.get(resultado.lastInsertRowid) as Usuario;
-
-        return res.status(201).json({ id: usuario.id, email: usuario.email });
+        const payload = jwt.verify(token, JWT_SECRET) as { id: number };
+        req.usuarioId = payload.id; // Injeta o id no req para a rota usar
+        next(); // Tudo certo! Segue para a rota.
     } catch {
-        // A trava UNIQUE do banco falha se o e-mail já existir
-        return res.status(409).json({ error: "E-mail já cadastrado." });
+        return res.status(401).json({ error: "Token inválido ou expirado." });
     }
+};
+
+// Rota de integridade do sistema (Health Check)
+app.get("/api/health", (req, res) => {
+    res.json({ status: "ok", message: "Servidor do Gestor de Tarefas ativo!" });
 });
 
-// Autenticar usuário (Login)
-app.post("/api/auth/login", (req, res) => {
-    const { email, senha } = req.body;
-
-    if (typeof email !== "string" || typeof senha !== "string") {
-        return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
-    }
-
-    const usuario = stmtBuscarUsuarioPorEmail.get(email.trim()) as Usuario | undefined;
-
-    // Compara SEMPRE com um hash (mesmo se o usuário não existir) para não
-    // vazar, pelo tempo de resposta, quais e-mails estão cadastrados
-    const hashEsperado = usuario?.senha ?? "$2a$10$fakehashparanaquebrarcomparacao";
-    const senhaOk = bcrypt.compareSync(senha, hashEsperado);
-
-    if (!usuario || !senhaOk) {
-        return res.status(401).json({ error: "Credenciais inválidas." });
-    }
-
-    // Gerando o "crachá" de acesso
-    const token = jwt.sign({ id: usuario.id, email: usuario.email }, JWT_SECRET, {
-        expiresIn: "2h",
-    });
-
-    return res.json({ token });
+app.get("/api/version", (req, res) => {
+    res.json({ appName: "Gerenciador de Tarefas Multi-Usuário", version: "1.0.0" });
 });
 
-// Listar as tarefas (Tasks)
-app.get("/api/tasks", (req, res) => {
+app.get("/api/tasks", authenticate, (req: AuthRequest, res) => {
+    const usuarioId = req.usuarioId!; // Garantimos que existe pois o middleware já checou
     // 1. Coerção Segura: Forçamos a variável a ser uma String vazia caso tentem nos enviar um Array
     const search = typeof req.query.search === "string" ? req.query.search : "";
 
     try {
         if (search) {
             // 2. Proteção: O '%' entra DEPOIS, apenas dentro do parâmetro
-            const tarefas = stmtBuscarPorTitulo.all(`%${search}%`);
+            const tarefas = stmtBuscarPorTitulo.all(`%${search}%`, usuarioId);
             res.json(tarefas);
         } else {
             // 3. Performance: Usamos a busca compilada lá do Passo 2
-            const tarefas = stmtListarTodas.all();
+            const tarefas = stmtListarTodas.all(usuarioId);
             res.json(tarefas);
         }
-    } catch {
+    } catch (erro) {
         // 4. Erro Controlado: Se algo quebrar, damos uma mensagem genérica para não vazar a estrutura do banco
         res.status(500).json({ error: "Erro interno ao processar a listagem." });
     }
 });
 
-// Criar nova tarefa (New Task)
-app.post("/api/tasks", (req, res) => {
+app.post("/api/tasks", authenticate, (req: AuthRequest, res) => {
+    const usuarioId = req.usuarioId!;
     const { titulo, prioridade } = req.body;
     const prioridadeValida = normalizarPrioridade(prioridade);
 
@@ -185,8 +227,8 @@ app.post("/api/tasks", (req, res) => {
     }
 
     try {
-        const resultado = stmtInserirTarefa.run(titulo.trim(), prioridadeValida);
-        const novaTarefa = stmtBuscarPorId.get(resultado.lastInsertRowid) as Tarefa;
+        const resultado = stmtInserirTarefa.run(titulo.trim(), prioridadeValida, usuarioId);
+        const novaTarefa = stmtBuscarPorId.get(resultado.lastInsertRowid, usuarioId) as Tarefa;
 
         return res.status(201).json(novaTarefa);
     } catch {
@@ -194,17 +236,17 @@ app.post("/api/tasks", (req, res) => {
     }
 });
 
-// Rota para deletar fisicamente uma tarefa do banco
-app.delete("/api/tasks/:id", (req, res) => {
+app.delete("/api/tasks/:id", authenticate, (req: AuthRequest, res) => {
+    const usuarioId = req.usuarioId!;
     // Validação de ID padronizada (igual PUT/PATCH)
-    const idParaDeletar = parsearId(req.params.id);
+    const idParaDeletar = parsearId(String(req.params.id));
 
     if (idParaDeletar === null) {
         return res.status(400).json({ error: "ID inválido." });
     }
 
     try {
-        const resultado = stmtDeletarTarefa.run(idParaDeletar);
+        const resultado = stmtDeletarTarefa.run(idParaDeletar, usuarioId);
 
         if (resultado.changes === 0) {
             return res.status(404).json({ error: "Tarefa não localizada para exclusão." });
@@ -216,24 +258,9 @@ app.delete("/api/tasks/:id", (req, res) => {
     }
 });
 
-// Rota principal de FALLBACK
-app.get("/", (req, res) => {
-    res.json({ turma: "ADS-2025" });
-});
-
-// Rota de integridade do sistema (Health Check)
-app.get("/api/health", (req, res) => {
-    res.json({ status: "ok", message: "Servidor do Gestor de Tarefas ativo!" });
-});
-
-// Rota da versão do sistema (Version Check)
-app.get("/api/version", (req, res) => {
-    res.json({ appName: "Gerenciador de Tarefas Multi-Usuários", version: "1.0.0" });
-});
-
-// A Rota PUT atualiza uma tarefa existente no SQLite com validações estritas
-app.put("/api/tasks/:id", (req, res) => {
-    const idParaAtualizar = parsearId(req.params.id);
+app.put("/api/tasks/:id", authenticate, (req: AuthRequest, res) => {
+    const usuarioId = req.usuarioId!;
+    const idParaAtualizar = parsearId(String(req.params.id));
 
     if (idParaAtualizar === null) {
         return res.status(400).json({ error: "ID inválido." });
@@ -253,23 +280,23 @@ app.put("/api/tasks/:id", (req, res) => {
 
     try {
         // Prepared statement inline (UPDATE completo não tem statement fixo no topo)
-        const sql = "UPDATE tarefas SET titulo = ?, status = ?, prioridade = ? WHERE id = ?";
-        const resultado = db.prepare(sql).run(titulo.trim(), statusValido, prioridadeValida, idParaAtualizar);
+        const sql = "UPDATE tarefas SET titulo = ?, status = ?, prioridade = ? WHERE id = ? AND usuario_id = ?";
+        const resultado = db.prepare(sql).run(titulo.trim(), statusValido, prioridadeValida, idParaAtualizar, usuarioId);
 
         if (resultado.changes === 0) {
             return res.status(404).json({ message: "Tarefa não encontrada para atualização!" });
         }
 
-        const tarefaAtualizada = stmtBuscarPorId.get(idParaAtualizar) as Tarefa;
+        const tarefaAtualizada = stmtBuscarPorId.get(idParaAtualizar, usuarioId) as Tarefa;
         return res.status(200).json(tarefaAtualizada);
     } catch {
         return res.status(500).json({ error: "Erro ao processar a atualização no banco de dados." });
     }
 });
 
-// A Rota PATCH executa atualizações parciais com validações sob demanda de forma segura e atômica
-app.patch("/api/tasks/:id", (req, res) => {
-    const idParaAtualizar = parsearId(req.params.id);
+app.patch("/api/tasks/:id", authenticate, (req: AuthRequest, res) => {
+    const usuarioId = req.usuarioId!;
+    const idParaAtualizar = parsearId(String(req.params.id));
 
     if (idParaAtualizar === null) {
         return res.status(400).json({ error: "ID inválido." });
@@ -284,8 +311,7 @@ app.patch("/api/tasks/:id", (req, res) => {
     try {
         const fluxoAtualizacao = db.transaction(() => {
             // Busca com statement singleton
-            const tarefaExistente = stmtBuscarPorId.get(idParaAtualizar) as Tarefa | undefined;
-
+            const tarefaExistente = stmtBuscarPorId.get(idParaAtualizar, usuarioId) as Tarefa | undefined;
             if (!tarefaExistente) return null;
 
             const camposParaAtualizar: string[] = [];
@@ -321,11 +347,11 @@ app.patch("/api/tasks/:id", (req, res) => {
             if (camposParaAtualizar.length === 0) return tarefaExistente;
 
             // Query dinâmica SEGURA: placeholders ? + valores array
-            const sql = `UPDATE tarefas SET ${camposParaAtualizar.join(", ")} WHERE id = ?`;
-            valoresParaAtualizar.push(idParaAtualizar);
+            const sql = `UPDATE tarefas SET ${camposParaAtualizar.join(", ")} WHERE id = ? AND usuario_id = ?`;
+            valoresParaAtualizar.push(idParaAtualizar, usuarioId);
 
             db.prepare(sql).run(...valoresParaAtualizar);
-            return stmtBuscarPorId.get(idParaAtualizar) as Tarefa;
+            return stmtBuscarPorId.get(idParaAtualizar, usuarioId) as Tarefa;
         });
 
         const resultado = fluxoAtualizacao();
@@ -337,14 +363,113 @@ app.patch("/api/tasks/:id", (req, res) => {
         return res.status(200).json(resultado);
     } catch (erro) {
         // Distingue erro de validação (400) de erro interno (500)
-        if (erro instanceof Error &&
-            (erro.message.includes("inválid") || erro.message.includes("caracteres"))) {
+        if (erro instanceof Error && (erro.message.includes("inválid") || erro.message.includes("caracteres"))) {
             return res.status(400).json({ error: erro.message });
         }
         return res.status(500).json({ error: "Erro ao processar a atualização parcial no banco." });
     }
 });
 
+app.post("/api/auth/register", (req, res) => {
+    const { email, senha } = req.body ?? {};
+
+    // Validação inicial dos dados
+    if (typeof email !== "string" || typeof senha !== "string") {
+        return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
+    }
+
+    if (senha.trim().length < 6) {
+        return res.status(400).json({ error: "A senha deve ter ao menos 6 caracteres." });
+    }
+
+    // Criando a "impressão digital" da senha
+    const hash = bcrypt.hashSync(senha, 10);
+
+    try {
+        const resultado = stmtInserirUsuario.run(email.trim(), hash);
+        const usuario = stmtBuscarUsuarioPorId.get(resultado.lastInsertRowid) as Usuario;
+
+        return res.status(201).json({ id: usuario.id, email: usuario.email });
+    } catch {
+        return res.status(409).json({ error: "E-mail já cadastrado." });
+    }
+});
+
+app.post("/api/auth/login", (req, res) => {
+    const { email, senha } = req.body ?? {};
+
+    if (typeof email !== "string" || typeof senha !== "string") {
+        return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
+    }
+
+    const usuario = stmtBuscarUsuarioPorEmail.get(email.trim()) as Usuario | undefined;
+
+    // Compara SEMPRE com hash (mesmo se usuário não existir) para evitar vazamento
+    const hashEsperado = usuario?.senha ?? "$2a$10$fakehashparanaquebrarcomparacao";
+    const senhaOk = bcrypt.compareSync(senha, hashEsperado);
+
+    if (!usuario || !senhaOk) {
+        return res.status(401).json({ error: "Credenciais inválidas." });
+    }
+
+    // Gerando o "Crachá" de acesso
+    const token = jwt.sign({ id: usuario.id, email: usuario.email }, JWT_SECRET, {
+        expiresIn: "2h",
+    });
+
+    return res.json({ token });
+});
+
+// (a) Uma rota de API que não existe tem que responder JSON, e não HTML.
+// Se esta linha ficasse depois do SPA fallback, "GET /api/typo" cairia nele e
+// devolveria o index.html com status 200: um erro da API viraria uma página de
+// "sucesso", e o front receberia HTML onde esperava JSON.
+app.use("/api", (_req: Request, res: Response) => {
+    res.status(404).json({ error: "Rota de API não encontrada." });
+});
+
+// (b) Os arquivos que o `npm run build` do Vite produziu em web/dist.
+// index.html, os .js com hash no nome, o .css e as imagens da public/.
+app.use(express.static(FRONT_DIST));
+
+// (c) Qualquer outro caminho não é API: é uma rota do React, que roda no
+// navegador. Devolvemos o index.html para o app assumir. É o que permite
+// abrir ou recarregar /tarefas sem o servidor responder "não encontrado".
+//
+// Sobre o /(.*)/: no Express 5 o curinga "*" deixou de existir e precisa ser
+// escrito como regex (a outra forma seria o padrão nomeado "/*splat"). O ponto
+// é que este curinga é bem mais largo que o do Express 4 — por isso a linha
+// (a) acima precisa vir antes: é ela que impede "/api/qualquer-coisa" de cair
+// aqui e virar uma página em vez de um erro.
+app.get(/(.*)/, (_req: Request, res: Response) => {
+    if (!fs.existsSync(FRONT_INDEX)) {
+        return res.status(503).type("text/plain").send(SEM_BUILD);
+    }
+
+    return res.sendFile(FRONT_INDEX);
+});
+
+function verificarFront(): void {
+    if (!fs.existsSync(FRONT_INDEX)) {
+        console.warn("\n[ATENÇÃO] " + SEM_BUILD + "\n");
+        return;
+    }
+
+    const fontes = path.join(FRONT_DIR, "src");
+    const temFontes = fs.existsSync(fontes);
+
+    if (temFontes && maisRecente(fontes) > fs.statSync(FRONT_INDEX).mtimeMs) {
+        console.warn(
+            "\n[ATENÇÃO] O build do front está VELHO: algum arquivo de app-react/web/src " +
+            "mudou depois do último build.\n" +
+            "          Rode `pnpm build:web` para ver a mudança.\n",
+        );
+    }
+}
+
 app.listen(PORT, () => {
     console.log(`Servidor rodando em: http://localhost:${PORT}`);
+    console.log(`API:   http://localhost:${PORT}/api/health`);
+    console.log(`Front: http://localhost:${PORT}`);
+    verificarFront();
 });

@@ -1,188 +1,218 @@
-### =====================================
-### AULA 5: ROTAS DE DIAGNÓSTICO
-### =====================================
+### Gerenciador de Tarefas - Testes REST Client
 
-### Teste rota principal fallback
-GET http://localhost:3000/
-
-### Testa integridade do sistema (Health Check)
+### 1. Health Check
 GET http://localhost:3000/api/health
 
-### Testar versão do sistema (Version Check)
+### 2. Versão da Aplicação
 GET http://localhost:3000/api/version
 
-### Listar todas as tarefas (GET)
+### 3. Listar todas as tarefas
 GET http://localhost:3000/api/tasks
 
-### Adicionar nova tarefa (POST)
+### 4. Buscar tarefas por título (search)
+GET http://localhost:3000/api/tasks?search=comprar
+
+### 5. Criar uma nova tarefa (POST)
 POST http://localhost:3000/api/tasks
 Content-Type: application/json
 
 {
-    "titulo": "Minha nova tarefa do dia 14/08/2026"
-}
-
-### Deletar tarefa por Id (DELETE), http://URL/endpoint/id
-DELETE http://localhost:3000/api/tasks/1
-
-###ataque
-
-GET http://localhost:3000/api/tasks?search=' UNION SELECT id, email, senha FROM usuarios --
-
-### ============================================
-### AULA 10: Validação Profunda e Escrita Segura
-### ============================================
-
-### Cenário 1: Criar uma tarefa com sucesso (Prioridade válida)
-POST http://localhost:3000/api/tasks
-Content-Type: application/json
-
-{
-    "titulo": "Estudar Node.js e SQLite",
+    "title": "Estudar TypeScript",
     "prioridade": "high"
 }
 
-
-### Cenário 2: Erro - Título vazio (Deve retornar Status 400)
+### 6. Criar tarefa com título inválido (deve retornar 400)
 POST http://localhost:3000/api/tasks
 Content-Type: application/json
 
 {
-    "titulo": "   ",
+    "title": "  ",
+    "prioridade": "high"
+}
+
+### 7. Criar tarefa com prioridade inválida (será definida como 'medium')
+POST http://localhost:3000/api/tasks
+Content-Type: application/json
+
+{
+    "title": "Ler livro de Node.js",
+    "prioridade": "muito_urgente"
+}
+
+### 8. Atualizar tarefa completamente (PUT)
+PUT http://localhost:3000/api/tasks/1
+Content-Type: application/json
+
+{
+    "title": "Estudar TypeScript Avançado",
+    "prioridade": "high",
+    "status": "completed"
+}
+
+### 9. Atualizar tarefa com dados inválidos (deve retornar 400)
+PUT http://localhost:3000/api/tasks/1
+Content-Type: application/json
+
+{
+    "title": "  ",
+    "prioridade": "high",
+    "status": "completed"
+}
+
+### 10. Atualizar tarefa inexistente (deve retornar 404)
+PUT http://localhost:3000/api/tasks/999
+Content-Type: application/json
+
+{
+    "title": "Tarefa inexistente",
+    "prioridade": "medium",
+    "status": "pending"
+}
+
+### 11. Atualização parcial (PATCH) - Apenas título
+PATCH http://localhost:3000/api/tasks/3
+Content-Type: application/json
+
+{
+    "title": "Atualizando apenas o título"
+}
+
+### 12. Atualização parcial (PATCH) - Apenas status
+PATCH http://localhost:3000/api/tasks/1
+Content-Type: application/json
+
+{
+    "status": "completed"
+}
+
+### 13. Atualização parcial (PATCH) - Apenas prioridade
+PATCH http://localhost:3000/api/tasks/1
+Content-Type: application/json
+
+{
     "prioridade": "low"
 }
 
+### 14. Atualização parcial (PATCH) - Múltiplos campos
+PATCH http://localhost:3000/api/tasks/1
+Content-Type: application/json
 
-### Cenário 3: Erro - Título muito curto (Abaixo de 3 caracteres)
+{
+    "title": "Título atualizado via PATCH",
+    "prioridade": "high",
+    "status": "pending"
+}
+
+### 15. Atualização parcial com dados inválidos (deve retornar 400)
+PATCH http://localhost:3000/api/tasks/1
+Content-Type: application/json
+
+{
+    "title": "  ",
+    "prioridade": "invalid_priority"
+}
+
+### 16. Atualização parcial sem corpo (deve retornar 400)
+PATCH http://localhost:3000/api/tasks/1
+Content-Type: application/json
+
+{}
+
+### 17. Atualização parcial de tarefa inexistente (deve retornar 404)
+PATCH http://localhost:3000/api/tasks/999
+Content-Type: application/json
+
+{
+    "status": "completed"
+}
+
+### 18. Excluir tarefa (DELETE)
+DELETE http://localhost:3000/api/tasks/1
+
+### 19. Excluir tarefa inexistente (deve retornar 404)
+DELETE http://localhost:3000/api/tasks/999
+
+### 20. Teste de Injeção SQL - Buscando tarefa com SQL Injection
+GET http://localhost:3000/api/tasks?search=%'; DROP TABLE tarefas; --
+
+### 21. Teste de Injeção SQL - Buscando tarefa com caractere especial
+GET http://localhost:3000/api/tasks?search=tarefa%25
+
+### 22. Criar múltiplas tarefas para testes
 POST http://localhost:3000/api/tasks
 Content-Type: application/json
 
 {
-    "titulo": "Oi", 
+    "title": "Tarefa de baixa prioridade",
+    "prioridade": "low"
+}
+
+### 23. Criar outra tarefa
+POST http://localhost:3000/api/tasks
+Content-Type: application/json
+
+{
+    "title": "Tarefa pendente prioritária",
     "prioridade": "high"
 }
 
+### 24. Buscar tarefas com search vazio (retorna todas)
+GET http://localhost:3000/api/tasks?search=
 
-### Cenário 4: Erro - Sem corpo na requisição (Deve retornar Status 400)
-POST http://localhost:3000/api/tasks
-Content-Type: application/json
+### 25. Buscar tarefas com termo que não existe
+GET http://localhost:3000/api/tasks?search=tarefa_inexistente
 
-{}
-
-### ============================================ 
-### DESAFIO CRUD: Atualização de Tarefas (PUT)
-### ============================================ 
-
-### Cenário 1: Atualização Total com Sucesso
-PUT http://localhost:3000/api/tasks/1
-Content-Type: application/json
-
-{
-  "titulo": "Estudar Node.js, SQLite e fazer deploy",
-  "prioridade": "high",
-  "status": "completed"
-}
-
-
-### Cenário 2: Erro - Título apenas com espaços
-PUT http://localhost:3000/api/tasks/1
-Content-Type: application/json
-
-{ "titulo": "   ", "prioridade": "low" }
-
-
-### Cenário 3: Erro - Título curto (Abaixo de 3 caracteres)
-PUT http://localhost:3000/api/tasks/1
-Content-Type: application/json
-
-{ "titulo": "Go", "prioridade": "medium" }
-
-
-### Cenário 4: Erro - ID inexistente (Deve retornar 404)
-PUT http://localhost:3000/api/tasks/9999
-Content-Type: application/json
-
-{ "titulo": "Tarefa fantasma", "prioridade": "medium", "status": "pending" }
-
-
-### Cenário 5: Erro - ID de texto inválido (Deve retornar 400)
+### 26. Teste de ID inválido no PUT (deve retornar 400)
 PUT http://localhost:3000/api/tasks/abc
 Content-Type: application/json
 
-{ "titulo": "ID incorreto na rota", "prioridade": "medium" }
+{
+    "title": "Título válido",
+    "prioridade": "medium",
+    "status": "pending"
+}
 
-### ============================================ 
-### DESAFIO CRUD: Atualização Parcial (PATCH)
-### ============================================ 
-
-
-### Cenário 1: Atualizar APENAS o status
-PATCH http://localhost:3000/api/tasks/1
+### 27. Teste de ID inválido no PATCH (deve retornar 400)
+PATCH http://localhost:3000/api/tasks/abc
 Content-Type: application/json
 
-{ "status": "completed" }
+{
+    "status": "completed"
+}
 
+### 28. Teste de ID inválido no DELETE (deve retornar 400)
+DELETE http://localhost:3000/api/tasks/abc
 
-### Cenário 2: Atualizar APENAS o título
-PATCH http://localhost:3000/api/tasks/1
+### 29. Criar tarefa com título de 3 caracteres exatos (válido)
+POST http://localhost:3000/api/tasks
 Content-Type: application/json
 
-{ "titulo": "Novo título atualizado via PATCH" }
+{
+    "title": "ABC",
+    "prioridade": "medium"
+}
 
-
-### Cenário 3: Erro - PATCH com título inválido
-PATCH http://localhost:3000/api/tasks/1
+### 30. Criar tarefa com título de 2 caracteres (inválido)
+POST http://localhost:3000/api/tasks
 Content-Type: application/json
 
-{ "titulo": "  Ab  " }
+{
+    "title": "AB",
+    "prioridade": "medium"
+}
 
-
-### Cenário 4: Erro - Prioridade inexistente
-PATCH http://localhost:3000/api/tasks/1
-Content-Type: application/json
-
-{ "prioridade": "super_urgent" }
-
-
-### Cenário 5: Erro - Corpo da requisição vazio
-PATCH http://localhost:3000/api/tasks/1
-Content-Type: application/json
-
-{}
-
-### Teste 1: Deleção de Sucesso
-# Altere o número '1' no final da URL para um ID 
-#que você sabe que existe no seu banco
-DELETE http://localhost:3000/api/tasks/1
-
-
-###
-
-
-### Teste 2: Deleção de Falha (ID Inexistente)
-# Este teste valida o erro 404 e a mensagem customizada
-# do seu 'if (resultado.changes === 0)'
-DELETE http://localhost:3000/api/tasks/99999
-
-### ============================================
-### AULA 11: Sanitização e Prepared Statements
-### ============================================
-
-### Teste de Array Injection (A Busca Bizarra)
+### 31. Teste de Array Injection (A Busca Bizarra)
 # Sem proteção: O JS converte ['a', 'b'] em "a,b" e faz uma busca descontrolada que não acha nada.
 # Com proteção (Passo 4): O servidor percebe que não é uma string pura, barra o array e lista as tarefas intencionalmente.
 GET http://localhost:3000/api/tasks?search=a&search=b
 
-### Teste de Parâmetro Indefinido (O Acidente)
+### 32. Teste de Parâmetro Indefinido (O Acidente)
 # Sem proteção: A variável search fica undefined, o código se perde e lista tudo por acidente.
 # Com proteção (Passo 4): O servidor barra o dado ruim, força uma string vazia ("") e lista tudo de propósito e com segurança.
 GET http://localhost:3000/api/tasks?search[]=a&search[]=b
-### ============================================
-### AULA 12: Quebrando Type Guards e Allowlists
-### ============================================
 
 ### 33. Quebrando o Type Guard: Título numérico (deve retornar 400)
-# O invasor tenta mandar um número (123) no lugar de uma string.
+# O invasor tenta mandar um número (123) no lugar de uma string. 
 # A nossa função tituloValido() vai barrar isso graças à verificação typeof t === "string".
 POST http://localhost:3000/api/tasks
 Content-Type: application/json
@@ -194,8 +224,7 @@ Content-Type: application/json
 
 ### 34. Quebrando a Allowlist: Status não permitido (deve retornar 400)
 # O invasor tenta inventar um status que não existe no banco ("cancelled").
-# Nossa rota PATCH verifica a lista STATUS_VALIDOS e barra a ação antes
-# mesmo de abrir a transação no banco.
+# Nossa rota PATCH verifica a lista STATUS_VALIDOS e barra a ação antes mesmo de abrir a transação no banco.
 PATCH http://localhost:3000/api/tasks/1
 Content-Type: application/json
 
@@ -203,9 +232,8 @@ Content-Type: application/json
     "status": "cancelled"
 }
 
-### ============================================
-### AULA 13: Autenticação (Registro e Login)
-### ============================================
+
+### Testes de Autenticação
 
 ### 35. Registro com Sucesso (deve retornar 201)
 POST http://localhost:3000/api/auth/register
@@ -253,3 +281,44 @@ Content-Type: application/json
     "email": "aluno@senai.com",
     "senha": "senhaerrada"
 }
+
+### 40. (Protegido) Listar todas as tarefas do usuário logado
+GET http://localhost:3000/api/tasks
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhbHVub0BzZW5haS5jb20iLCJpYXQiOjE3ODg5MTc2MTQsImV4cCI6MTc4ODkyNDgxNH0.FrcuuUDNRDMJ2nYcX7WOXUXT9rlBjHjfoJdHr15pOq4
+
+### 40B. Teste de Segurança: Acessar sem token (deve retornar 401)
+GET http://localhost:3000/api/tasks
+
+### 41. (Protegido) Criar uma nova tarefa 
+POST http://localhost:3000/api/tasks
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhbHVub0BzZW5haS5jb20iLCJpYXQiOjE3ODg5MTc2MTQsImV4cCI6MTc4ODkyNDgxNH0.FrcuuUDNRDMJ2nYcX7WOXUXT9rlBjHjfoJdHr15pOq4
+
+{
+    "titulo": "Minha Tarefa Isolada",
+    "prioridade": "high"
+}
+
+
+# ============================================================================
+#  AULA 08 — FRONT SERVIDO PELO BACK (rode com o server.ts da Aula 08)
+#  Conferir STATUS e CONTENT-TYPE, não só o status!
+# ============================================================================
+
+### 42. (6.1) GET / entrega a tela -> 200 text/html com <div id="root">
+GET http://localhost:3000/
+
+### 43. (6.2) GET /tarefas é rota do React -> 200 text/html (SPA fallback)
+GET http://localhost:3000/tarefas
+
+### 44. (6.3) GET /favicon.svg é arquivo do build -> 200 image/svg+xml (NÃO text/html)
+GET http://localhost:3000/favicon.svg
+
+### 45. (6.4) GET /api/typo não existe na API -> 404 application/json (NÃO 200, NÃO HTML)
+GET http://localhost:3000/api/typo
+
+### 46. (6.5) GET /apixyz começa com "api" mas NÃO é /api -> 200 text/html
+GET http://localhost:3000/apixyz
+
+### 47. (6.6) GET /api/health — a API sobreviveu ao front -> 200
+GET http://localhost:3000/api/health
