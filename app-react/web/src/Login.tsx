@@ -8,6 +8,7 @@
 
 import { useState } from "react";
 import { login, registrar } from "./api";
+import { IconeLivro } from "./Icones";
 
 /** O que o App precisa saber: o login deu certo. */
 interface LoginProps {
@@ -90,79 +91,93 @@ export default function Login({ aoLogar }: LoginProps) {
     const ehLogin = modo === "login";
 
     return (
-        <div className="flex min-h-screen items-center justify-center px-4">
-            <div className="w-full max-w-sm rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-2xl">
-                <h1 className="text-center text-2xl font-bold tracking-tight text-white">
-                    Gerenciador de Tarefas
-                </h1>
-                <p className="mt-2 text-center text-sm text-slate-400">
-                    {ehLogin ? "Entre para continuar" : "Crie sua conta para começar"}
-                </p>
+        <div className="flex min-h-screen items-center justify-center px-4 py-12">
+            {/* A capa do livro: couro verde com moldura dourada e fita marcadora. */}
+            <div className="capa w-full max-w-md px-5 pb-8 pt-12 sm:px-9">
+                <span className="fita" aria-hidden="true" />
 
-                <form onSubmit={enviar} className="mt-8 flex flex-col gap-4">
-                    <div className="flex flex-col gap-1">
-                        <label htmlFor="email" className="text-sm font-medium text-slate-300">
-                            E-mail
-                        </label>
-                        <input
-                            id="email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="voce@email.com"
-                            autoComplete="email"
-                            required
-                            className="rounded-md border border-slate-700 bg-slate-800 px-3 py-2.5 text-base text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none"
-                        />
-                    </div>
+                <div className="text-center">
+                    <IconeLivro className="mx-auto h-12 w-12 text-gold" />
+                    <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-gold">
+                        Gerenciador de Tarefas
+                    </h1>
+                    <p className="mt-1 font-hand text-2xl text-paper/90">
+                        Seu caderno de anotações e tarefas
+                    </p>
+                </div>
 
-                    <div className="flex flex-col gap-1">
-                        <label htmlFor="senha" className="text-sm font-medium text-slate-300">
-                            Senha
-                        </label>
-                        <input
-                            id="senha"
-                            type="password"
-                            value={senha}
-                            onChange={(e) => setSenha(e.target.value)}
-                            placeholder={ehLogin ? "Sua senha" : "Mínimo de 6 caracteres"}
-                            // O teclado do celular oferece o campo certo para cada caso.
-                            autoComplete={ehLogin ? "current-password" : "new-password"}
-                            required
-                            className="rounded-md border border-slate-700 bg-slate-800 px-3 py-2.5 text-base text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none"
-                        />
-                    </div>
+                {/* A etiqueta de papel colada na capa, onde fica o formulário. */}
+                <div className="etiqueta mt-7 p-6">
+                    <p className="text-center font-hand text-2xl text-ink-soft">
+                        {ehLogin ? "Entre para continuar" : "Crie sua conta para começar"}
+                    </p>
 
-                    {/* Mensagem de erro. role="alert" faz o leitor de tela anunciar. */}
-                    {erro && (
-                        <p
-                            role="alert"
-                            className="rounded-md border border-red-900 bg-red-950/60 px-3 py-2 text-sm text-red-300"
+                    <form onSubmit={enviar} className="mt-4 flex flex-col gap-4">
+                        <div className="flex flex-col gap-1">
+                            <label htmlFor="email" className="text-sm font-semibold text-ink-soft">
+                                E-mail
+                            </label>
+                            <input
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="voce@email.com"
+                                autoComplete="email"
+                                required
+                                className="campo text-base"
+                            />
+                        </div>
+
+                        <div className="flex flex-col gap-1">
+                            <label htmlFor="senha" className="text-sm font-semibold text-ink-soft">
+                                Senha
+                            </label>
+                            <input
+                                id="senha"
+                                type="password"
+                                value={senha}
+                                onChange={(e) => setSenha(e.target.value)}
+                                placeholder={ehLogin ? "Sua senha" : "Mínimo de 6 caracteres"}
+                                // O teclado do celular oferece o campo certo para cada caso.
+                                autoComplete={ehLogin ? "current-password" : "new-password"}
+                                required
+                                className="campo text-base"
+                            />
+                        </div>
+
+                        {/* Mensagem de erro. role="alert" faz o leitor de tela anunciar. */}
+                        {erro && (
+                            <p
+                                role="alert"
+                                className="rounded-md border-l-4 border-ribbon bg-rose-50 px-3 py-2 text-sm text-rose-900"
+                            >
+                                {erro}
+                            </p>
+                        )}
+
+                        {/* Botão verde (emerald), como pede o laboratório. */}
+                        <button
+                            type="submit"
+                            disabled={carregando}
+                            className="btn btn-primario w-full py-2.5 text-base"
                         >
-                            {erro}
-                        </p>
-                    )}
+                            {carregando ? "Aguarde..." : ehLogin ? "Entrar" : "Criar conta"}
+                        </button>
 
-                    <button
-                        type="submit"
-                        disabled={carregando}    
-                        className="rounded-md bg-emerald-600 py-2.5 font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                        {carregando ? "Aguarde..." : ehLogin ? "Entrar" : "Criar conta"}
-                    </button>
-					
-					{/* type="button": dentro do <form>, um botão sem type vira submit e recarrega a página. */}
-					<button
-                        type="button"
-						onClick={() => {
-							setModo(ehLogin ? "registro" : "login");
-							setErro(""); // troca de modo sem deixar erro antigo na tela
-						}}
-						className="mt-4 w-full text-sm text-slate-400 transition hover:text-white"
-					>
-						{ehLogin ? "Não tem conta? Registre-se" : "Já tem conta? Entrar"}
-					</button>
-                </form>
+                        {/* type="button": dentro do <form>, um botão sem type vira submit e recarrega a página. */}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setModo(ehLogin ? "registro" : "login");
+                                setErro(""); // troca de modo sem deixar erro antigo na tela
+                            }}
+                            className="w-full text-center font-hand text-xl text-ink-soft underline-offset-4 transition hover:text-emerald-800 hover:underline"
+                        >
+                            {ehLogin ? "Não tem conta? Registre-se" : "Já tem conta? Entrar"}
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     );

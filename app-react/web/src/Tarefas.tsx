@@ -20,6 +20,7 @@ import {
     type Tarefa,
     type Usuario,
 } from "./api";
+import { IconeCheck, IconeLivro, IconeLupa } from "./Icones";
 
 // Tipos derivados de Tarefa: se o back mudar o conjunto de valores,
 // o TypeScript avisa aqui sem precisar mexer em nada.
@@ -41,11 +42,14 @@ const PRIORIDADES_PT: Record<Prioridade, string> = {
 /** As opções na ordem em que aparecem no <select>. */
 const PRIORIDADES: Prioridade[] = ["low", "medium", "high"];
 
-/** Cores do badge de prioridade, por nível. */
+/**
+ * Cores do marcador de página de cada prioridade: verde-sálvia (baixa),
+ * dourado (média) e vermelho-fita (alta). O texto escuro mantém o contraste.
+ */
 const COR_PRIORIDADE: Record<Prioridade, string> = {
-    low: "bg-slate-700/60 text-slate-300 ring-slate-600",
-    medium: "bg-amber-500/15 text-amber-300 ring-amber-500/40",
-    high: "bg-rose-500/15 text-rose-300 ring-rose-500/40",
+    low: "bg-emerald-200 text-emerald-950",
+    medium: "bg-amber-200 text-amber-950",
+    high: "bg-rose-200 text-rose-950",
 };
 
 /** Quanto tempo esperamos a pessoa parar de digitar antes de buscar. */
@@ -283,199 +287,205 @@ export default function Tarefas({ usuario, aoSair }: TarefasProps) {
     const pendentes = total - concluidas;
 
     return (
-        <div className="mx-auto flex min-h-screen w-full max-w-3xl flex-col gap-6 px-4 py-10">
-            {/* ---------------------------------------------------------- 1. cabeçalho */}
-            <header className="flex flex-wrap items-start justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-extrabold tracking-tight text-white">
-                        Minhas Tarefas
-                    </h1>
-                    <p className="mt-1 text-sm text-slate-400">
-                        Conectado como <span className="text-slate-200">{usuario.email}</span>
-                    </p>
-                </div>
+        <div className="min-h-screen px-3 py-6 sm:px-6 sm:py-10">
+            {/* A folha do caderno: margem vermelha, furos de argola e folhas por baixo. */}
+            <div className="caderno mx-auto w-full max-w-3xl">
+                <div className="flex flex-col gap-6">
+                    {/* ---------------------------------------------------------- 1. cabeçalho */}
+                    <header className="flex flex-wrap items-start justify-between gap-4">
+                        <div className="flex items-start gap-3">
+                            <IconeLivro className="mt-1 h-10 w-10 shrink-0 text-leather" />
+                            <div>
+                                <p className="font-hand text-xl leading-none text-ribbon">
+                                    Caderno de tarefas
+                                </p>
+                                <h1 className="font-display text-3xl font-bold tracking-tight text-ink">
+                                    Minhas Tarefas
+                                </h1>
+                                <p className="mt-1 text-sm text-ink-soft">
+                                    Conectado como{" "}
+                                    <span className="font-semibold text-ink">{usuario.email}</span>
+                                </p>
+                            </div>
+                        </div>
 
-                <button
-                    type="button"
-                    onClick={aoSair}
-                    className="rounded-md border border-slate-700 px-4 py-2 text-sm text-slate-300 transition hover:border-slate-500 hover:text-white"
-                >
-                    Sair
-                </button>
-            </header>
+                        <button type="button" onClick={aoSair} className="btn btn-contorno">
+                            Sair
+                        </button>
+                    </header>
 
-            {/* ------------------------------------------------------- 2. criar tarefa */}
-            <form
-                onSubmit={criar}
-                className="flex flex-col gap-3 rounded-lg border border-slate-800 bg-slate-900/60 p-4 sm:flex-row"
-            >
-                <div className="flex-1">
-                    <label
-                        htmlFor="titulo"
-                        className="sr-only"
+                    {/* ------------------------------------------------------- 2. criar tarefa */}
+                    <form
+                        onSubmit={criar}
+                        className="flex flex-col gap-4 border-y border-dashed border-ink/30 py-4 sm:flex-row sm:items-end"
                     >
-                        Título da nova tarefa
-                    </label>
-                    <input
-                        id="titulo"
-                        type="text"
-                        value={titulo}
-                        onChange={(e) => setTitulo(e.target.value)}
-                        placeholder="O que precisa ser feito?"
-                        maxLength={120}
-                        className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-slate-500 focus:outline-none"
-                    />
-                </div>
+                        <div className="flex-1">
+                            <label htmlFor="titulo" className="sr-only">
+                                Título da nova tarefa
+                            </label>
+                            <input
+                                id="titulo"
+                                type="text"
+                                value={titulo}
+                                onChange={(e) => setTitulo(e.target.value)}
+                                placeholder="O que precisa ser feito?"
+                                maxLength={120}
+                                className="campo font-hand text-2xl"
+                            />
+                        </div>
 
-                <div>
-                    <label
-                        htmlFor="prioridade"
-                        className="sr-only"
-                    >
-                        Prioridade
-                    </label>
-                    <select
-                        id="prioridade"
-                        value={prioridade}
-                        onChange={(e) => setPrioridade(e.target.value as Prioridade)}
-                        className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 focus:border-slate-500 focus:outline-none sm:w-auto"
-                    >
-                        {PRIORIDADES.map((p) => (
-                            <option key={p} value={p}>
-                                {PRIORIDADES_PT[p]}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                        <div>
+                            <label htmlFor="prioridade" className="sr-only">
+                                Prioridade
+                            </label>
+                            <select
+                                id="prioridade"
+                                value={prioridade}
+                                onChange={(e) => setPrioridade(e.target.value as Prioridade)}
+                                className="campo w-full cursor-pointer sm:w-auto"
+                            >
+                                {PRIORIDADES.map((p) => (
+                                    <option key={p} value={p}>
+                                        {PRIORIDADES_PT[p]}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                <button
-                    type="submit"
-                    disabled={criando}
-                    className="rounded-md bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-white disabled:opacity-50"
-                >
-                    {criando ? "Criando..." : "Nova Tarefa"}
-                </button>
-            </form>
+                        <button
+                            type="submit"
+                            disabled={criando}
+                            className="btn btn-primario"
+                        >
+                            {criando ? "Criando..." : "Nova Tarefa"}
+                        </button>
+                    </form>
 
-            {/* ------------------------------------------------------------- 3. busca */}
-            <div className="flex flex-col gap-2">
-                <label
-                    htmlFor="busca"
-                    className="text-sm font-medium text-slate-300"
-                >
-                    Buscar por título
-                </label>
-                <input
-                    id="busca"
-                    type="search"
-                    value={busca}
-                    onChange={(e) => setBusca(e.target.value)}
-                    placeholder="Digite para filtrar..."
-                    className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-slate-500 focus:outline-none"
-                />
-            </div>
-
-            {/* -------------------------------------------------------------- 4. erro */}
-            {erro && (
-                <div
-                    role="alert"
-                    className="flex items-start justify-between gap-3 rounded-md border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
-                >
-                    <span>{erro}</span>
-                    <button
-                        type="button"
-                        onClick={() => setErro("")}
-                        aria-label="Fechar aviso"
-                        className="shrink-0 text-rose-300 transition hover:text-white"
-                    >
-                        ×
-                    </button>
-                </div>
-            )}
-
-            {/* ------------------------------------------------------------- 5. lista */}
-            <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-4">
-                {/* aria-live faz o leitor de tela anunciar a contagem a cada mudança */}
-                <p
-                    aria-live="polite"
-                    className="mb-3 text-sm text-slate-400"
-                >
-                    {carregando
-                        ? "Carregando..."
-                        : `${pendentes} pendente(s) e ${concluidas} concluída(s).`}
-                </p>
-
-                {carregando ? (
-                    <p className="py-6 text-center text-sm text-slate-500">
-                        Buscando suas tarefas...
-                    </p>
-                ) : total === 0 ? (
-                    <div className="py-10 text-center">
-                        <p className="text-slate-300">
-                            {buscaAplicada
-                                ? `Nenhuma tarefa contém "${buscaAplicada}".`
-                                : "Nenhuma tarefa por aqui ainda."}
-                        </p>
-                        <p className="mt-1 text-sm text-slate-500">
-                            {buscaAplicada
-                                ? "Tente outro termo de busca."
-                                : "Use o formulário acima para criar a primeira."}
-                        </p>
+                    {/* ------------------------------------------------------------- 3. busca */}
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor="busca" className="text-sm font-semibold text-ink-soft">
+                            Buscar por título
+                        </label>
+                        <div className="relative">
+                            <IconeLupa className="pointer-events-none absolute left-1 top-1/2 h-5 w-5 -translate-y-1/2 text-ink-soft" />
+                            <input
+                                id="busca"
+                                type="search"
+                                value={busca}
+                                onChange={(e) => setBusca(e.target.value)}
+                                placeholder="Folheie o caderno..."
+                                className="campo pl-8"
+                            />
+                        </div>
                     </div>
-                ) : (
-                    <ul className="flex max-h-[60vh] list-none flex-col gap-2 overflow-y-auto p-0 pr-1">
-                        {tarefas.map((t) => {
-                            const feita = t.status === "completed";
 
-                            return (
-                                <li
-                                    key={t.id}
-                                    className="flex items-center justify-between gap-3 rounded-md border border-slate-800 bg-slate-950/60 px-3 py-2"
-                                >
-                                    <div className="min-w-0 flex-1">
-                                        <p
-                                            className={`truncate text-sm ${feita
-                                                    ? "text-slate-500 line-through"
-                                                    : "text-slate-100"
-                                                }`}
-                                        >
-                                            {t.titulo}
-                                        </p>
-                                        <span
-                                            className={`mt-1 inline-block rounded px-2 py-0.5 text-xs ring-1 ${COR_PRIORIDADE[t.prioridade]}`}
-                                        >
-                                            {PRIORIDADES_PT[t.prioridade]}
-                                        </span>
-                                    </div>
+                    {/* -------------------------------------------------------------- 4. erro */}
+                    {erro && (
+                        <div
+                            role="alert"
+                            className="flex items-start justify-between gap-3 rounded-md border-l-4 border-ribbon bg-rose-50 px-4 py-3 text-sm text-rose-900"
+                        >
+                            <span>{erro}</span>
+                            <button
+                                type="button"
+                                onClick={() => setErro("")}
+                                aria-label="Fechar aviso"
+                                className="shrink-0 cursor-pointer text-lg leading-none text-rose-800 transition hover:text-rose-950"
+                            >
+                                ×
+                            </button>
+                        </div>
+                    )}
 
-                                    <div className="flex shrink-0 gap-2">
-                                        <button
-                                            type="button"
-                                            onClick={() => void alternarStatus(t)}
-                                            className="rounded border border-slate-700 px-3 py-1 text-xs text-slate-300 transition hover:border-slate-500 hover:text-white"
-                                        >
-                                            {feita ? "Reabrir" : "Concluir"}
-                                        </button>
+                    {/* ------------------------------------------------------------- 5. lista */}
+                    <div>
+                        {/* aria-live faz o leitor de tela anunciar a contagem a cada mudança */}
+                        <p
+                            aria-live="polite"
+                            className="mb-1 font-hand text-2xl text-ink-soft"
+                        >
+                            {carregando
+                                ? "Carregando..."
+                                : `${pendentes} pendente(s) e ${concluidas} concluída(s).`}
+                        </p>
 
-                                        <button
-                                            type="button"
-                                            onClick={() => setParaExcluir(t)}
-                                            className="rounded border border-rose-500/40 px-3 py-1 text-xs text-rose-300 transition hover:border-rose-400 hover:text-rose-200"
+                        {carregando ? (
+                            <p className="py-6 text-center font-hand text-2xl text-ink-soft">
+                                Buscando suas tarefas...
+                            </p>
+                        ) : total === 0 ? (
+                            <div className="flex flex-col items-center py-10 text-center">
+                                <IconeLivro className="h-12 w-12 text-ink-soft/50" />
+                                <p className="mt-3 font-display text-lg font-semibold text-ink">
+                                    {buscaAplicada
+                                        ? `Nenhuma tarefa contém "${buscaAplicada}".`
+                                        : "Nenhuma tarefa por aqui ainda."}
+                                </p>
+                                <p className="mt-1 font-hand text-xl text-ink-soft">
+                                    {buscaAplicada
+                                        ? "Tente outro termo de busca."
+                                        : "Use o formulário acima para criar a primeira."}
+                                </p>
+                            </div>
+                        ) : (
+                            <ul className="flex max-h-[60vh] list-none flex-col overflow-y-auto border-t border-dashed border-ink/30 p-0 pr-1">
+                                {tarefas.map((t) => {
+                                    const feita = t.status === "completed";
+
+                                    return (
+                                        <li
+                                            key={t.id}
+                                            className="flex flex-wrap items-center justify-between gap-3 border-b border-dashed border-ink/30 py-3"
                                         >
-                                            Excluir
-                                        </button>
-                                    </div>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                )}
+                                            <div className="flex min-w-0 flex-1 items-center gap-3">
+                                                <IconeCheck feito={feita} className="h-6 w-6 shrink-0" />
+                                                <div className="min-w-0 flex-1">
+                                                    <p
+                                                        className={`truncate py-0.5 pr-2 font-hand text-2xl leading-snug ${feita
+                                                            ? "text-ink-soft line-through decoration-ribbon/70 decoration-2"
+                                                            : "text-ink"
+                                                            }`}
+                                                    >
+                                                        {t.titulo}
+                                                    </p>
+                                                    <span
+                                                        className={`marcador mt-1 ${COR_PRIORIDADE[t.prioridade]}`}
+                                                    >
+                                                        {PRIORIDADES_PT[t.prioridade]}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex shrink-0 gap-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => void alternarStatus(t)}
+                                                    className="btn btn-contorno px-3 py-1 text-xs"
+                                                >
+                                                    {feita ? "Reabrir" : "Concluir"}
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setParaExcluir(t)}
+                                                    className="btn btn-contorno-perigo px-3 py-1 text-xs"
+                                                >
+                                                    Excluir
+                                                </button>
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        )}
+                    </div>
+                </div>
             </div>
 
             {/* ------------------------------------------------------- 6. modal de exclusão */}
             {paraExcluir && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4"
                     // Clicar no fundo (fora do cartão) cancela.
                     onClick={() => setParaExcluir(null)}
                 >
@@ -484,17 +494,17 @@ export default function Tarefas({ usuario, aoSair }: TarefasProps) {
                         aria-modal="true"
                         aria-labelledby="titulo-modal"
                         onClick={(e) => e.stopPropagation()}
-                        className="w-full max-w-sm rounded-lg border border-slate-700 bg-slate-900 p-5 shadow-xl"
+                        className="etiqueta w-full max-w-sm p-6"
                     >
                         <h2
                             id="titulo-modal"
-                            className="text-lg font-semibold text-white"
+                            className="font-display text-xl font-bold text-ink"
                         >
                             Excluir esta tarefa?
                         </h2>
 
-                        <p className="mt-2 text-sm text-slate-400">
-                            <span className="text-slate-200">{paraExcluir.titulo}</span> será
+                        <p className="mt-2 text-sm text-ink-soft">
+                            <span className="font-semibold text-ink">{paraExcluir.titulo}</span> será
                             removida permanentemente. Não dá para desfazer.
                         </p>
 
@@ -502,7 +512,7 @@ export default function Tarefas({ usuario, aoSair }: TarefasProps) {
                             <button
                                 type="button"
                                 onClick={() => setParaExcluir(null)}
-                                className="rounded-md border border-slate-700 px-4 py-2 text-sm text-slate-300 transition hover:border-slate-500 hover:text-white"
+                                className="btn btn-contorno"
                             >
                                 Cancelar
                             </button>
@@ -511,7 +521,7 @@ export default function Tarefas({ usuario, aoSair }: TarefasProps) {
                                 ref={botaoConfirmar}
                                 type="button"
                                 onClick={() => void confirmarExcluir()}
-                                className="rounded-md bg-rose-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-500"
+                                className="btn btn-perigo"
                             >
                                 Excluir
                             </button>
