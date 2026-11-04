@@ -1,6 +1,27 @@
+<!-- nav:topo -->
+<p align="center">
+  <a href="../README.md"><img src="https://img.shields.io/badge/In%C3%ADcio-24292f?style=for-the-badge&logo=github&logoColor=white" alt="Início"></a>
+  <a href="../gerenciador-tarefas/README.md"><img src="https://img.shields.io/badge/API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="API Gerenciador"></a>
+  <img src="https://img.shields.io/badge/voc%C3%AA_est%C3%A1_aqui-Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="Você está aqui: Front React">
+  <a href="../diario-de-bordo/README.md"><img src="https://img.shields.io/badge/Di%C3%A1rio_de_bordo-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="Diário de bordo"></a>
+  <a href="../docs/GUIA_DE_ESTUDOS.md"><img src="https://img.shields.io/badge/Guia_de_estudos-d97706?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Guia de estudos"></a>
+  <a href="../exercicios/tailwind/dicas.md"><img src="https://img.shields.io/badge/Tailwind-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind"></a>
+</p>
+<!-- /nav:topo -->
+
 # Aplicação React
 
-Projetos das aulas de React, criados com **Vite**. Cada pasta é um projeto independente, com o próprio `package.json` e `node_modules`.
+Projetos das aulas de React, criados com **Vite**. Cada pasta é um projeto independente, com o próprio `package.json` e `node_modules`. O `web` conversa com a [API do Gerenciador](../gerenciador-tarefas/README.md#endpoints).
+
+**Nesta página:** [meu-primeiro-app](#meu-primeiro-app-lista-de-tarefas) · [web](#web-front-end-conectado-à-api) · [Tecnologias](#tecnologias)
+
+**Aulas que construíram estas telas** (clique para abrir o diário):
+
+<p>
+  <a href="../diario-de-bordo/2026-10-07.md"><img src="https://img.shields.io/badge/07_out-Intro_ao_React-8250df?style=for-the-badge" alt="07 out: Intro ao React"></a>
+  <a href="../diario-de-bordo/2026-10-14.md"><img src="https://img.shields.io/badge/14_out-Estado_no_React-8250df?style=for-the-badge" alt="14 out: Estado no React"></a>
+  <a href="../diario-de-bordo/2026-10-28.md"><img src="https://img.shields.io/badge/28_out-Laborat%C3%B3rio-8250df?style=for-the-badge" alt="28 out: Laboratório"></a>
+</p>
 
 ```
 app-react/
@@ -65,3 +86,13 @@ Se a API não estiver rodando, a tela mostra o erro de conexão. A API libera o 
 | React 19 + Vite | ambos |
 | JavaScript + oxlint | meu-primeiro-app |
 | TypeScript + ESLint | web |
+
+<!-- nav:rodape -->
+---
+
+<p align="center">
+  <a href="../gerenciador-tarefas/README.md"><img src="https://img.shields.io/badge/%E2%86%90_anterior-API_Gerenciador-6e7781?style=for-the-badge" alt="← anterior"></a>
+  <a href="#top"><img src="https://img.shields.io/badge/%E2%AC%86_voltar_ao_topo-6e7781?style=for-the-badge" alt="⬆ voltar ao topo"></a>
+  <a href="../diario-de-bordo/README.md"><img src="https://img.shields.io/badge/pr%C3%B3ximo_%E2%86%92-Di%C3%A1rio_de_bordo-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="próximo →"></a>
+</p>
+<!-- /nav:rodape -->
