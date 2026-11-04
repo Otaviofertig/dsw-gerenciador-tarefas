@@ -2,7 +2,10 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cors from 'cors';
 import express, { type Request, type Response, type NextFunction } from "express";
-import Database from "better-sqlite3";
+// LACUNA 1 (Aula 09): o better-sqlite3 só sabe ler um arquivo do disco, e de
+// forma síncrona. O @libsql/client fala com o Turso pela internet (HTTP) e,
+// sem credenciais, também abre um arquivo local com "file:".
+import { createClient, type InValue, type Row } from "@libsql/client";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -71,18 +74,24 @@ function maisRecente(dir: string): number {
     return maior;
 }
 
-// 1. Criamos um "molde" (Interface) para nossas tarefas
+// 1. Criamos um "molde" (Interface) para nossas tarefas.
+// Na Aula 09 as tabelas ganharam colunas de data e a senha virou senha_hash.
 interface Tarefa {
     id: number;
+    usuario_id: number;
     titulo: string;
-    status: string;
-    prioridade: string;
+    descricao: string | null;
+    status: "pending" | "completed";
+    prioridade: "low" | "medium" | "high";
+    criado_em: string;
+    atualizado_em: string;
 }
 
 interface Usuario {
     id: number;
     email: string;
-    senha: string;
+    senha_hash: string;
+    criado_em: string;
 }
 
 interface AuthRequest extends Request {
@@ -123,47 +132,212 @@ const parsearId = (idParam: string): number | null => {
 // Middleware para ler o corpo das requisições em formato JSON
 app.use(express.json());
 
-const db = new Database("tarefas.db");
+// ============================================================================
+// LACUNA 2: leitura do .env com detecção de BOM
+// ============================================================================
+// O .env fica ao lado deste arquivo (gerenciador-tarefas/api/.env) e NUNCA vai
+// para o Git: o .gitignore da raiz já ignora ".env".
+const ARQUIVO_ENV = path.join(__dirname, ".env");
 
-db.exec(`
-    CREATE TABLE IF NOT EXISTS usuarios (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        email TEXT UNIQUE NOT NULL,
-        senha TEXT NOT NULL
-    );
+/**
+ * Carrega o .env com uma checagem defensiva contra o BOM do Windows.
+ *
+ * O Bloco de Notas e o PowerShell antigo salvam UTF-8 com três bytes
+ * invisíveis no começo (0xEF 0xBB 0xBF). Aí a primeira chave vira
+ * "﻿TURSO_URL", a TURSO_URL "some" sem erro nenhum e o servidor volta
+ * para o arquivo local. Em vez de torcer, olhamos os primeiros bytes.
+ */
+function carregarEnv(): void {
+    if (!fs.existsSync(ARQUIVO_ENV)) return;
 
-    CREATE TABLE IF NOT EXISTS tarefas (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        titulo TEXT NOT NULL,
-        status TEXT DEFAULT 'pending',
-        prioridade TEXT DEFAULT 'medium',
-        usuario_id INTEGER NOT NULL, /* <-- ADICIONAMOS O VÍNCULO AQUI */
-        FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
-    );
-`);
+    const bruto = fs.readFileSync(ARQUIVO_ENV);
+    if (bruto.length >= 3 && bruto[0] === 0xef && bruto[1] === 0xbb && bruto[2] === 0xbf) {
+        console.warn(
+            "\n[ATENÇÃO] O seu .env foi salvo COM BOM (marca de bytes 0xEF 0xBB 0xBF).\n" +
+            "          Consequência: a PRIMEIRA variável do arquivo é ignorada sem erro.\n" +
+            "          Salve de novo em UTF-8 SEM BOM e confira se a primeira\n" +
+            "          variável é mesmo a TURSO_URL.\n",
+        );
+    }
 
-// Escrevemos (compilamos) as buscas UMA ÚNICA VEZ e guardamos na memória.
-const stmtContarUsuarios = db.prepare("SELECT COUNT(*) as count FROM usuarios");
-const stmtInserirUsuario = db.prepare("INSERT INTO usuarios (email, senha) VALUES (?, ?)");
-
-const stmtListarTodas = db.prepare("SELECT * FROM tarefas WHERE usuario_id = ?");
-const stmtBuscarPorTitulo = db.prepare("SELECT * FROM tarefas WHERE titulo LIKE ? AND usuario_id = ?");
-const stmtBuscarPorId = db.prepare("SELECT * FROM tarefas WHERE id = ? AND usuario_id = ?");
-const stmtInserirTarefa = db.prepare("INSERT INTO tarefas (titulo, status, prioridade, usuario_id) VALUES (?, 'pending', ?, ?)");
-const stmtDeletarTarefa = db.prepare("DELETE FROM tarefas WHERE id = ? AND usuario_id = ?");
-
-const stmtBuscarUsuarioPorId = db.prepare("SELECT * FROM usuarios WHERE id = ?");
-const stmtBuscarUsuarioPorEmail = db.prepare("SELECT * FROM usuarios WHERE email = ?");
-
-// Inserindo dados falsos para serem vazados
-// Bom: Tipagem correta sem usar "as any"
-const usuariosExistentes = stmtContarUsuarios.get() as { count: number };
-if (usuariosExistentes.count === 0) {
-    const hashAdmin = bcrypt.hashSync("123456", 10);
-    stmtInserirUsuario.run("admin@senai.com", hashAdmin);
+    // O que já estiver no ambiente do sistema (ex.: variáveis do Render ou de
+    // um container Docker) tem prioridade sobre o arquivo.
+    process.loadEnvFile(ARQUIVO_ENV);
 }
 
-console.log("Banco de dados SQLite inicializado com sucesso!");
+carregarEnv();
+
+// ============================================================================
+// LACUNA 3: de onde vêm os dados? Nuvem (Turso) ou arquivo local
+// ============================================================================
+const TURSO_URL = process.env.TURSO_URL;
+const TURSO_TOKEN = process.env.TURSO_TOKEN;
+
+// Só vamos para a nuvem com as DUAS informações. Faltou uma, usamos o arquivo.
+const usandoNuvem = Boolean(TURSO_URL && TURSO_TOKEN);
+const MODO_BANCO = usandoNuvem ? "Turso / libSQL (nuvem)" : "arquivo local (SQLite)";
+
+// ============================================================================
+// LACUNA 4: o cliente do banco
+// ============================================================================
+// Mesmo pacote, dois destinos: "libsql://..." vai pela internet até o Turso;
+// "file:./tarefas.db" abre um arquivo na pasta em que o servidor foi iniciado
+// (aqui, gerenciador-tarefas/api), útil sem internet ou sem conta no Turso.
+const db = createClient({
+    url: usandoNuvem ? TURSO_URL! : "file:./tarefas.db",
+    authToken: usandoNuvem ? TURSO_TOKEN : undefined,
+});
+
+// ============================================================================
+// LACUNA 5: banner que diz, sem adivinhação, onde os dados estão sendo gravados
+// ============================================================================
+function exibirBannerBanco(): void {
+    console.log("============================================================");
+    console.log("  Banco de dados");
+    console.log("------------------------------------------------------------");
+    console.log(`  Modo  : ${MODO_BANCO}`);
+    console.log(`  Onde  : ${usandoNuvem ? TURSO_URL : path.resolve("tarefas.db")}`);
+    // O token é uma senha: dizemos se ele existe, mas nunca o imprimimos.
+    console.log(`  Token : ${usandoNuvem ? "presente (nunca será mostrado)" : "não informado"}`);
+    if (!usandoNuvem) {
+        console.log("  Para usar o Turso, crie gerenciador-tarefas/api/.env com:");
+        console.log("    TURSO_URL=libsql://seu-banco.turso.io");
+        console.log("    TURSO_TOKEN=seu-token");
+    }
+    console.log("============================================================");
+}
+
+// ============================================================================
+// LACUNA 6: o SQL de criação das tabelas, um comando por constante
+// ============================================================================
+const SQL_USUARIOS = `
+    CREATE TABLE IF NOT EXISTS usuarios (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT NOT NULL UNIQUE,
+        senha_hash TEXT NOT NULL,
+        criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+`;
+
+const SQL_TAREFAS = `
+    CREATE TABLE IF NOT EXISTS tarefas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        usuario_id INTEGER NOT NULL,
+        titulo TEXT NOT NULL,
+        descricao TEXT,
+        status TEXT NOT NULL DEFAULT 'pending',
+        prioridade TEXT NOT NULL DEFAULT 'medium',
+        criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+        atualizado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE
+    );
+`;
+
+// ============================================================================
+// LACUNA 7: preparar o banco antes de abrir as portas
+// ============================================================================
+async function inicializarBanco(): Promise<void> {
+    try {
+        // No better-sqlite3, um db.exec("a; b;") rodava os dois comandos.
+        // No libSQL, um execute() com dois comandos roda só o PRIMEIRO e ignora
+        // o resto em silêncio: a tabela tarefas nunca nasceria. O batch manda
+        // cada comando separado e é atômico: falhou um, nada fica pela metade.
+        await db.batch([SQL_USUARIOS, SQL_TAREFAS], "write");
+
+        // Bancos criados antes da Aula 09 não têm a coluna atualizado_em.
+        try {
+            await db.execute(
+                "ALTER TABLE tarefas ADD COLUMN atualizado_em DATETIME DEFAULT CURRENT_TIMESTAMP",
+            );
+        } catch (alterErro: unknown) {
+            const mensagem = alterErro instanceof Error ? alterErro.message : String(alterErro);
+            if (!mensagem.includes("duplicate column")) {
+                console.warn("  Não foi possível adicionar a coluna atualizado_em:", mensagem);
+            }
+            // "duplicate column" = a coluna já existe, que é o caso normal.
+        }
+
+        // Usuário semente para facilitar o login no laboratório
+        const adminEmail = "admin@senai.com";
+        const { rows } = await db.execute({
+            sql: "SELECT id FROM usuarios WHERE email = ?",
+            args: [adminEmail],
+        });
+
+        if (rows.length === 0) {
+            const hash = await bcrypt.hash("123456", 10);
+            await db.execute({
+                sql: "INSERT INTO usuarios (email, senha_hash) VALUES (?, ?)",
+                args: [adminEmail, hash],
+            });
+        }
+    } catch (erro: unknown) {
+        const e = erro as { code?: string; message?: string };
+        console.error("\n[ERRO] Não consegui preparar o banco de dados.");
+        console.error(`  Modo   : ${MODO_BANCO}`);
+        console.error(`  Onde   : ${usandoNuvem ? TURSO_URL : path.resolve("tarefas.db")}`);
+        console.error(`  Código : ${e?.code || "DESCONHECIDO"}`);
+        console.error(`  Detalhe: ${e?.message}`);
+        if (usandoNuvem) {
+            console.error("  O Turso devolve HTTP 404 tanto para URL errada quanto para token errado.");
+            console.error("  Confira se a TURSO_URL não tem barra no final e se o TURSO_TOKEN está completo.\n");
+        }
+        process.exit(1);
+    }
+}
+
+// ============================================================================
+// LACUNA 8: helpers de consulta, agora assíncronos
+// ============================================================================
+// Antes: db.prepare(sql) uma vez no topo e stmt.get()/all()/run() nas rotas.
+// Agora: await db.execute({ sql, args }). Com o banco do outro lado da
+// internet, o que custa é a viagem pela rede, não compilar o SQL.
+// O que NÃO muda: os valores vão sempre nos "?" + args, nunca colados no SQL.
+
+/** O libSQL devolve linhas genéricas (Row); aqui damos a elas o tipo certo. */
+function primeiraLinha<T>(rows: Row[]): T | undefined {
+    return rows[0] as unknown as T | undefined;
+}
+
+const buscarUsuarioPorEmail = (email: string) =>
+    db.execute({ sql: "SELECT * FROM usuarios WHERE email = ?", args: [email] });
+
+const buscarUsuarioPorId = (id: number) =>
+    db.execute({ sql: "SELECT id, email, criado_em FROM usuarios WHERE id = ?", args: [id] });
+
+const inserirUsuario = (email: string, senhaHash: string) =>
+    db.execute({
+        sql: "INSERT INTO usuarios (email, senha_hash) VALUES (?, ?)",
+        args: [email, senhaHash],
+    });
+
+const listarTarefasDoUsuario = (usuarioId: number, search?: string) => {
+    if (search) {
+        // O '%' entra DEPOIS, apenas dentro do parâmetro
+        return db.execute({
+            sql: `SELECT * FROM tarefas
+                  WHERE usuario_id = ? AND (titulo LIKE ? OR descricao LIKE ?)
+                  ORDER BY id DESC`,
+            args: [usuarioId, `%${search}%`, `%${search}%`],
+        });
+    }
+    return db.execute({
+        sql: "SELECT * FROM tarefas WHERE usuario_id = ? ORDER BY id DESC",
+        args: [usuarioId],
+    });
+};
+
+const buscarTarefaPorIdEUsuario = (id: number, usuarioId: number) =>
+    db.execute({
+        sql: "SELECT * FROM tarefas WHERE id = ? AND usuario_id = ?",
+        args: [id, usuarioId],
+    });
+
+const deletarTarefaPorIdEUsuario = (id: number, usuarioId: number) =>
+    db.execute({
+        sql: "DELETE FROM tarefas WHERE id = ? AND usuario_id = ?",
+        args: [id, usuarioId],
+    });
 
 // Middleware de Autenticação
 const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -184,39 +358,121 @@ const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
     }
 };
 
-// Rota de integridade do sistema (Health Check)
-app.get("/api/health", (req, res) => {
-    res.json({ status: "ok", message: "Servidor do Gestor de Tarefas ativo!" });
-});
+// ============================================================================
+// LACUNA 9: health, register e login assíncronos
+// ============================================================================
 
-app.get("/api/version", (req, res) => {
-    res.json({ appName: "Gerenciador de Tarefas Multi-Usuário", version: "1.0.0" });
-});
-
-app.get("/api/tasks", authenticate, (req: AuthRequest, res) => {
-    const usuarioId = req.usuarioId!; // Garantimos que existe pois o middleware já checou
-    // 1. Coerção Segura: Forçamos a variável a ser uma String vazia caso tentem nos enviar um Array
-    const search = typeof req.query.search === "string" ? req.query.search : "";
-
+// Health check ATIVO: além de dizer que o Node está vivo, pergunta ao banco.
+// O processo pode estar de pé enquanto o Turso está fora do ar.
+app.get("/api/health", async (_req: Request, res: Response) => {
     try {
-        if (search) {
-            // 2. Proteção: O '%' entra DEPOIS, apenas dentro do parâmetro
-            const tarefas = stmtBuscarPorTitulo.all(`%${search}%`, usuarioId);
-            res.json(tarefas);
-        } else {
-            // 3. Performance: Usamos a busca compilada lá do Passo 2
-            const tarefas = stmtListarTodas.all(usuarioId);
-            res.json(tarefas);
-        }
-    } catch (erro) {
-        // 4. Erro Controlado: Se algo quebrar, damos uma mensagem genérica para não vazar a estrutura do banco
-        res.status(500).json({ error: "Erro interno ao processar a listagem." });
+        await db.execute("SELECT 1");
+        return res.json({
+            status: "ok",
+            message: "Servidor do Gestor de Tarefas ativo!",
+            banco: MODO_BANCO,
+        });
+    } catch {
+        return res.status(503).json({
+            status: "erro",
+            message: "O servidor está no ar, mas o banco de dados não respondeu.",
+            banco: MODO_BANCO,
+        });
     }
 });
 
-app.post("/api/tasks", authenticate, (req: AuthRequest, res) => {
+app.get("/api/version", (_req, res) => {
+    res.json({ appName: "Gerenciador de Tarefas Multi-Usuário", version: "1.0.0" });
+});
+
+// O front (app-react/web/src/api.ts) envia { email, senha }.
+app.post("/api/auth/register", async (req: Request, res: Response) => {
+    const { email, senha } = req.body ?? {};
+
+    // Validação inicial dos dados
+    if (typeof email !== "string" || typeof senha !== "string") {
+        return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
+    }
+
+    if (senha.trim().length < 6) {
+        return res.status(400).json({ error: "A senha deve ter ao menos 6 caracteres." });
+    }
+
+    try {
+        // Criando a "impressão digital" da senha
+        const hash = await bcrypt.hash(senha, 10);
+        const resultado = await inserirUsuario(email.trim(), hash);
+
+        // lastInsertRowid vem como bigint no libSQL; Number() converte.
+        const { rows } = await buscarUsuarioPorId(Number(resultado.lastInsertRowid));
+        const usuario = primeiraLinha<Usuario>(rows)!;
+
+        return res.status(201).json({ id: usuario.id, email: usuario.email });
+    } catch (erro: unknown) {
+        // 409 só para o conflito de verdade: e-mail repetido (UNIQUE).
+        // Antes, QUALQUER erro virava 409, inclusive o banco fora do ar.
+        // O libSQL põe "SQLITE_CONSTRAINT" em erro.code (o detalhe UNIQUE fica
+        // em erro.extendedCode); o startsWith aceita as duas formas.
+        const codigo = String((erro as { code?: string })?.code);
+        if (codigo.startsWith("SQLITE_CONSTRAINT")) {
+            return res.status(409).json({ error: "E-mail já cadastrado." });
+        }
+        return res.status(500).json({ error: "Não foi possível cadastrar agora. Tente de novo." });
+    }
+});
+
+app.post("/api/auth/login", async (req: Request, res: Response) => {
+    const { email, senha } = req.body ?? {};
+
+    if (typeof email !== "string" || typeof senha !== "string") {
+        return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
+    }
+
+    // Banco fora do ar é 500, e NÃO "credenciais inválidas": senão o usuário
+    // acharia que errou a senha quando o problema é a rede.
+    let usuario: Usuario | undefined;
+    try {
+        const { rows } = await buscarUsuarioPorEmail(email.trim());
+        usuario = primeiraLinha<Usuario>(rows);
+    } catch {
+        return res.status(500).json({ error: "Não foi possível entrar agora. Tente de novo." });
+    }
+
+    // Compara SEMPRE com um hash (mesmo se o usuário não existir) para a
+    // resposta demorar o mesmo tempo e não revelar quais e-mails existem.
+    const hashEsperado = usuario?.senha_hash ?? "$2a$10$fakehashparanaquebrarcomparacao";
+    const senhaOk = await bcrypt.compare(senha, hashEsperado);
+
+    if (!usuario || !senhaOk) {
+        return res.status(401).json({ error: "Credenciais inválidas." });
+    }
+
+    // Gerando o "Crachá" de acesso
+    const token = jwt.sign({ id: usuario.id, email: usuario.email }, JWT_SECRET, {
+        expiresIn: "8h",
+    });
+
+    return res.json({ token });
+});
+
+// Rotas de tarefas: as mesmas regras de antes, agora com await.
+app.get("/api/tasks", authenticate, async (req: AuthRequest, res) => {
+    const usuarioId = req.usuarioId!; // Garantimos que existe pois o middleware já checou
+    // Coerção Segura: forçamos uma String vazia caso tentem nos enviar um Array
+    const search = typeof req.query.search === "string" ? req.query.search : "";
+
+    try {
+        const { rows } = await listarTarefasDoUsuario(usuarioId, search || undefined);
+        return res.json(rows);
+    } catch {
+        // Erro Controlado: mensagem genérica para não vazar a estrutura do banco
+        return res.status(500).json({ error: "Erro interno ao processar a listagem." });
+    }
+});
+
+app.post("/api/tasks", authenticate, async (req: AuthRequest, res) => {
     const usuarioId = req.usuarioId!;
-    const { titulo, prioridade } = req.body;
+    const { titulo, prioridade } = req.body ?? {};
     const prioridadeValida = normalizarPrioridade(prioridade);
 
     // Validação via helper (type guard)
@@ -227,16 +483,19 @@ app.post("/api/tasks", authenticate, (req: AuthRequest, res) => {
     }
 
     try {
-        const resultado = stmtInserirTarefa.run(titulo.trim(), prioridadeValida, usuarioId);
-        const novaTarefa = stmtBuscarPorId.get(resultado.lastInsertRowid, usuarioId) as Tarefa;
+        const resultado = await db.execute({
+            sql: "INSERT INTO tarefas (titulo, status, prioridade, usuario_id) VALUES (?, 'pending', ?, ?)",
+            args: [titulo.trim(), prioridadeValida, usuarioId],
+        });
+        const { rows } = await buscarTarefaPorIdEUsuario(Number(resultado.lastInsertRowid), usuarioId);
 
-        return res.status(201).json(novaTarefa);
+        return res.status(201).json(primeiraLinha<Tarefa>(rows));
     } catch {
         return res.status(500).json({ error: "Erro ao processar persistência" });
     }
 });
 
-app.delete("/api/tasks/:id", authenticate, (req: AuthRequest, res) => {
+app.delete("/api/tasks/:id", authenticate, async (req: AuthRequest, res) => {
     const usuarioId = req.usuarioId!;
     // Validação de ID padronizada (igual PUT/PATCH)
     const idParaDeletar = parsearId(String(req.params.id));
@@ -246,19 +505,20 @@ app.delete("/api/tasks/:id", authenticate, (req: AuthRequest, res) => {
     }
 
     try {
-        const resultado = stmtDeletarTarefa.run(idParaDeletar, usuarioId);
+        const resultado = await deletarTarefaPorIdEUsuario(idParaDeletar, usuarioId);
 
-        if (resultado.changes === 0) {
+        // better-sqlite3: resultado.changes  ->  libSQL: resultado.rowsAffected
+        if (resultado.rowsAffected === 0) {
             return res.status(404).json({ error: "Tarefa não localizada para exclusão." });
         }
 
-        res.json({ message: "Tarefa excluída do banco SQLite com sucesso!" });
+        return res.json({ message: "Tarefa excluída com sucesso!" });
     } catch {
-        res.status(500).json({ error: "Erro interno ao processar a exclusão." });
+        return res.status(500).json({ error: "Erro interno ao processar a exclusão." });
     }
 });
 
-app.put("/api/tasks/:id", authenticate, (req: AuthRequest, res) => {
+app.put("/api/tasks/:id", authenticate, async (req: AuthRequest, res) => {
     const usuarioId = req.usuarioId!;
     const idParaAtualizar = parsearId(String(req.params.id));
 
@@ -266,7 +526,7 @@ app.put("/api/tasks/:id", authenticate, (req: AuthRequest, res) => {
         return res.status(400).json({ error: "ID inválido." });
     }
 
-    const { titulo, prioridade, status } = req.body;
+    const { titulo, prioridade, status } = req.body ?? {};
 
     // Validação via helpers
     if (!tituloValido(titulo)) {
@@ -279,22 +539,23 @@ app.put("/api/tasks/:id", authenticate, (req: AuthRequest, res) => {
     const statusValido = normalizarStatus(status);
 
     try {
-        // Prepared statement inline (UPDATE completo não tem statement fixo no topo)
-        const sql = "UPDATE tarefas SET titulo = ?, status = ?, prioridade = ? WHERE id = ? AND usuario_id = ?";
-        const resultado = db.prepare(sql).run(titulo.trim(), statusValido, prioridadeValida, idParaAtualizar, usuarioId);
+        const resultado = await db.execute({
+            sql: "UPDATE tarefas SET titulo = ?, status = ?, prioridade = ?, atualizado_em = CURRENT_TIMESTAMP WHERE id = ? AND usuario_id = ?",
+            args: [titulo.trim(), statusValido, prioridadeValida, idParaAtualizar, usuarioId],
+        });
 
-        if (resultado.changes === 0) {
+        if (resultado.rowsAffected === 0) {
             return res.status(404).json({ message: "Tarefa não encontrada para atualização!" });
         }
 
-        const tarefaAtualizada = stmtBuscarPorId.get(idParaAtualizar, usuarioId) as Tarefa;
-        return res.status(200).json(tarefaAtualizada);
+        const { rows } = await buscarTarefaPorIdEUsuario(idParaAtualizar, usuarioId);
+        return res.status(200).json(primeiraLinha<Tarefa>(rows));
     } catch {
         return res.status(500).json({ error: "Erro ao processar a atualização no banco de dados." });
     }
 });
 
-app.patch("/api/tasks/:id", authenticate, (req: AuthRequest, res) => {
+app.patch("/api/tasks/:id", authenticate, async (req: AuthRequest, res) => {
     const usuarioId = req.usuarioId!;
     const idParaAtualizar = parsearId(String(req.params.id));
 
@@ -309,58 +570,60 @@ app.patch("/api/tasks/:id", authenticate, (req: AuthRequest, res) => {
     const { titulo, prioridade, status } = req.body;
 
     try {
-        const fluxoAtualizacao = db.transaction(() => {
-            // Busca com statement singleton
-            const tarefaExistente = stmtBuscarPorId.get(idParaAtualizar, usuarioId) as Tarefa | undefined;
-            if (!tarefaExistente) return null;
+        const { rows: rowsExistente } = await buscarTarefaPorIdEUsuario(idParaAtualizar, usuarioId);
+        const tarefaExistente = primeiraLinha<Tarefa>(rowsExistente);
 
-            const camposParaAtualizar: string[] = [];
-            const valoresParaAtualizar: unknown[] = [];
-
-            // Título (se enviado)
-            if (titulo !== undefined) {
-                if (!tituloValido(titulo)) {
-                    throw new Error("O título da tarefa deve conter pelo menos 3 caracteres válidos.");
-                }
-                camposParaAtualizar.push("titulo = ?");
-                valoresParaAtualizar.push(titulo.trim());
-            }
-
-            // Prioridade (se enviada)
-            if (prioridade !== undefined) {
-                if (!PRIORIDADES.includes(prioridade as typeof PRIORIDADES[number])) {
-                    throw new Error("Prioridade inválida. Use 'low', 'medium' ou 'high'.");
-                }
-                camposParaAtualizar.push("prioridade = ?");
-                valoresParaAtualizar.push(prioridade);
-            }
-
-            // Status (se enviado)
-            if (status !== undefined) {
-                if (!STATUS_VALIDOS.includes(status as typeof STATUS_VALIDOS[number])) {
-                    throw new Error("Status inválido. Use 'pending' ou 'completed'.");
-                }
-                camposParaAtualizar.push("status = ?");
-                valoresParaAtualizar.push(status);
-            }
-
-            if (camposParaAtualizar.length === 0) return tarefaExistente;
-
-            // Query dinâmica SEGURA: placeholders ? + valores array
-            const sql = `UPDATE tarefas SET ${camposParaAtualizar.join(", ")} WHERE id = ? AND usuario_id = ?`;
-            valoresParaAtualizar.push(idParaAtualizar, usuarioId);
-
-            db.prepare(sql).run(...valoresParaAtualizar);
-            return stmtBuscarPorId.get(idParaAtualizar, usuarioId) as Tarefa;
-        });
-
-        const resultado = fluxoAtualizacao();
-
-        if (!resultado) {
+        // Atenção: o server-lacunas.ts da aula faz "return null" aqui. Numa rota
+        // async isso não responde nada e a requisição fica pendurada até o
+        // timeout. Tarefa que não existe (ou é de outro usuário) é 404.
+        if (!tarefaExistente) {
             return res.status(404).json({ message: "Tarefa não encontrada para atualização parcial!" });
         }
 
-        return res.status(200).json(resultado);
+        const camposParaAtualizar: string[] = [];
+        const valoresParaAtualizar: InValue[] = [];
+
+        // Título (se enviado)
+        if (titulo !== undefined) {
+            if (!tituloValido(titulo)) {
+                throw new Error("O título da tarefa deve conter pelo menos 3 caracteres válidos.");
+            }
+            camposParaAtualizar.push("titulo = ?");
+            valoresParaAtualizar.push(titulo.trim());
+        }
+
+        // Prioridade (se enviada)
+        if (prioridade !== undefined) {
+            if (!PRIORIDADES.includes(prioridade as typeof PRIORIDADES[number])) {
+                throw new Error("Prioridade inválida. Use 'low', 'medium' ou 'high'.");
+            }
+            camposParaAtualizar.push("prioridade = ?");
+            valoresParaAtualizar.push(prioridade);
+        }
+
+        // Status (se enviado)
+        if (status !== undefined) {
+            if (!STATUS_VALIDOS.includes(status as typeof STATUS_VALIDOS[number])) {
+                throw new Error("Status inválido. Use 'pending' ou 'completed'.");
+            }
+            camposParaAtualizar.push("status = ?");
+            valoresParaAtualizar.push(status);
+        }
+
+        if (camposParaAtualizar.length === 0) {
+            return res.status(200).json(tarefaExistente);
+        }
+
+        // Query dinâmica SEGURA: os nomes das colunas vêm da nossa allowlist
+        // acima, e os valores vão nos "?" + args.
+        camposParaAtualizar.push("atualizado_em = CURRENT_TIMESTAMP");
+        const sql = `UPDATE tarefas SET ${camposParaAtualizar.join(", ")} WHERE id = ? AND usuario_id = ?`;
+        valoresParaAtualizar.push(idParaAtualizar, usuarioId);
+
+        await db.execute({ sql, args: valoresParaAtualizar });
+
+        const { rows } = await buscarTarefaPorIdEUsuario(idParaAtualizar, usuarioId);
+        return res.status(200).json(primeiraLinha<Tarefa>(rows));
     } catch (erro) {
         // Distingue erro de validação (400) de erro interno (500)
         if (erro instanceof Error && (erro.message.includes("inválid") || erro.message.includes("caracteres"))) {
@@ -370,55 +633,9 @@ app.patch("/api/tasks/:id", authenticate, (req: AuthRequest, res) => {
     }
 });
 
-app.post("/api/auth/register", (req, res) => {
-    const { email, senha } = req.body ?? {};
-
-    // Validação inicial dos dados
-    if (typeof email !== "string" || typeof senha !== "string") {
-        return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
-    }
-
-    if (senha.trim().length < 6) {
-        return res.status(400).json({ error: "A senha deve ter ao menos 6 caracteres." });
-    }
-
-    // Criando a "impressão digital" da senha
-    const hash = bcrypt.hashSync(senha, 10);
-
-    try {
-        const resultado = stmtInserirUsuario.run(email.trim(), hash);
-        const usuario = stmtBuscarUsuarioPorId.get(resultado.lastInsertRowid) as Usuario;
-
-        return res.status(201).json({ id: usuario.id, email: usuario.email });
-    } catch {
-        return res.status(409).json({ error: "E-mail já cadastrado." });
-    }
-});
-
-app.post("/api/auth/login", (req, res) => {
-    const { email, senha } = req.body ?? {};
-
-    if (typeof email !== "string" || typeof senha !== "string") {
-        return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
-    }
-
-    const usuario = stmtBuscarUsuarioPorEmail.get(email.trim()) as Usuario | undefined;
-
-    // Compara SEMPRE com hash (mesmo se usuário não existir) para evitar vazamento
-    const hashEsperado = usuario?.senha ?? "$2a$10$fakehashparanaquebrarcomparacao";
-    const senhaOk = bcrypt.compareSync(senha, hashEsperado);
-
-    if (!usuario || !senhaOk) {
-        return res.status(401).json({ error: "Credenciais inválidas." });
-    }
-
-    // Gerando o "Crachá" de acesso
-    const token = jwt.sign({ id: usuario.id, email: usuario.email }, JWT_SECRET, {
-        expiresIn: "2h",
-    });
-
-    return res.json({ token });
-});
+// ============================================================================
+// LACUNA 10: as três peças da Aula 08 (a ordem importa!)
+// ============================================================================
 
 // (a) Uma rota de API que não existe tem que responder JSON, e não HTML.
 // Se esta linha ficasse depois do SPA fallback, "GET /api/typo" cairia nele e
@@ -428,7 +645,7 @@ app.use("/api", (_req: Request, res: Response) => {
     res.status(404).json({ error: "Rota de API não encontrada." });
 });
 
-// (b) Os arquivos que o `npm run build` do Vite produziu em web/dist.
+// (b) Os arquivos que o `pnpm build` do Vite produziu em app-react/web/dist.
 // index.html, os .js com hash no nome, o .css e as imagens da public/.
 app.use(express.static(FRONT_DIST));
 
@@ -467,9 +684,32 @@ function verificarFront(): void {
     }
 }
 
-app.listen(PORT, () => {
-    console.log(`Servidor rodando em: http://localhost:${PORT}`);
-    console.log(`API:   http://localhost:${PORT}/api/health`);
-    console.log(`Front: http://localhost:${PORT}`);
-    verificarFront();
-});
+// ============================================================================
+// LACUNA 11: só aceitamos requisições depois que o banco estiver pronto
+// ============================================================================
+// Antes, o db.exec() síncrono terminava antes da próxima linha. Agora a
+// criação das tabelas é uma Promise: se o app.listen() viesse direto, a
+// primeira requisição poderia chegar antes de a tabela existir no Turso.
+async function iniciarServidor(): Promise<void> {
+    await inicializarBanco();
+
+    // No Express 5, este callback também é chamado quando o listen FALHA (ex.:
+    // porta já ocupada por outro servidor esquecido aberto). Sem checar o erro,
+    // o terminal diria "Servidor rodando" enquanto as requisições iriam para o
+    // outro processo.
+    app.listen(PORT, (erro?: Error) => {
+        if (erro) {
+            console.error(`\n[ERRO] Não consegui abrir a porta ${PORT}: ${erro.message}`);
+            console.error("  Outro servidor já está usando essa porta? Feche-o ou use outra PORT.\n");
+            process.exit(1);
+        }
+
+        exibirBannerBanco();
+        console.log(`Servidor rodando em: http://localhost:${PORT}`);
+        console.log(`API:   http://localhost:${PORT}/api/health`);
+        console.log(`Front: http://localhost:${PORT}`);
+        verificarFront();
+    });
+}
+
+iniciarServidor();

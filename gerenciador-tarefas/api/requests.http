@@ -322,3 +322,57 @@ GET http://localhost:3000/apixyz
 
 ### 47. (6.6) GET /api/health — a API sobreviveu ao front -> 200
 GET http://localhost:3000/api/health
+
+# ============================================================================
+#  AULA 09 — BANCO EM NUVEM (Turso / libSQL)
+#  Rode uma vez SEM .env (modo local) e outra COM .env (modo nuvem) e compare
+#  o campo "banco" do health check. As rotas e respostas são as mesmas.
+# ============================================================================
+
+### 48. Health check ativo: roda SELECT 1 no banco -> 200 com "banco": "Turso / libSQL (nuvem)" ou "arquivo local (SQLite)"
+# Se o banco não responder (sem internet, token revogado), a resposta é 503.
+GET http://localhost:3000/api/health
+
+### 49. Login com o usuário semente -> 200 com token (válido por 8h)
+# O REST Client guarda a resposta com o nome "login" para os testes abaixo.
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@senai.com",
+    "senha": "123456"
+}
+
+### 50. Criar tarefa usando o token do teste 49 -> 201 com criado_em e atualizado_em
+# @name criada
+POST http://localhost:3000/api/tasks
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+    "titulo": "Tarefa gravada no Turso",
+    "prioridade": "high"
+}
+
+### 51. PATCH na tarefa criada no teste 50 -> 200 e atualizado_em muda
+PATCH http://localhost:3000/api/tasks/{{criada.response.body.id}}
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+    "status": "completed"
+}
+
+### 52. PATCH em tarefa inexistente -> 404 (no server-lacunas.ts da aula, ficava pendurado)
+PATCH http://localhost:3000/api/tasks/999999
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+    "status": "completed"
+}
+
+### 53. Listar: a tarefa continua lá depois de reiniciar o servidor (no Turso, mesmo apagando o tarefas.db)
+GET http://localhost:3000/api/tasks
+Authorization: Bearer {{login.response.body.token}}

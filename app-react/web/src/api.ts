@@ -178,7 +178,7 @@ export const getUsuario = (): Usuario | null => {
             return null;
         }
 
-        // O server.ts gera o token com 2h de validade (`expiresIn: "2h"`).
+        // O server.ts gera o token com 8h de validade (`expiresIn: "8h"`).
         // Checar o exp evita deixar a tela "logada" com um token morto.
         if (typeof dados.exp === "number" && dados.exp * 1000 < Date.now()) {
             clearToken();
