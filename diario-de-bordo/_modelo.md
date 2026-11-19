@@ -2,8 +2,8 @@
   COMO USAR ESTE MODELO
   1. Copie para AAAA-MM-DD.md e troque tudo que está em MAIÚSCULAS.
   2. Botão "ver no projeto": aponte para a seção do README que a aula construiu.
-     Back-end:  ../gerenciador-tarefas/README.md#ANCORA (botão verde, logo nodedotjs)
-     Front-end: ../app-react/README.md#ANCORA          (botão azul 087ea4, logo react)
+     Back-end:  ../docs/API.md#ANCORA      (botão verde, logo nodedotjs)
+     Front-end: ../web/README.md#ANCORA    (botão azul 087ea4, logo react)
   3. Rodapé: o botão "←" aponta para a aula anterior. Depois, abra a aula
      anterior e acrescente no rodapé dela o botão "→" apontando para esta.
   4. Nos badges, espaço vira "_" e acentos ficam codificados (é = %C3%A9,
@@ -13,7 +13,7 @@
 <p align="center">
   <a href="../README.md"><img src="https://img.shields.io/badge/In%C3%ADcio-24292f?style=for-the-badge&logo=github&logoColor=white" alt="Início"></a>
   <a href="README.md"><img src="https://img.shields.io/badge/Di%C3%A1rio_de_bordo-%C3%ADndice-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="Diário de bordo"></a>
-  <a href="../gerenciador-tarefas/README.md#ANCORA"><img src="https://img.shields.io/badge/ver_no_projeto-API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="ver no projeto"></a>
+  <a href="../docs/API.md#ANCORA"><img src="https://img.shields.io/badge/ver_no_projeto-API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="ver no projeto"></a>
 </p>
 <!-- /nav:topo -->
 

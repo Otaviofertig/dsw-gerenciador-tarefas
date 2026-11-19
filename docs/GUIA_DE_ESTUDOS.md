@@ -1,11 +1,11 @@
 <!-- nav:topo -->
 <p align="center">
   <a href="../README.md"><img src="https://img.shields.io/badge/In%C3%ADcio-24292f?style=for-the-badge&logo=github&logoColor=white" alt="Início"></a>
-  <a href="../gerenciador-tarefas/README.md"><img src="https://img.shields.io/badge/API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="API Gerenciador"></a>
-  <a href="../app-react/README.md"><img src="https://img.shields.io/badge/Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="Front React"></a>
+  <a href="API.md"><img src="https://img.shields.io/badge/API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="API Gerenciador"></a>
+  <a href="../web/README.md"><img src="https://img.shields.io/badge/Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="Front React"></a>
   <a href="../diario-de-bordo/README.md"><img src="https://img.shields.io/badge/Di%C3%A1rio_de_bordo-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="Diário de bordo"></a>
   <img src="https://img.shields.io/badge/voc%C3%AA_est%C3%A1_aqui-Guia_de_estudos-d97706?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Você está aqui: Guia de estudos">
-  <a href="../exercicios/tailwind/dicas.md"><img src="https://img.shields.io/badge/Tailwind-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind"></a>
+  <a href="../extras/README.md"><img src="https://img.shields.io/badge/Extras-6e7781?style=for-the-badge&logo=files&logoColor=white" alt="Extras"></a>
 </p>
 <!-- /nav:topo -->
 
@@ -13,7 +13,7 @@
 
 *Atualizado em 23/09/2026*
 
-> **Até onde este guia vai:** ele explica com calma o back-end até a aula de autenticação (23/09). As aulas seguintes (React, front servido pela API e banco em nuvem) estão no diário de bordo, e o estado atual do código está no [README do Gerenciador](../gerenciador-tarefas/README.md).
+> **Até onde este guia vai:** ele explica com calma o back-end até a aula de autenticação (23/09). As aulas seguintes (React, front servido pela API e banco em nuvem) estão no diário de bordo, e o estado atual do código está no [README do Gerenciador](API.md).
 
 <p>
   <a href="../diario-de-bordo/2026-10-07.md"><img src="https://img.shields.io/badge/07_out-Intro_ao_React-8250df?style=for-the-badge" alt="07 out: Intro ao React"></a>
@@ -196,6 +196,6 @@ O token já é gerado corretamente, mas **nenhuma rota ainda exige ele** — `/a
 <p align="center">
   <a href="../diario-de-bordo/README.md"><img src="https://img.shields.io/badge/%E2%86%90_anterior-Di%C3%A1rio_de_bordo-6e7781?style=for-the-badge" alt="← anterior"></a>
   <a href="#top"><img src="https://img.shields.io/badge/%E2%AC%86_voltar_ao_topo-6e7781?style=for-the-badge" alt="⬆ voltar ao topo"></a>
-  <a href="../exercicios/tailwind/dicas.md"><img src="https://img.shields.io/badge/pr%C3%B3ximo_%E2%86%92-Tailwind-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="próximo →"></a>
+  <a href="../extras/tailwind/dicas.md"><img src="https://img.shields.io/badge/pr%C3%B3ximo_%E2%86%92-Tailwind-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="próximo →"></a>
 </p>
 <!-- /nav:rodape -->

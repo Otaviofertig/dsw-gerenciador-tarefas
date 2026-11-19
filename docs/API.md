@@ -2,30 +2,31 @@
 <p align="center">
   <a href="../README.md"><img src="https://img.shields.io/badge/In%C3%ADcio-24292f?style=for-the-badge&logo=github&logoColor=white" alt="Início"></a>
   <img src="https://img.shields.io/badge/voc%C3%AA_est%C3%A1_aqui-API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Você está aqui: API Gerenciador">
-  <a href="../app-react/README.md"><img src="https://img.shields.io/badge/Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="Front React"></a>
+  <a href="../web/README.md"><img src="https://img.shields.io/badge/Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="Front React"></a>
   <a href="../diario-de-bordo/README.md"><img src="https://img.shields.io/badge/Di%C3%A1rio_de_bordo-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="Diário de bordo"></a>
-  <a href="../docs/GUIA_DE_ESTUDOS.md"><img src="https://img.shields.io/badge/Guia_de_estudos-d97706?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Guia de estudos"></a>
-  <a href="../exercicios/tailwind/dicas.md"><img src="https://img.shields.io/badge/Tailwind-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind"></a>
+  <a href="GUIA_DE_ESTUDOS.md"><img src="https://img.shields.io/badge/Guia_de_estudos-d97706?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Guia de estudos"></a>
+  <a href="../extras/README.md"><img src="https://img.shields.io/badge/Extras-6e7781?style=for-the-badge&logo=files&logoColor=white" alt="Extras"></a>
 </p>
 <!-- /nav:topo -->
 
-# Gerenciador de Tarefas
+# API do Gerenciador de Tarefas
 
-Gerenciador de tarefas multi-usuário: back-end em **Node.js + Express + TypeScript** com persistência em **SQLite na nuvem** (Turso, via `@libsql/client`), e um protótipo de tela feito com **Tailwind CSS**. O projeto evolui a cada aula: primeiro as rotas básicas, depois o CRUD, a blindagem contra entradas maliciosas, a autenticação com senha criptografada e JWT e, na Aula 09, a migração do arquivo local para o banco em nuvem.
+Gerenciador de tarefas multiusuário: back-end em **Node.js + Express + TypeScript** com persistência em **SQLite na nuvem** (Turso, via `@libsql/client`). A mesma API entrega a tela em React da pasta [`web/`](../web/README.md). O projeto evolui a cada aula: primeiro as rotas básicas, depois o CRUD, a blindagem contra entradas maliciosas, a autenticação com senha criptografada e JWT e, na Aula 09, a migração do arquivo local para o banco em nuvem. Na Aula 10, o sistema foi publicado no **Render**: [abrir o sistema](https://gerenciador-de-tarefas.onrender.com).
+
+Os arquivos da API ficam na raiz do repositório:
 
 ```
-gerenciador-tarefas/
-├── api/
-│   ├── server.ts          # API completa (rotas, banco, autenticação)
-│   ├── requests.http      # cenários de teste por aula (REST Client)
-│   ├── .env.example       # modelo do .env com TURSO_URL e TURSO_TOKEN
-│   ├── package.json
-│   └── tsconfig.json
-└── prototipo-html/
-    └── index.html         # tela estática: login + cadastro de tarefas (Tailwind via CDN)
+dsw-gerenciador-tarefas/
+├── server.ts          # API completa (rotas, banco, autenticação, entrega da tela)
+├── package.json       # scripts dev, start, build e dev:all
+├── tsconfig.json
+├── render.yaml        # receita do deploy no Render
+├── .env.example       # modelo do .env com TURSO_URL e TURSO_TOKEN
+├── requests.http      # cenários de teste por aula (REST Client)
+└── web/               # a tela em React, entregue pela API depois do build
 ```
 
-**Nesta página:** [Como rodar](#como-rodar-a-api) · [Banco em nuvem](#banco-em-nuvem-turso) · [Front pela API](#servindo-o-front-end-pela-api) · [Variáveis](#variáveis-de-ambiente) · [Tecnologias](#tecnologias) · [Endpoints](#endpoints) · [Modelo de dados](#modelo-de-dados) · [Respostas](#exemplos-de-resposta) · [Autenticação](#fluxo-de-autenticação) · [Segurança](#segurança-aplicada) · [Testes](#testes-com-rest-client) · [Limitações](#limitações-atuais) · [Roadmap](#roadmap)
+**Nesta página:** [Como rodar](#como-rodar-a-api) · [Banco em nuvem](#banco-em-nuvem-turso) · [Front pela API](#servindo-o-front-end-pela-api) · [Variáveis](#variáveis-de-ambiente) · [Deploy](#deploy-no-render) · [Tecnologias](#tecnologias) · [Endpoints](#endpoints) · [Modelo de dados](#modelo-de-dados) · [Respostas](#exemplos-de-resposta) · [Autenticação](#fluxo-de-autenticação) · [Segurança](#segurança-aplicada) · [Testes](#testes-com-rest-client) · [Limitações](#limitações-atuais) · [Roadmap](#roadmap)
 
 **Aulas que construíram esta API** (clique para abrir o diário):
 
@@ -36,15 +37,17 @@ gerenciador-tarefas/
   <a href="../diario-de-bordo/2026-09-23.md"><img src="https://img.shields.io/badge/23_set-Autentica%C3%A7%C3%A3o-8250df?style=for-the-badge" alt="23 set: Autenticação"></a>
   <a href="../diario-de-bordo/2026-10-28.md"><img src="https://img.shields.io/badge/28_out-Laborat%C3%B3rio-8250df?style=for-the-badge" alt="28 out: Laboratório"></a>
   <a href="../diario-de-bordo/2026-11-04.md"><img src="https://img.shields.io/badge/04_nov-Banco_em_nuvem-8250df?style=for-the-badge" alt="04 nov: Banco em nuvem"></a>
+  <a href="../diario-de-bordo/2026-11-11.md"><img src="https://img.shields.io/badge/11_nov-Deploy_no_Render-8250df?style=for-the-badge" alt="11 nov: Deploy no Render"></a>
 </p>
 
 ## Como rodar a API
 
+Na raiz do repositório:
+
 ```bash
-cd gerenciador-tarefas/api
-pnpm install
-pnpm dev        # desenvolvimento, reinicia ao salvar (tsx watch)
-pnpm start      # execução simples
+npm install
+npm run dev     # desenvolvimento, reinicia ao salvar (tsx watch)
+npm start       # execução simples
 ```
 
 O servidor sobe em `http://localhost:3000`. Antes de abrir a porta, ele cria as tabelas (se ainda não existirem) e o usuário semente `admin@senai.com` / `123456`. O banner no terminal diz para onde os dados estão indo:
@@ -59,40 +62,57 @@ O servidor sobe em `http://localhost:3000`. Antes de abrir a porta, ele cria as 
 ============================================================
 ```
 
-Sem `.env`, o modo é `arquivo local (SQLite)` e os dados ficam em `api/tarefas.db`.
+Sem `.env`, o modo é `arquivo local (SQLite)` e os dados ficam em `tarefas.db`, na raiz.
 
 ### Banco em nuvem (Turso)
 
 1. Crie a conta e o banco em [turso.tech](https://turso.tech) e copie a URL (`libsql://...`) e um token.
-2. Copie `api/.env.example` para `api/.env` e preencha os dois valores. Salve em **UTF-8 sem BOM** e confira se a URL não termina com `/`.
-3. Rode `pnpm dev` e confira o banner, ou chame `GET /api/health`, que responde `"banco": "Turso / libSQL (nuvem)"`.
+2. Copie `.env.example` para `.env` (na raiz) e preencha os dois valores. Salve em **UTF-8 sem BOM** e confira se a URL não termina com `/`.
+3. Rode `npm run dev` e confira o banner, ou chame `GET /api/health`, que responde `"banco": "Turso / libSQL (nuvem)"`.
 
 O `.env` e o `tarefas.db` estão no `.gitignore` e nunca devem ir para o repositório.
 
 ### Servindo o front-end pela API
 
-A API também entrega o front React (`app-react/web`). Como tela e API saem da mesma origem, o CORS deixa de ser necessário nesse modo.
+A API também entrega a tela React (`web/`). Como tela e API saem da mesma origem, o CORS deixa de ser necessário nesse modo.
 
 ```bash
-pnpm build:web   # gera app-react/web/dist
-pnpm dev         # a tela abre em http://localhost:3000
-pnpm dev:all     # alternativa: API e Vite juntos (tela em http://localhost:5173)
+npm run build    # instala a tela, gera web/dist e confere os tipos
+npm start        # a tela abre em http://localhost:3000
+npm run dev:all  # alternativa: API e Vite juntos (tela em http://localhost:5173)
 ```
 
-A ordem das peças no final do `server.ts` importa: primeiro o 404 em JSON para `/api/*` que não existe, depois o `express.static` com o `dist`, e por último o SPA fallback, que devolve o `index.html` para qualquer outro caminho. Ao subir, a API avisa se o build não existe ou está mais velho que `app-react/web/src`.
+A ordem das peças no final do `server.ts` importa: primeiro o 404 em JSON para `/api/*` que não existe, depois o `express.static` com o `dist`, e por último o SPA fallback, que devolve o `index.html` para qualquer outro caminho. Ao subir, a API avisa se o build não existe ou está mais velho que `web/src`.
 
 ### Variáveis de ambiente
 
 | Variável | Padrão | Descrição |
 | --- | --- | --- |
 | `PORT` | `3000` | Porta do servidor |
-| `JWT_SECRET` | valor de desenvolvimento | Chave que assina os tokens. Em produção, sempre defina a sua |
+| `JWT_SECRET` | valor de desenvolvimento | Chave que assina os tokens. No Render ela é gerada automaticamente (`generateValue: true` no `render.yaml`) |
 | `TURSO_URL` | (vazio) | Endereço do banco no Turso (`libsql://...`). Sem ela, usa `tarefas.db` |
 | `TURSO_TOKEN` | (vazio) | Token de acesso ao banco. Só vai para a nuvem com URL **e** token |
 
-O servidor lê `api/.env` sozinho (`process.loadEnvFile`). Variáveis já definidas no sistema, como as do painel de uma hospedagem, têm prioridade sobre o arquivo. Se o `.env` estiver salvo com BOM, o terminal mostra um aviso, porque a primeira variável seria ignorada sem erro.
+O servidor lê o `.env` da raiz sozinho (`process.loadEnvFile`). Variáveis já definidas no sistema, como as do painel de uma hospedagem, têm prioridade sobre o arquivo. Se o `.env` estiver salvo com BOM, o terminal mostra um aviso, porque a primeira variável seria ignorada sem erro.
 
 > **Atenção:** o `CREATE TABLE IF NOT EXISTS` não atualiza tabelas que já existem. Um `tarefas.db` criado antes da Aula 09 ainda tem a coluna `senha` (hoje é `senha_hash`): apague o arquivo e reinicie o servidor.
+
+### Deploy no Render
+
+A API (junto com a tela) está publicada no Render, com o banco no Turso. O passo a passo completo, com o que mudou no código, os valores do painel, os testes e a solução de problemas, está no [README principal](../README.md#deploy-no-render). Em resumo:
+
+| Peça | Onde está | Para que serve |
+| --- | --- | --- |
+| `render.yaml` | raiz | receita do deploy: nome, plano grátis, comandos de build e start, variáveis e health check |
+| script `build` | `package.json` | `npm --prefix web install && npm run build:web && tsc`: instala a tela, gera `web/dist` e confere os tipos. A máquina do Render começa vazia, então o build precisa instalar tudo |
+| `engines.node` | `package.json` | fixa o Node 24 no Render, igual ao da máquina local |
+| `GET /api/db-check` | `server.ts` | confirma, em produção, que o banco tem as tabelas e quantas linhas cada uma tem |
+
+Para conferir antes de subir, rode o mesmo build que o Render roda:
+
+```bash
+npm run build
+```
 
 ## Tecnologias
 
@@ -104,7 +124,6 @@ O servidor lê `api/.env` sozinho (`process.loadEnvFile`). Variáveis já defini
 | bcryptjs | Hash das senhas |
 | jsonwebtoken | Geração de tokens JWT |
 | cors | Libera o front-end React (`localhost:5173`) para consumir a API |
-| Tailwind CSS | Layout do protótipo HTML |
 | REST Client (VS Code) | Testes das rotas via `requests.http` |
 
 ## Endpoints
@@ -113,9 +132,10 @@ O servidor lê `api/.env` sozinho (`process.loadEnvFile`). Variáveis já defini
 
 | Método | Rota | Descrição |
 | --- | --- | --- |
-| GET | `/` | Entrega a tela do React (build em `app-react/web/dist`) |
+| GET | `/` | Entrega a tela do React (build em `web/dist`) |
 | GET | `/api/health` | Health check ativo: roda `SELECT 1` no banco e informa o modo (`banco`). `503` se o banco não responder |
 | GET | `/api/version` | Nome e versão da aplicação |
+| GET | `/api/db-check` | Lista as tabelas do banco e quantas linhas cada uma tem (`ok`, `banco`, `tabelas`, `contagem`). Só faz leituras. `503` se o banco não responder |
 
 ### Autenticação
 
@@ -234,27 +254,22 @@ Se o usuário `admin@senai.com` não existir, ele é criado com a senha `123456`
 
 ## Testes com REST Client
 
-O arquivo [requests.http](api/requests.http) reúne os cenários de sucesso e de falha de cada aula (validação, ataques, registro e login). Com a extensão **REST Client** instalada, clique em "Send Request" acima de cada bloco.
+O arquivo [requests.http](../requests.http) reúne os cenários de sucesso e de falha de cada aula (validação, ataques, registro e login). Com a extensão **REST Client** instalada, clique em "Send Request" acima de cada bloco.
 
 Dica: separe cada requisição com `###`, senão a extensão não identifica os requests.
 
-## Protótipo HTML
-
-A tela em [prototipo-html/index.html](prototipo-html/index.html) foi feita com Tailwind CSS via CDN: cabeçalho, formulário de acesso ("Acesso ao Sistema") e área de cadastro de tarefas em grade responsiva. É uma página estática que ainda não consome a API. Basta abri-la no navegador.
-
 ## Limitações atuais
 
-- **A aplicação ainda roda só na máquina local:** o banco já pode ficar no Turso, mas a API ainda não foi publicada. Isso fica para a Aula 10.
-- **O protótipo HTML é estático:** os formulários de login e de tarefas não chamam a API. A tela de verdade está em `app-react/web`.
-- **`JWT_SECRET` tem valor padrão de desenvolvimento:** deve ser definida por variável de ambiente fora do ambiente local.
+- **Plano gratuito do Render:** o servidor dorme depois de 15 minutos sem uso, e a primeira visita seguinte demora perto de 1 minuto.
+- **`JWT_SECRET` tem valor padrão de desenvolvimento:** na máquina local, se não for definida, usa um valor fixo. No Render ela é gerada automaticamente.
+- **Usuário semente com senha fraca:** o `admin@senai.com` / `123456` existe para as aulas. Num sistema real, essa senha seria trocada.
 - **Sem testes automatizados:** a verificação é manual, pelo `requests.http`.
 
 ## Roadmap
 
-Já feito: middleware de autenticação, tarefas por usuário, front React consumindo a API, front servido pela API (Aula 08) e banco em nuvem com `.env` (Aula 09).
+Já feito: middleware de autenticação, tarefas por usuário, front React consumindo a API, front servido pela API (Aula 08), banco em nuvem com `.env` (Aula 09) e deploy no Render com `render.yaml` e `/api/db-check` (Aula 10).
 
-1. **Deploy em produção (Aula 10):** publicar a API com Render e Docker, com `TURSO_URL`, `TURSO_TOKEN` e `JWT_SECRET` configurados no painel da hospedagem.
-2. **Refinamentos:** testes automatizados e mensagens de erro padronizadas (hoje alguns `404` usam `message` em vez de `error`).
+1. **Refinamentos:** testes automatizados e mensagens de erro padronizadas (hoje alguns `404` usam `message` em vez de `error`).
 
 <!-- nav:rodape -->
 ---
@@ -262,6 +277,6 @@ Já feito: middleware de autenticação, tarefas por usuário, front React consu
 <p align="center">
   <a href="../README.md"><img src="https://img.shields.io/badge/%E2%86%90_anterior-In%C3%ADcio-6e7781?style=for-the-badge" alt="← anterior"></a>
   <a href="#top"><img src="https://img.shields.io/badge/%E2%AC%86_voltar_ao_topo-6e7781?style=for-the-badge" alt="⬆ voltar ao topo"></a>
-  <a href="../app-react/README.md"><img src="https://img.shields.io/badge/pr%C3%B3ximo_%E2%86%92-Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="próximo →"></a>
+  <a href="../web/README.md"><img src="https://img.shields.io/badge/pr%C3%B3ximo_%E2%86%92-Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="próximo →"></a>
 </p>
 <!-- /nav:rodape -->
