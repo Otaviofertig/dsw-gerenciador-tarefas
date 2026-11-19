@@ -376,3 +376,18 @@ Authorization: Bearer {{login.response.body.token}}
 ### 53. Listar: a tarefa continua lá depois de reiniciar o servidor (no Turso, mesmo apagando o tarefas.db)
 GET http://localhost:3000/api/tasks
 Authorization: Bearer {{login.response.body.token}}
+
+# ============================================================================
+# Aula 10: deploy no Render
+# Para testar o site publicado, troque http://localhost:3000 pelo endereço do
+# Render (https://gerenciador-de-tarefas.onrender.com).
+# ============================================================================
+
+### 54. Conferir o banco: tabelas e quantas linhas cada uma tem (só leitura)
+GET http://localhost:3000/api/db-check
+
+### 55. Health: em produção deve responder "banco": "Turso / libSQL (nuvem)"
+GET http://localhost:3000/api/health
+
+### 56. F5 numa rota da tela: o SPA fallback devolve o index.html (200, não 404)
+GET http://localhost:3000/tarefas

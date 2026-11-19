@@ -382,6 +382,36 @@ app.get("/api/version", (_req, res) => {
     res.json({ appName: "Gerenciador de Tarefas Multi-Usuário", version: "1.0.0" });
 });
 
+// Aula 10 (deploy): confere o banco de verdade, em produção.
+// O /api/health só diz "o banco respondeu". Esta rota vai além: lista as
+// tabelas que existem e quantas linhas cada uma tem. Depois do deploy, é o
+// jeito rápido de confirmar que o Render está mesmo ligado ao Turso e que as
+// tabelas foram criadas. Só faz leituras (SELECT): não altera nada no banco.
+app.get("/api/db-check", async (_req: Request, res: Response) => {
+    try {
+        await db.execute("SELECT 1");
+        const { rows: tabelas } = await db.execute(
+            "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'",
+        );
+
+        const nomes = tabelas.map((t) => String(t.name));
+        const contagem: Record<string, number> = {};
+        for (const nome of nomes) {
+            // O nome vem do próprio banco (sqlite_master), não do usuário.
+            // As aspas duplas protegem nomes com caracteres especiais.
+            const { rows } = await db.execute(`SELECT COUNT(*) AS total FROM "${nome}"`);
+            contagem[nome] = Number(rows[0]?.total ?? 0);
+        }
+
+        return res.json({ ok: true, banco: MODO_BANCO, tabelas: nomes, contagem });
+    } catch (erro: unknown) {
+        return res.status(503).json({
+            ok: false,
+            erro: erro instanceof Error ? erro.message : "Falha ao consultar o banco.",
+        });
+    }
+});
+
 // O front (web/src/api.ts) envia { email, senha }.
 app.post("/api/auth/register", async (req: Request, res: Response) => {
     const { email, senha } = req.body ?? {};
