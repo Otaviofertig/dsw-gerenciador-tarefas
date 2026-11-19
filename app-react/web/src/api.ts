@@ -109,8 +109,9 @@ export const authHeaders = (): Record<string, string> => {
 const tratarResposta = async <T,>(res: Response): Promise<T> => {
     const texto = await res.text();
 
-    // Nem toda resposta devolve JSON (ex.: o DELETE responde só com mensagem).
-    // Se o corpo não for JSON válido, deixamos `dados` como null e seguimos.
+    // Nem toda resposta devolve JSON (ex.: 204 No Content, DELETE sem corpo).
+    // Se o corpo estiver vazio ou não for JSON válido, deixamos `dados` como null.
+    // O `texto ?` é essencial: JSON.parse("") lança SyntaxError.
     let dados: unknown;
     try {
         dados = texto ? JSON.parse(texto) : null;
@@ -124,6 +125,12 @@ const tratarResposta = async <T,>(res: Response): Promise<T> => {
             (dados as { error?: string } | null)?.error ??
             `Falha na requisição (HTTP ${res.status}).`;
         throw new Error(mensagem);
+    }
+
+    // Bug C da aula de 18/11: sem esta checagem, uma resposta 204 (sem corpo)
+    // chegaria ao componente fingindo ser um T de verdade.
+    if (res.status === 204 || texto === "") {
+        return undefined as T;
     }
 
     return dados as T;
