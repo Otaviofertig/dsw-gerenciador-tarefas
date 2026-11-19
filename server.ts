@@ -22,12 +22,11 @@ const JWT_SECRET = process.env.JWT_SECRET || "super_secreto_desenvolvimento";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
- * Pasta do projeto React. Neste repositório o front não fica ao lado do
- * server.ts: a API está em gerenciador-tarefas/api e o React em app-react/web.
+ * Pasta do projeto React: a pasta web/, ao lado deste server.ts.
  */
-const FRONT_DIR = path.join(__dirname, "..", "..", "app-react", "web");
+const FRONT_DIR = path.join(__dirname, "web");
 
-/** Pasta que o `pnpm build` do Vite cria dentro do projeto React. */
+/** Pasta que o `npm run build:web` (Vite) cria dentro do projeto React. */
 const FRONT_DIST = path.join(FRONT_DIR, "dist");
 
 /** O arquivo de entrada que o SPA fallback entrega. */
@@ -44,12 +43,10 @@ const SEM_BUILD = [
     "Procurei este arquivo:",
     `  ${FRONT_INDEX}`,
     "",
-    "Gere-o com (a partir de gerenciador-tarefas/api):",
-    "  pnpm build:web",
+    "Gere-o com (na pasta do projeto):",
+    "  npm run build",
     "",
-    "Se for a primeira vez, instale antes as dependências do front:",
-    "  cd ../../app-react/web",
-    "  pnpm install",
+    "Esse comando já instala as dependências do front (web/) e gera o build.",
     "",
     "Enquanto isso, a API continua funcionando em /api/health.",
 ].join("\n");
@@ -135,7 +132,7 @@ app.use(express.json());
 // ============================================================================
 // LACUNA 2: leitura do .env com detecção de BOM
 // ============================================================================
-// O .env fica ao lado deste arquivo (gerenciador-tarefas/api/.env) e NUNCA vai
+// O .env fica ao lado deste arquivo (.env, na raiz do projeto) e NUNCA vai
 // para o Git: o .gitignore da raiz já ignora ".env".
 const ARQUIVO_ENV = path.join(__dirname, ".env");
 
@@ -182,7 +179,7 @@ const MODO_BANCO = usandoNuvem ? "Turso / libSQL (nuvem)" : "arquivo local (SQLi
 // ============================================================================
 // Mesmo pacote, dois destinos: "libsql://..." vai pela internet até o Turso;
 // "file:./tarefas.db" abre um arquivo na pasta em que o servidor foi iniciado
-// (aqui, gerenciador-tarefas/api), útil sem internet ou sem conta no Turso.
+// (aqui, a raiz do projeto), útil sem internet ou sem conta no Turso.
 const db = createClient({
     url: usandoNuvem ? TURSO_URL! : "file:./tarefas.db",
     authToken: usandoNuvem ? TURSO_TOKEN : undefined,
@@ -200,7 +197,7 @@ function exibirBannerBanco(): void {
     // O token é uma senha: dizemos se ele existe, mas nunca o imprimimos.
     console.log(`  Token : ${usandoNuvem ? "presente (nunca será mostrado)" : "não informado"}`);
     if (!usandoNuvem) {
-        console.log("  Para usar o Turso, crie gerenciador-tarefas/api/.env com:");
+        console.log("  Para usar o Turso, crie o arquivo .env na raiz do projeto com:");
         console.log("    TURSO_URL=libsql://seu-banco.turso.io");
         console.log("    TURSO_TOKEN=seu-token");
     }
@@ -385,7 +382,7 @@ app.get("/api/version", (_req, res) => {
     res.json({ appName: "Gerenciador de Tarefas Multi-Usuário", version: "1.0.0" });
 });
 
-// O front (app-react/web/src/api.ts) envia { email, senha }.
+// O front (web/src/api.ts) envia { email, senha }.
 app.post("/api/auth/register", async (req: Request, res: Response) => {
     const { email, senha } = req.body ?? {};
 
@@ -645,7 +642,7 @@ app.use("/api", (_req: Request, res: Response) => {
     res.status(404).json({ error: "Rota de API não encontrada." });
 });
 
-// (b) Os arquivos que o `pnpm build` do Vite produziu em app-react/web/dist.
+// (b) Os arquivos que o `npm run build:web` (Vite) produziu em web/dist.
 // index.html, os .js com hash no nome, o .css e as imagens da public/.
 app.use(express.static(FRONT_DIST));
 
@@ -677,9 +674,9 @@ function verificarFront(): void {
 
     if (temFontes && maisRecente(fontes) > fs.statSync(FRONT_INDEX).mtimeMs) {
         console.warn(
-            "\n[ATENÇÃO] O build do front está VELHO: algum arquivo de app-react/web/src " +
+            "\n[ATENÇÃO] O build do front está VELHO: algum arquivo de web/src " +
             "mudou depois do último build.\n" +
-            "          Rode `pnpm build:web` para ver a mudança.\n",
+            "          Rode `npm run build:web` para ver a mudança.\n",
         );
     }
 }

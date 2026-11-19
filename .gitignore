@@ -145,3 +145,5 @@ vite.config.ts.timestamp-*
 # database
 
 *.db
+# Arquivo de sistema do macOS
+.DS_Store
