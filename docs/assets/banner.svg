@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="380" viewBox="0 0 1200 380" role="img" aria-labelledby="t d">
+<title id="t">Gerenciador de Tarefas</title>
+<desc id="d">Banner animado: o título do projeto, as tecnologias sendo digitadas e uma lista de tarefas que vai sendo concluída sozinha.</desc>
+
+  <style>
+    @keyframes surge { from { opacity: 0; transform: translateY(var(--dy)); } to { opacity: 1; transform: none; } }
+    @keyframes flutua { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes gira { to { transform: rotate(360deg); } }
+    @keyframes pulsa { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+    .flutua { animation: flutua 4s ease-in-out infinite; }
+  </style>
+
+  <defs>
+    <linearGradient id="bgp" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#1b1540"/>
+    </linearGradient>
+    <pattern id="gradep" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity="0.05"/>
+    </pattern>
+    <filter id="blurp" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="50"/></filter>
+    <clipPath id="bordap"><rect width="1200" height="380" rx="18"/></clipPath>
+  </defs>
+  <g clip-path="url(#bordap)">
+    <rect width="1200" height="380" fill="url(#bgp)"/>
+    <rect width="1200" height="380" fill="url(#gradep)"/>
+    <circle cx="216" cy="76" r="171" fill="#2563eb" opacity="0.35" filter="url(#blurp)">
+      <animate attributeName="cx" values="216;384;216" dur="14s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1020" cy="342" r="190" fill="#16a34a" opacity="0.3" filter="url(#blurp)">
+      <animate attributeName="cy" values="342;209;342" dur="11s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+<g style="animation: surge 0.7s ease-out 0.1s both; --dy: 14px"><text x="64" y="74" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="600" letter-spacing="3" fill="#93c5fd">DSW · DESENVOLVIMENTO DE SISTEMAS WEB · 2026</text></g>
+<g style="animation: surge 0.8s ease-out 0.3s both; --dy: 20px"><text x="62" y="142" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="58" font-weight="800" fill="#ffffff">Gerenciador</text><text x="62" y="204" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="58" font-weight="800" fill="url(#titulo)">de Tarefas</text></g>
+<defs><linearGradient id="titulo" x1="0" x2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="0.5" stop-color="#38bdf8"/><stop offset="1" stop-color="#a78bfa"/><animateTransform attributeName="gradientTransform" type="translate" values="-0.3 0;0.3 0;-0.3 0" dur="6s" repeatCount="indefinite"/></linearGradient></defs>
+
+  <clipPath id="tipop"><rect x="66" y="233" width="0" height="27">
+    <animate attributeName="width" values="0.0;11.4;22.8;34.2;45.6;57.0;68.4;79.8;91.2;102.6;114.0;125.4;136.8;148.2;159.6;171.0;182.4;193.8;205.2;216.6;228.0;239.4;250.8;262.2;273.6;285.0;296.4;307.8;319.2;330.6;342.0;353.4;364.8;376.2;387.6;399.0;410.4;421.8;433.2;444.6;456.0;467.4;478.8;490.2;501.6;513.0;524.4;535.8" calcMode="discrete" begin="1.2s" dur="2.82s" fill="freeze"/>
+  </rect></clipPath>
+  <text x="66" y="252" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="19" fill="#e2e8f0" clip-path="url(#tipop)" textLength="535.8" lengthAdjust="spacingAndGlyphs">&gt; React · Express · TypeScript · Turso · Render</text>
+  <rect x="66" y="236" width="6.3" height="20" fill="#e2e8f0">
+    <animate attributeName="x" values="66.0;77.4;88.8;100.2;111.6;123.0;134.4;145.8;157.2;168.6;180.0;191.4;202.8;214.2;225.6;237.0;248.4;259.8;271.2;282.6;294.0;305.4;316.8;328.2;339.6;351.0;362.4;373.8;385.2;396.6;408.0;419.4;430.8;442.2;453.6;465.0;476.4;487.8;499.2;510.6;522.0;533.4;544.8;556.2;567.6;579.0;590.4;601.8" calcMode="discrete" begin="1.2s" dur="2.82s" fill="freeze"/>
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.5;0.5;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+<g style="animation: surge 0.7s ease-out 4.0s both; --dy: 14px"><text x="64" y="296" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="17" fill="#cbd5e1">Cada pessoa com a sua conta, as suas tarefas</text><text x="64" y="320" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="17" fill="#cbd5e1">e os dados guardados na nuvem.</text></g>
+<g style="animation: surge 0.9s ease-out 0.6s both; --dy: 30px"><g class="flutua">
+<rect x="748" y="58" width="400" height="284" rx="16" fill="#000" opacity="0.35"/>
+<rect x="740" y="48" width="400" height="284" rx="16" fill="#fffdf6"/>
+<rect x="740" y="48" width="400" height="54" rx="16" fill="#1e3a5f"/><rect x="740" y="86" width="400" height="16" fill="#1e3a5f"/>
+<circle cx="764" cy="75" r="5.5" fill="#f87171"/>
+<circle cx="782" cy="75" r="5.5" fill="#fbbf24"/>
+<circle cx="800" cy="75" r="5.5" fill="#4ade80"/>
+<text x="826" y="81" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="17" font-weight="700" fill="#fff">Minhas tarefas</text>
+<rect x="1022" y="63" width="100" height="24" rx="12" fill="#22c55e" opacity="0.18"/><text x="1072" y="80" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12" fill="#86efac">JWT ✓</text>
+<line x1="758" y1="156" x2="1122" y2="156" stroke="#bfdbfe" stroke-width="1"/>
+<line x1="758" y1="198" x2="1122" y2="198" stroke="#bfdbfe" stroke-width="1"/>
+<line x1="758" y1="240" x2="1122" y2="240" stroke="#bfdbfe" stroke-width="1"/>
+<line x1="758" y1="282" x2="1122" y2="282" stroke="#bfdbfe" stroke-width="1"/>
+<line x1="758" y1="324" x2="1122" y2="324" stroke="#bfdbfe" stroke-width="1"/>
+<line x1="798" y1="106" x2="798" y2="324" stroke="#fca5a5" stroke-width="1.2"/>
+<rect x="762" y="132" width="20" height="20" rx="5" fill="#ffffff" stroke="#94a3b8" stroke-width="2"><animate attributeName="fill" values="#ffffff;#ffffff;#22c55e;#22c55e;#ffffff" keyTimes="0;0.145;0.175;0.93;1" dur="11.0s" repeatCount="indefinite"/><animate attributeName="stroke" values="#94a3b8;#94a3b8;#16a34a;#16a34a;#94a3b8" keyTimes="0;0.145;0.175;0.93;1" dur="11.0s" repeatCount="indefinite"/></rect>
+<path d="M766.5 142.5 l4 4 l7 -8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="20" stroke-dashoffset="20"><animate attributeName="stroke-dashoffset" values="20;20;0;0;20" keyTimes="0;0.145;0.175;0.93;1" dur="11.0s" repeatCount="indefinite"/></path>
+<text x="810" y="147" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#1e293b">Estudar useState e useEffect<animate attributeName="fill" values="#1e293b;#1e293b;#94a3b8;#94a3b8;#1e293b" keyTimes="0;0.145;0.175;0.93;1" dur="11.0s" repeatCount="indefinite"/></text>
+<line x1="810" y1="142" x2="810" y2="142" stroke="#64748b" stroke-width="1.6"><animate attributeName="x2" values="810;810;1009;1009;810" keyTimes="0;0.145;0.175;0.93;1" dur="11.0s" repeatCount="indefinite"/></line>
+<rect x="1062" y="132" width="58" height="20" rx="10" fill="#dc2626" opacity="0.14"/><text x="1091" y="146" text-anchor="middle" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="700" fill="#dc2626">Alta</text>
+<rect x="762" y="174" width="20" height="20" rx="5" fill="#ffffff" stroke="#94a3b8" stroke-width="2"><animate attributeName="fill" values="#ffffff;#ffffff;#22c55e;#22c55e;#ffffff" keyTimes="0;0.309;0.339;0.93;1" dur="11.0s" repeatCount="indefinite"/><animate attributeName="stroke" values="#94a3b8;#94a3b8;#16a34a;#16a34a;#94a3b8" keyTimes="0;0.309;0.339;0.93;1" dur="11.0s" repeatCount="indefinite"/></rect>
+<path d="M766.5 184.5 l4 4 l7 -8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="20" stroke-dashoffset="20"><animate attributeName="stroke-dashoffset" values="20;20;0;0;20" keyTimes="0;0.309;0.339;0.93;1" dur="11.0s" repeatCount="indefinite"/></path>
+<text x="810" y="189" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#1e293b">Ligar a API ao banco Turso<animate attributeName="fill" values="#1e293b;#1e293b;#94a3b8;#94a3b8;#1e293b" keyTimes="0;0.309;0.339;0.93;1" dur="11.0s" repeatCount="indefinite"/></text>
+<line x1="810" y1="184" x2="810" y2="184" stroke="#64748b" stroke-width="1.6"><animate attributeName="x2" values="810;810;995;995;810" keyTimes="0;0.309;0.339;0.93;1" dur="11.0s" repeatCount="indefinite"/></line>
+<rect x="1062" y="174" width="58" height="20" rx="10" fill="#d97706" opacity="0.14"/><text x="1091" y="188" text-anchor="middle" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="700" fill="#d97706">Média</text>
+<rect x="762" y="216" width="20" height="20" rx="5" fill="#ffffff" stroke="#94a3b8" stroke-width="2"><animate attributeName="fill" values="#ffffff;#ffffff;#22c55e;#22c55e;#ffffff" keyTimes="0;0.473;0.503;0.93;1" dur="11.0s" repeatCount="indefinite"/><animate attributeName="stroke" values="#94a3b8;#94a3b8;#16a34a;#16a34a;#94a3b8" keyTimes="0;0.473;0.503;0.93;1" dur="11.0s" repeatCount="indefinite"/></rect>
+<path d="M766.5 226.5 l4 4 l7 -8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="20" stroke-dashoffset="20"><animate attributeName="stroke-dashoffset" values="20;20;0;0;20" keyTimes="0;0.473;0.503;0.93;1" dur="11.0s" repeatCount="indefinite"/></path>
+<text x="810" y="231" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#1e293b">Fazer o deploy no Render<animate attributeName="fill" values="#1e293b;#1e293b;#94a3b8;#94a3b8;#1e293b" keyTimes="0;0.473;0.503;0.93;1" dur="11.0s" repeatCount="indefinite"/></text>
+<line x1="810" y1="226" x2="810" y2="226" stroke="#64748b" stroke-width="1.6"><animate attributeName="x2" values="810;810;980;980;810" keyTimes="0;0.473;0.503;0.93;1" dur="11.0s" repeatCount="indefinite"/></line>
+<rect x="1062" y="216" width="58" height="20" rx="10" fill="#dc2626" opacity="0.14"/><text x="1091" y="230" text-anchor="middle" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="700" fill="#dc2626">Alta</text>
+<rect x="762" y="258" width="20" height="20" rx="5" fill="#ffffff" stroke="#94a3b8" stroke-width="2"><animate attributeName="fill" values="#ffffff;#ffffff;#22c55e;#22c55e;#ffffff" keyTimes="0;0.636;0.666;0.93;1" dur="11.0s" repeatCount="indefinite"/><animate attributeName="stroke" values="#94a3b8;#94a3b8;#16a34a;#16a34a;#94a3b8" keyTimes="0;0.636;0.666;0.93;1" dur="11.0s" repeatCount="indefinite"/></rect>
+<path d="M766.5 268.5 l4 4 l7 -8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="20" stroke-dashoffset="20"><animate attributeName="stroke-dashoffset" values="20;20;0;0;20" keyTimes="0;0.636;0.666;0.93;1" dur="11.0s" repeatCount="indefinite"/></path>
+<text x="810" y="273" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#1e293b">Revisar o diário de bordo<animate attributeName="fill" values="#1e293b;#1e293b;#94a3b8;#94a3b8;#1e293b" keyTimes="0;0.636;0.666;0.93;1" dur="11.0s" repeatCount="indefinite"/></text>
+<line x1="810" y1="268" x2="810" y2="268" stroke="#64748b" stroke-width="1.6"><animate attributeName="x2" values="810;810;988;988;810" keyTimes="0;0.636;0.666;0.93;1" dur="11.0s" repeatCount="indefinite"/></line>
+<rect x="1062" y="258" width="58" height="20" rx="10" fill="#16a34a" opacity="0.14"/><text x="1091" y="272" text-anchor="middle" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="700" fill="#16a34a">Baixa</text>
+<rect x="762" y="300" width="200" height="8" rx="4" fill="#e2e8f0"/>
+<rect x="762" y="300" width="0" height="8" rx="4" fill="#22c55e"><animate attributeName="width" values="0;0;50;50;100;100;150;150;200;200;0" keyTimes="0.000;0.145;0.175;0.309;0.339;0.473;0.503;0.636;0.666;0.930;1.000" dur="11.0s" repeatCount="indefinite"/></rect>
+<text x="1118" y="308" text-anchor="end" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#475569" opacity="1">0 de 4 concluídas<animate attributeName="opacity" values="1;0;1" keyTimes="0;0.145;0.93" calcMode="discrete" dur="11.0s" repeatCount="indefinite"/></text>
+<text x="1118" y="308" text-anchor="end" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#475569" opacity="0">1 de 4 concluídas<animate attributeName="opacity" values="0;1;0" keyTimes="0;0.145;0.309" calcMode="discrete" dur="11.0s" repeatCount="indefinite"/></text>
+<text x="1118" y="308" text-anchor="end" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#475569" opacity="0">2 de 4 concluídas<animate attributeName="opacity" values="0;1;0" keyTimes="0;0.309;0.473" calcMode="discrete" dur="11.0s" repeatCount="indefinite"/></text>
+<text x="1118" y="308" text-anchor="end" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#475569" opacity="0">3 de 4 concluídas<animate attributeName="opacity" values="0;1;0" keyTimes="0;0.473;0.636" calcMode="discrete" dur="11.0s" repeatCount="indefinite"/></text>
+<text x="1118" y="308" text-anchor="end" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#15803d" opacity="0">Tudo concluído!<animate attributeName="opacity" values="0;1;0" keyTimes="0;0.636;0.930" calcMode="discrete" dur="11.0s" repeatCount="indefinite"/></text>
+</g></g>
+</svg>

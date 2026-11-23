@@ -9,9 +9,21 @@
 </p>
 <!-- /nav:topo -->
 
+<p align="center">
+  <img src="docs/assets/banner.svg" width="100%" alt="Gerenciador de Tarefas: React, Express, TypeScript, Turso e Render. Uma lista de tarefas animada vai sendo concluída.">
+</p>
+
 # DSW: Gerenciador de Tarefas
 
-**Estudante:** Otávio Fertig
+<p>
+  <a href="https://gerenciador-de-tarefas.onrender.com"><img src="https://img.shields.io/badge/deploy-Render-46e3b7?style=flat-square&logo=render&logoColor=black" alt="deploy: Render"></a>
+  <img src="https://img.shields.io/badge/aulas_no_di%C3%A1rio-10-8250df?style=flat-square&logo=bookstack&logoColor=white" alt="aulas no diário: 10">
+  <img src="https://img.shields.io/badge/Node.js-24-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js 24">
+  <img src="https://img.shields.io/badge/React-19-087ea4?style=flat-square&logo=react&logoColor=white" alt="React 19">
+  <img src="https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
+</p>
+
+**Estudante:** Otávio Fertig<br>
 **Disciplina:** DSW — Desenvolvimento de Sistemas Web (turma ADS-2025)
 
 Um **gerenciador de tarefas multiusuário**: cada pessoa cria a sua conta, entra com e-mail e senha e organiza as próprias tarefas, com prioridade, busca e filtro. O projeto tem duas partes que funcionam juntas:
@@ -22,6 +34,19 @@ Um **gerenciador de tarefas multiusuário**: cada pessoa cria a sua conta, entra
 O sistema está publicado no **Render**:
 
 [![Abrir o sistema publicado](https://img.shields.io/badge/abrir_o_sistema-no_ar_no_Render-46e3b7?style=for-the-badge&logo=render&logoColor=black)](https://gerenciador-de-tarefas.onrender.com) [![Como foi o deploy](https://img.shields.io/badge/como_foi_o_deploy-passo_a_passo-24292f?style=for-the-badge&logo=render&logoColor=white)](#deploy-no-render)
+
+**Nesta página:** [Funcionalidades](#o-que-o-sistema-faz) · [Comece por aqui](#comece-por-aqui) · [Estrutura](#estrutura-do-projeto) · [Como rodar](#como-rodar) · [Deploy](#deploy-no-render) · [Tecnologias](#tecnologias) · [Andamento](#andamento-por-aula)
+
+## O que o sistema faz
+
+- [x] Criar conta e entrar com e-mail e senha (senha guardada com **bcrypt**, login com **JWT**)
+- [x] Cada pessoa vê só as próprias tarefas
+- [x] Criar, concluir e excluir tarefas, com prioridade baixa, média ou alta
+- [x] Buscar por título, com **debounce** para não chamar a API a cada letra
+- [x] Filtrar por prioridade na própria tela
+- [x] Dados guardados na nuvem (**Turso**), que não somem quando o servidor reinicia
+- [x] Publicado na internet (**Render**), com deploy automático a cada push na `main`
+- [ ] Testes automatizados (próximo passo, veja o [roadmap](docs/API.md#roadmap))
 
 ## Comece por aqui
 
@@ -131,7 +156,14 @@ npm run dev
 
 ### Como funciona
 
-Toda vez que um commit chega na `main` do GitHub, o Render refaz o deploy sozinho:
+Toda vez que um commit chega na `main` do GitHub, o Render refaz o deploy sozinho. Depois, cada pedido da tela passa pela API e chega ao banco:
+
+<p align="center">
+  <img src="docs/assets/fluxo.svg" width="100%" alt="Animação: o push no GitHub dispara o deploy no Render. A tela manda GET /api/tasks com o token para a API no Render, a API consulta o Turso filtrando pelo usuario_id e a resposta volta em JSON.">
+</p>
+
+<details>
+<summary>Ver o mesmo fluxo em texto</summary>
 
 ```
  GitHub (main) ──push──▶ Render
@@ -145,6 +177,8 @@ Toda vez que um commit chega na `main` do GitHub, o Render refaz o deploy sozinh
                    └── dados ───▶ Turso (banco na nuvem)
 ```
 
+</details>
+
 Um endereço só entrega a tela e a API. Por isso, em produção, a tela não precisa de CORS: tudo vem do mesmo lugar.
 
 ### O que foi preparado no código
@@ -155,7 +189,8 @@ Um endereço só entrega a tela e a API. Por isso, em produção, a tela não pr
 | [`server.ts`](server.ts) | rota nova `GET /api/db-check` | mostra as tabelas do banco e quantas linhas cada uma tem: confirma que o Render está ligado ao Turso |
 | [`render.yaml`](render.yaml) | arquivo novo na raiz | é a "receita" do deploy: nome, plano grátis, comandos, variáveis e health check |
 
-### Passo a passo no painel do Render
+<details>
+<summary><b>Passo a passo no painel do Render</b></summary>
 
 1. Entre em [render.com](https://render.com) com a conta do GitHub.
 2. Clique em **New + → Web Service** e conecte este repositório.
@@ -182,6 +217,8 @@ Um endereço só entrega a tela e a API. Por isso, em produção, a tela não pr
 > [!TIP]
 > Outro caminho: **New + → Blueprint**. O Render lê o `render.yaml` sozinho e só pergunta o `TURSO_URL` e o `TURSO_TOKEN`.
 
+</details>
+
 ### Como testar depois do deploy
 
 1. Abra `/api/health`. Deve responder `200` com `"banco": "Turso / libSQL (nuvem)"`. Se aparecer `arquivo local (SQLite)`, as variáveis do Turso não chegaram.
@@ -189,7 +226,8 @@ Um endereço só entrega a tela e a API. Por isso, em produção, a tela não pr
 3. Abra o endereço principal, entre com `admin@senai.com` / `123456` e crie uma tarefa.
 4. Aperte **F5**. A página deve continuar abrindo, sem erro 404: o servidor devolve a tela do React para qualquer caminho que não seja da API.
 
-### Se algo der errado
+<details>
+<summary><b>Se algo der errado</b></summary>
 
 | O que aparece | Por que acontece | Como resolver |
 | --- | --- | --- |
@@ -197,6 +235,8 @@ Um endereço só entrega a tela e a API. Por isso, em produção, a tela não pr
 | `/api/health` responde `503` ou o log mostra erro de banco | `TURSO_URL` ou `TURSO_TOKEN` errados | copiar de novo, sem `/` no final da URL e com o token inteiro |
 | `/api/health` diz `arquivo local (SQLite)` | as variáveis do Turso não foram cadastradas | cadastrar as duas em **Environment** e fazer um novo deploy |
 | A primeira visita demora quase 1 minuto | o plano gratuito dorme sem uso | é normal: depois de acordar, fica rápido |
+
+</details>
 
 ## Tecnologias
 
@@ -209,23 +249,33 @@ Um endereço só entrega a tela e a API. Por isso, em produção, a tela não pr
 
 ## Andamento por aula
 
-Clique na data para abrir o diário daquela aula. Verde = back-end, azul = front-end.
+As aulas de setembro em diante seguem a numeração do material do professor (Aula 00 = 02/09). Clique na data para abrir o diário. Verde = back-end, azul = front-end.
+
+<details>
+<summary><b>Antes do diário: agosto</b> (Tailwind, primeira API e banco SQLite)</summary>
+
+| Aulas | Tema |
+| --- | --- |
+| 3 e 4 | Layout com Tailwind CSS (desafio do card responsivo, hoje em [`extras/`](extras/README.md)) |
+| 5 · 14/08 | Configuração inicial do back-end: Express + TypeScript, rotas de diagnóstico e CRUD em memória |
+| 6 a 10 | Banco SQLite, validação profunda e escrita segura (POST, PUT, PATCH, DELETE) |
+
+</details>
 
 | Aula | Tema | Diário |
-| --- | --- | --- |
-| 3 e 4 | Layout com Tailwind CSS (desafio do card responsivo, hoje em [`extras/`](extras/README.md)) | — |
-| 5 · 14/08 | Configuração inicial do back-end (Express + TS, rotas de diagnóstico, CRUD em RAM) | — |
-| 6 a 9 | Banco SQLite, testes de ataque e tratamento de erros | [![02 set](https://img.shields.io/badge/02_set-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-09-02.md) |
-| 10 | Validação profunda e escrita segura (POST, PUT, PATCH, DELETE) | — |
-| 11 | Sanitização da busca e prepared statements | [![09 set](https://img.shields.io/badge/09_set-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-09-09.md) |
-| 12 | Type guards, allowlists e transações nas rotas de escrita | [![16 set](https://img.shields.io/badge/16_set-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-09-16.md) |
-| 13 | Autenticação: registro, login, bcrypt e JWT | [![23 set](https://img.shields.io/badge/23_set-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-09-23.md) |
-| React 1 | Introdução ao React: componentes, `useState`, `useEffect`, `fetch` e CORS | [![07 out](https://img.shields.io/badge/07_out-087ea4?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-10-07.md) |
-| React 2 | Lista de tarefas com estado, formulário controlado e componente `Tarefa` | [![14 out](https://img.shields.io/badge/14_out-087ea4?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-10-14.md) |
-| Lab | Ajustes com Tailwind, lacunas de lógica e o back servindo o front (`express.static` e SPA fallback) | [![28 out](https://img.shields.io/badge/28_out-087ea4?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-10-28.md) |
-| 09 | Banco de dados em nuvem: `@libsql/client` (Turso), `.env` com detecção de BOM, `db.batch()` e rotas assíncronas | [![04 nov](https://img.shields.io/badge/04_nov-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-11-04.md) |
-| 10 | Deploy no Render: `render.yaml`, build que instala a tela, rota `/api/db-check`, variáveis de ambiente e projeto centralizado na raiz | [![11 nov](https://img.shields.io/badge/11_nov-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-11-11.md) |
-| Atividade | Leitura e análise do front (questionário ENADE), caça ao bug (debounce, `await`, resposta 204) e filtro por prioridade com `useMemo` | [![18 nov](https://img.shields.io/badge/18_nov-087ea4?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-11-18.md) |
+| :---: | --- | :---: |
+| 00 | Tratamento de erros e testes de ataque | [![02 set](https://img.shields.io/badge/02_set-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-09-02.md) |
+| 01 | Sanitização da busca e prepared statements | [![09 set](https://img.shields.io/badge/09_set-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-09-09.md) |
+| 02 | Type guards, allowlists e transações nas rotas de escrita | [![16 set](https://img.shields.io/badge/16_set-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-09-16.md) |
+| 03 | Autenticação: registro, login, bcrypt e JWT | [![23 set](https://img.shields.io/badge/23_set-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-09-23.md) |
+| 04 | Protegendo rotas: middleware `authenticate` e tarefas por usuário | 30 set |
+| 05 | Introdução ao React: componentes, `useState`, `useEffect`, `fetch` e CORS | [![07 out](https://img.shields.io/badge/07_out-087ea4?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-10-07.md) |
+| 06 | Lista de tarefas com estado, formulário controlado e componente `Tarefa` | [![14 out](https://img.shields.io/badge/14_out-087ea4?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-10-14.md) |
+| 07 | Lista de tarefas ligada à API: debounce na busca, `useRef` e modal acessível | 21 out |
+| 08 | Laboratório: Tailwind, lacunas de lógica e o back servindo o front (`express.static` e SPA fallback) | [![28 out](https://img.shields.io/badge/28_out-087ea4?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-10-28.md) |
+| 09 | Banco em nuvem: `@libsql/client` (Turso), `.env` com detecção de BOM, `db.batch()` e rotas assíncronas | [![04 nov](https://img.shields.io/badge/04_nov-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-11-04.md) |
+| 10 | Deploy no Render: `render.yaml`, build que instala a tela, `/api/db-check` e variáveis de ambiente | [![11 nov](https://img.shields.io/badge/11_nov-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-11-11.md) |
+| 11 | Leitura e análise do front (questionário ENADE), caça ao bug e filtro por prioridade com `useMemo` | [![18 nov](https://img.shields.io/badge/18_nov-087ea4?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-11-18.md) |
 
 Os pontos em aberto e os próximos passos estão na [documentação da API](docs/API.md#limitações-atuais).
 

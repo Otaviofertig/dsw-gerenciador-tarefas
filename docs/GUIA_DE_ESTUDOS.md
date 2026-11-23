@@ -9,6 +9,10 @@
 </p>
 <!-- /nav:topo -->
 
+<p align="center">
+  <img src="assets/banner-guia.svg" width="100%" alt="Guia de estudos: os conceitos do back-end explicados com calma">
+</p>
+
 # DSW: Guia de Estudos — Gerenciador de Tarefas
 
 *Atualizado em 23/09/2026*

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="240" viewBox="0 0 1200 240" role="img" aria-labelledby="t d">
+<title id="t">Diário de bordo</title>
+<desc id="d">O que aprendi em cada aula, com as minhas palavras</desc>
+
+  <style>
+    @keyframes surge { from { opacity: 0; transform: translateY(var(--dy)); } to { opacity: 1; transform: none; } }
+    @keyframes flutua { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes gira { to { transform: rotate(360deg); } }
+    @keyframes pulsa { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+    .flutua { animation: flutua 4s ease-in-out infinite; }
+  </style>
+
+  <defs>
+    <linearGradient id="bgdiario" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f0a1f"/>
+      <stop offset="1" stop-color="#22164a"/>
+    </linearGradient>
+    <pattern id="gradediario" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity="0.05"/>
+    </pattern>
+    <filter id="blurdiario" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="50"/></filter>
+    <clipPath id="bordadiario"><rect width="1200" height="240" rx="18"/></clipPath>
+  </defs>
+  <g clip-path="url(#bordadiario)">
+    <rect width="1200" height="240" fill="url(#bgdiario)"/>
+    <rect width="1200" height="240" fill="url(#gradediario)"/>
+    <circle cx="216" cy="48" r="108" fill="#c4b5fd" opacity="0.35" filter="url(#blurdiario)">
+      <animate attributeName="cx" values="216;384;216" dur="14s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1020" cy="216" r="120" fill="#a78bfa" opacity="0.3" filter="url(#blurdiario)">
+      <animate attributeName="cy" values="216;132;216" dur="11s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+<g style="animation: surge 0.7s ease-out 0.1s both; --dy: 14px"><text x="60" y="66" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" letter-spacing="3" fill="#c4b5fd">AULA A AULA</text></g>
+<g style="animation: surge 0.8s ease-out 0.3s both; --dy: 18px"><text x="58" y="132" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="52" font-weight="800" fill="#fff">Diário de bordo</text></g>
+<rect x="60" y="150" width="0" height="5" rx="2.5" fill="#c4b5fd"><animate attributeName="width" values="0;140" begin="0.6s" dur="0.9s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/></rect>
+<g style="animation: surge 0.7s ease-out 0.9s both; --dy: 14px"><text x="60" y="194" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="19" fill="#cbd5e1">O que aprendi em cada aula, com as minhas palavras</text></g>
+<g style="animation: surge 0.9s ease-out 0.5s both; --dy: 24px"><g transform="translate(950 55)">
+<rect x="0" y="0" width="170" height="130" rx="10" fill="#fffdf6"/>
+<rect x="0" y="0" width="22" height="130" rx="6" fill="#8b5cf6"/>
+<line x1="44" y1="8" x2="44" y2="124" stroke="#fca5a5" stroke-width="1.5"/>
+<line x1="52" y1="26" x2="52" y2="26" stroke="#334155" stroke-width="3" stroke-linecap="round"><animate attributeName="x2" values="52;52;152;152;52" keyTimes="0;0.08;0.20;0.92;1" dur="7s" repeatCount="indefinite"/></line>
+<line x1="52" y1="47" x2="52" y2="47" stroke="#334155" stroke-width="3" stroke-linecap="round"><animate attributeName="x2" values="52;52;138;138;52" keyTimes="0;0.21;0.33;0.92;1" dur="7s" repeatCount="indefinite"/></line>
+<line x1="52" y1="68" x2="52" y2="68" stroke="#334155" stroke-width="3" stroke-linecap="round"><animate attributeName="x2" values="52;52;160;160;52" keyTimes="0;0.34;0.46;0.92;1" dur="7s" repeatCount="indefinite"/></line>
+<line x1="52" y1="89" x2="52" y2="89" stroke="#334155" stroke-width="3" stroke-linecap="round"><animate attributeName="x2" values="52;52;122;122;52" keyTimes="0;0.47;0.59;0.92;1" dur="7s" repeatCount="indefinite"/></line>
+<line x1="52" y1="110" x2="52" y2="110" stroke="#334155" stroke-width="3" stroke-linecap="round"><animate attributeName="x2" values="52;52;146;146;52" keyTimes="0;0.60;0.72;0.92;1" dur="7s" repeatCount="indefinite"/></line>
+</g></g>
+</svg>

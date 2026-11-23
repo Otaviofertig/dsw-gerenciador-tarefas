@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="240" viewBox="0 0 1200 240" role="img" aria-labelledby="t d">
+<title id="t">Extras</title>
+<desc id="d">Trabalhos de outras aulas: Tailwind e o primeiro app React</desc>
+
+  <style>
+    @keyframes surge { from { opacity: 0; transform: translateY(var(--dy)); } to { opacity: 1; transform: none; } }
+    @keyframes flutua { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes gira { to { transform: rotate(360deg); } }
+    @keyframes pulsa { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+    .flutua { animation: flutua 4s ease-in-out infinite; }
+  </style>
+
+  <defs>
+    <linearGradient id="bgextras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1117"/>
+      <stop offset="1" stop-color="#1f2937"/>
+    </linearGradient>
+    <pattern id="gradeextras" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity="0.05"/>
+    </pattern>
+    <filter id="blurextras" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="50"/></filter>
+    <clipPath id="bordaextras"><rect width="1200" height="240" rx="18"/></clipPath>
+  </defs>
+  <g clip-path="url(#bordaextras)">
+    <rect width="1200" height="240" fill="url(#bgextras)"/>
+    <rect width="1200" height="240" fill="url(#gradeextras)"/>
+    <circle cx="216" cy="48" r="108" fill="#cbd5e1" opacity="0.35" filter="url(#blurextras)">
+      <animate attributeName="cx" values="216;384;216" dur="14s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1020" cy="216" r="120" fill="#94a3b8" opacity="0.3" filter="url(#blurextras)">
+      <animate attributeName="cy" values="216;132;216" dur="11s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+<g style="animation: surge 0.7s ease-out 0.1s both; --dy: 14px"><text x="60" y="66" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" letter-spacing="3" fill="#cbd5e1">OUTRAS AULAS</text></g>
+<g style="animation: surge 0.8s ease-out 0.3s both; --dy: 18px"><text x="58" y="132" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="52" font-weight="800" fill="#fff">Extras</text></g>
+<rect x="60" y="150" width="0" height="5" rx="2.5" fill="#cbd5e1"><animate attributeName="width" values="0;140" begin="0.6s" dur="0.9s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/></rect>
+<g style="animation: surge 0.7s ease-out 0.9s both; --dy: 14px"><text x="60" y="194" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="19" fill="#cbd5e1">Trabalhos de outras aulas: Tailwind e o primeiro app React</text></g>
+<g style="animation: surge 0.9s ease-out 0.5s both; --dy: 24px"><g transform="translate(1030 120)">
+<g><animateTransform attributeName="transform" type="translate" values="-50 10;-50 -2;-50 10" dur="3.2s" repeatCount="indefinite"/><rect x="-40" y="-50" width="80" height="100" rx="10" fill="#0f172a" stroke="#0ea5e9" stroke-width="2.5" transform="rotate(-10)"/><rect x="-26" y="-30" width="52" height="8" rx="4" fill="#0ea5e9" opacity="0.6" transform="rotate(-10)"/></g>
+<g><animateTransform attributeName="transform" type="translate" values="0 -10;0 -22;0 -10" dur="3.8s" repeatCount="indefinite"/><rect x="-40" y="-50" width="80" height="100" rx="10" fill="#0f172a" stroke="#a78bfa" stroke-width="2.5" transform="rotate(0)"/><rect x="-26" y="-30" width="52" height="8" rx="4" fill="#a78bfa" opacity="0.6" transform="rotate(0)"/></g>
+<g><animateTransform attributeName="transform" type="translate" values="50 12;50 0;50 12" dur="3.5s" repeatCount="indefinite"/><rect x="-40" y="-50" width="80" height="100" rx="10" fill="#0f172a" stroke="#22c55e" stroke-width="2.5" transform="rotate(10)"/><rect x="-26" y="-30" width="52" height="8" rx="4" fill="#22c55e" opacity="0.6" transform="rotate(10)"/></g>
+</g></g>
+</svg>

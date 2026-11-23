@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400" role="img" aria-labelledby="t d">
+<title id="t">Como um pedido percorre o sistema</title>
+<desc id="d">Animação: o push no GitHub dispara o deploy no Render; a tela no navegador manda um pedido com o token para a API no Render, a API consulta o Turso e a resposta volta em JSON.</desc>
+
+  <style>
+    @keyframes surge { from { opacity: 0; transform: translateY(var(--dy)); } to { opacity: 1; transform: none; } }
+    @keyframes flutua { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes gira { to { transform: rotate(360deg); } }
+    @keyframes pulsa { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+    .flutua { animation: flutua 4s ease-in-out infinite; }
+  </style>
+
+  <defs>
+    <linearGradient id="bgf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#10233a"/>
+    </linearGradient>
+    <pattern id="gradef" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity="0.05"/>
+    </pattern>
+    <filter id="blurf" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="50"/></filter>
+    <clipPath id="bordaf"><rect width="1200" height="400" rx="18"/></clipPath>
+  </defs>
+  <g clip-path="url(#bordaf)">
+    <rect width="1200" height="400" fill="url(#bgf)"/>
+    <rect width="1200" height="400" fill="url(#gradef)"/>
+    <circle cx="216" cy="80" r="180" fill="#0ea5e9" opacity="0.35" filter="url(#blurf)">
+      <animate attributeName="cx" values="216;384;216" dur="14s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1020" cy="360" r="200" fill="#22c55e" opacity="0.3" filter="url(#blurf)">
+      <animate attributeName="cy" values="360;220;360" dur="11s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+<text x="40" y="44" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="600" letter-spacing="2.5" fill="#7dd3fc">O CAMINHO DE UM PEDIDO</text>
+<g id="nonav">
+<rect x="30" y="196" width="230" height="120" rx="14" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<rect x="30" y="196" width="6" height="120" rx="3" fill="#38bdf8"/>
+<text x="52" y="228" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="700" fill="#fff">Navegador</text>
+<text x="52" y="254" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" fill="#94a3b8">tela React (web/)</text>
+<text x="52" y="276" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" fill="#94a3b8">token no localStorage</text>
+</g>
+<g id="noapi">
+<rect x="450" y="170" width="280" height="172" rx="14" fill="#0f172a" stroke="#22c55e" stroke-width="2"/>
+<rect x="450" y="170" width="6" height="172" rx="3" fill="#22c55e"/>
+<text x="472" y="202" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="700" fill="#fff">Render · server.ts</text>
+<text x="472" y="228" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" fill="#94a3b8">/       → tela (web/dist)</text>
+<text x="472" y="250" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" fill="#94a3b8">/api/*  → rotas da API</text>
+<text x="472" y="272" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" fill="#94a3b8">JWT + bcrypt</text>
+</g>
+<g id="nodb">
+<rect x="960" y="196" width="210" height="120" rx="14" fill="#0f172a" stroke="#a78bfa" stroke-width="2"/>
+<rect x="960" y="196" width="6" height="120" rx="3" fill="#a78bfa"/>
+<text x="982" y="228" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="700" fill="#fff">Turso</text>
+<text x="982" y="254" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" fill="#94a3b8">banco na nuvem</text>
+<text x="982" y="276" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" fill="#94a3b8">usuarios · tarefas</text>
+</g>
+<g id="nogh">
+<rect x="450" y="48" width="280" height="56" rx="14" fill="#0f172a" stroke="#e5e7eb" stroke-width="2"/>
+<rect x="450" y="48" width="6" height="56" rx="3" fill="#e5e7eb"/>
+<text x="472" y="80" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="700" fill="#fff">GitHub · main</text>
+</g>
+<path d="M260 240 H450" stroke="#334155" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+<path d="M450 270 H260" stroke="#334155" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+<path d="M730 240 H960" stroke="#334155" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+<path d="M960 270 H730" stroke="#334155" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+<path d="M590 104 V170" stroke="#334155" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+<circle r="7" fill="#38bdf8" opacity="0"><animateMotion path="M260 240 H450" dur="7.0s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.043;0.186;1" calcMode="linear"/><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.043;0.053;0.186;0.196;1" dur="7.0s" repeatCount="indefinite"/></circle>
+<circle r="14" fill="#38bdf8" opacity="0"><animateMotion path="M260 240 H450" dur="7.0s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.043;0.186;1" calcMode="linear"/><animate attributeName="opacity" values="0;0;0.25;0.25;0;0" keyTimes="0;0.043;0.053;0.186;0.196;1" dur="7.0s" repeatCount="indefinite"/></circle>
+<text x="355" y="228" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#38bdf8" opacity="0.35">GET /api/tasks + token<animate attributeName="opacity" values="0.35;0.35;1;1;0.35;0.35" keyTimes="0;0.043;0.063;0.246;0.286;1" dur="7.0s" repeatCount="indefinite"/></text>
+<circle r="7" fill="#22c55e" opacity="0"><animateMotion path="M730 240 H960" dur="7.0s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.214;0.357;1" calcMode="linear"/><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.214;0.224;0.357;0.367;1" dur="7.0s" repeatCount="indefinite"/></circle>
+<circle r="14" fill="#22c55e" opacity="0"><animateMotion path="M730 240 H960" dur="7.0s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.214;0.357;1" calcMode="linear"/><animate attributeName="opacity" values="0;0;0.25;0.25;0;0" keyTimes="0;0.214;0.224;0.357;0.367;1" dur="7.0s" repeatCount="indefinite"/></circle>
+<text x="845" y="228" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#22c55e" opacity="0.35">SQL com usuario_id = ?<animate attributeName="opacity" values="0.35;0.35;1;1;0.35;0.35" keyTimes="0;0.214;0.234;0.417;0.457;1" dur="7.0s" repeatCount="indefinite"/></text>
+<circle r="7" fill="#a78bfa" opacity="0"><animateMotion path="M960 270 H730" dur="7.0s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.443;0.586;1" calcMode="linear"/><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.443;0.453;0.586;0.596;1" dur="7.0s" repeatCount="indefinite"/></circle>
+<circle r="14" fill="#a78bfa" opacity="0"><animateMotion path="M960 270 H730" dur="7.0s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.443;0.586;1" calcMode="linear"/><animate attributeName="opacity" values="0;0;0.25;0.25;0;0" keyTimes="0;0.443;0.453;0.586;0.596;1" dur="7.0s" repeatCount="indefinite"/></circle>
+<text x="845" y="292" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#a78bfa" opacity="0.35">linhas da tabela<animate attributeName="opacity" values="0.35;0.35;1;1;0.35;0.35" keyTimes="0;0.443;0.463;0.646;0.686;1" dur="7.0s" repeatCount="indefinite"/></text>
+<circle r="7" fill="#22c55e" opacity="0"><animateMotion path="M450 270 H260" dur="7.0s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.614;0.757;1" calcMode="linear"/><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.614;0.624;0.757;0.767;1" dur="7.0s" repeatCount="indefinite"/></circle>
+<circle r="14" fill="#22c55e" opacity="0"><animateMotion path="M450 270 H260" dur="7.0s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.614;0.757;1" calcMode="linear"/><animate attributeName="opacity" values="0;0;0.25;0.25;0;0" keyTimes="0;0.614;0.624;0.757;0.767;1" dur="7.0s" repeatCount="indefinite"/></circle>
+<text x="355" y="292" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#22c55e" opacity="0.35">200 OK · JSON<animate attributeName="opacity" values="0.35;0.35;1;1;0.35;0.35" keyTimes="0;0.614;0.634;0.817;0.857;1" dur="7.0s" repeatCount="indefinite"/></text>
+<rect x="956" y="192" width="218" height="128" rx="17" fill="none" stroke="#a78bfa" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.357;0.400;0.443;1" dur="7.0s" repeatCount="indefinite"/></rect>
+<rect x="26" y="192" width="238" height="128" rx="17" fill="none" stroke="#38bdf8" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.757;0.850;0.943;1" dur="7.0s" repeatCount="indefinite"/></rect>
+<text x="145" y="346" text-anchor="middle" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#38bdf8" opacity="0">lista atualizada na tela<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.757;0.786;0.943;1" dur="7.0s" repeatCount="indefinite"/></text>
+<rect x="578" y="104" width="24" height="16" rx="3" fill="#e5e7eb" opacity="0"><animateMotion path="M0 0 V50" dur="3.5s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.1;0.5;1" calcMode="linear"/><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1;0.12;0.5;0.52;1" dur="3.5s" repeatCount="indefinite"/></rect>
+<text x="612" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" fill="#94a3b8">install → build → start</text>
+<text x="612" y="132" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#e5e7eb">deploy automático</text>
+<text x="568" y="142" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" fill="#94a3b8">git push</text>
+<text x="1160" y="384" text-anchor="end" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#64748b">um endereço só entrega a tela e a API</text>
+</svg>
