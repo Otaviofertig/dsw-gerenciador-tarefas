@@ -11,7 +11,7 @@
 
 # Equivalência CSS puro → Tailwind
 
-Tabela de consulta das aulas 3 e 4. Para praticar, abra no navegador o [desafio do card responsivo](desafio-card-responsivo.html) e a [comparação CSS puro vs. Tailwind](css-puro-vs-tailwind.html). O Tailwind também é usado no [front React](../../web/README.md#web-front-end-conectado-à-api) e no [protótipo HTML](../../docs/API.md#protótipo-html).
+Tabela de consulta das aulas 3 e 4. Para praticar, abra no navegador o [desafio do card responsivo](desafio-card-responsivo.html) e a [comparação CSS puro vs. Tailwind](css-puro-vs-tailwind.html). O Tailwind também é usado no [front React](../../web/README.md#web-front-end-conectado-à-api).
 
 | CSS puro | Tailwind |
 | --- | --- |

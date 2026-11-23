@@ -17,7 +17,6 @@ Atividades da disciplina que não fazem parte do Gerenciador de Tarefas. Ficam a
 | --- | --- | --- |
 | [`meu-primeiro-app/`](meu-primeiro-app/) | primeira lista de tarefas em React, sem API | React 1 e 2 (07/10 e 14/10) |
 | [`tailwind/`](tailwind/dicas.md) | desafio do card responsivo, comparação CSS × Tailwind e tabela de dicas | 3 e 4 |
-| [`prototipo-html/`](prototipo-html/index.html) | primeiro protótipo da tela do gerenciador, só HTML + Tailwind | 3 e 4 |
 
 ## meu-primeiro-app: lista de tarefas
 
@@ -36,11 +35,11 @@ npm run dev     # abre em http://localhost:5173
 npm run lint    # oxlint
 ```
 
-## Tailwind e protótipo
+## Tailwind
 
 Não precisam de servidor: abra o arquivo `.html` direto no navegador.
 
-[![Card responsivo](https://img.shields.io/badge/exerc%C3%ADcio-card_responsivo-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white)](tailwind/desafio-card-responsivo.html) [![CSS vs Tailwind](https://img.shields.io/badge/exerc%C3%ADcio-CSS_vs_Tailwind-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white)](tailwind/css-puro-vs-tailwind.html) [![Dicas](https://img.shields.io/badge/tabela-CSS_%E2%86%92_Tailwind-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white)](tailwind/dicas.md) [![Protótipo](https://img.shields.io/badge/prot%C3%B3tipo-index.html-e34f26?style=for-the-badge&logo=html5&logoColor=white)](prototipo-html/index.html)
+[![Card responsivo](https://img.shields.io/badge/exerc%C3%ADcio-card_responsivo-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white)](tailwind/desafio-card-responsivo.html) [![CSS vs Tailwind](https://img.shields.io/badge/exerc%C3%ADcio-CSS_vs_Tailwind-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white)](tailwind/css-puro-vs-tailwind.html) [![Dicas](https://img.shields.io/badge/tabela-CSS_%E2%86%92_Tailwind-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white)](tailwind/dicas.md)
 
 <!-- nav:rodape -->
 ---
