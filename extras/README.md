@@ -9,6 +9,10 @@
 </p>
 <!-- /nav:topo -->
 
+<p align="center">
+  <img src="../docs/assets/banner-extras.svg" width="100%" alt="Extras: trabalhos de outras aulas">
+</p>
+
 # Extras: trabalhos de outras aulas
 
 Atividades da disciplina que não fazem parte do Gerenciador de Tarefas. Ficam aqui, separadas, para a raiz do repositório ter só o projeto principal.

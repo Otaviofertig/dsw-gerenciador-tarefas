@@ -9,6 +9,10 @@
 </p>
 <!-- /nav:topo -->
 
+<p align="center">
+  <img src="../docs/assets/banner-diario.svg" width="100%" alt="Diário de bordo: o que aprendi em cada aula">
+</p>
+
 # Diário de bordo
 
 Anotações curtas do que aprendi em cada aula de DSW, escritas com as minhas palavras. Para a explicação completa de cada assunto, veja o [Guia de Estudos](../docs/GUIA_DE_ESTUDOS.md).

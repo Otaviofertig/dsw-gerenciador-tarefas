@@ -9,6 +9,10 @@
 </p>
 <!-- /nav:topo -->
 
+<p align="center">
+  <img src="assets/banner-api.svg" width="100%" alt="API do Gerenciador: Node.js, Express, TypeScript, Turso e JWT">
+</p>
+
 # API do Gerenciador de Tarefas
 
 Gerenciador de tarefas multiusuário: back-end em **Node.js + Express + TypeScript** com persistência em **SQLite na nuvem** (Turso, via `@libsql/client`). A mesma API entrega a tela em React da pasta [`web/`](../web/README.md). O projeto evolui a cada aula: primeiro as rotas básicas, depois o CRUD, a blindagem contra entradas maliciosas, a autenticação com senha criptografada e JWT e, na Aula 09, a migração do arquivo local para o banco em nuvem. Na Aula 10, o sistema foi publicado no **Render**: [abrir o sistema](https://gerenciador-de-tarefas.onrender.com).
@@ -235,6 +239,28 @@ Se o usuário `admin@senai.com` não existir, ele é criado com a senha `123456`
 ```
 
 ## Fluxo de autenticação
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor P as Pessoa
+    participant T as Tela (React)
+    participant A as API (server.ts)
+    participant B as Turso
+
+    P->>T: digita e-mail e senha
+    T->>A: POST /api/auth/login
+    A->>B: busca o usuário pelo e-mail
+    B-->>A: hash bcrypt da senha
+    A->>A: bcrypt.compare (sempre compara, mesmo sem usuário)
+    A-->>T: 200 + token JWT (8 horas)
+    T->>T: guarda o token no localStorage
+    T->>A: GET /api/tasks com Authorization: Bearer token
+    A->>A: middleware authenticate confere a assinatura
+    A->>B: SELECT ... WHERE usuario_id = ?
+    B-->>A: só as tarefas dessa pessoa
+    A-->>T: 200 + lista em JSON
+```
 
 1. O cliente chama `POST /api/auth/register` e a senha é transformada em hash bcrypt antes de ir para o banco.
 2. O cliente chama `POST /api/auth/login` e o servidor compara a senha com o hash.

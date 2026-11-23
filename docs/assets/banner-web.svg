@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="240" viewBox="0 0 1200 240" role="img" aria-labelledby="t d">
+<title id="t">Front-end em React</title>
+<desc id="d">React 19 · Vite · TypeScript · Tailwind CSS</desc>
+
+  <style>
+    @keyframes surge { from { opacity: 0; transform: translateY(var(--dy)); } to { opacity: 1; transform: none; } }
+    @keyframes flutua { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes gira { to { transform: rotate(360deg); } }
+    @keyframes pulsa { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+    .flutua { animation: flutua 4s ease-in-out infinite; }
+  </style>
+
+  <defs>
+    <linearGradient id="bgweb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#06121c"/>
+      <stop offset="1" stop-color="#0b2a3d"/>
+    </linearGradient>
+    <pattern id="gradeweb" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity="0.05"/>
+    </pattern>
+    <filter id="blurweb" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="50"/></filter>
+    <clipPath id="bordaweb"><rect width="1200" height="240" rx="18"/></clipPath>
+  </defs>
+  <g clip-path="url(#bordaweb)">
+    <rect width="1200" height="240" fill="url(#bgweb)"/>
+    <rect width="1200" height="240" fill="url(#gradeweb)"/>
+    <circle cx="216" cy="48" r="108" fill="#7dd3fc" opacity="0.35" filter="url(#blurweb)">
+      <animate attributeName="cx" values="216;384;216" dur="14s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1020" cy="216" r="120" fill="#38bdf8" opacity="0.3" filter="url(#blurweb)">
+      <animate attributeName="cy" values="216;132;216" dur="11s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+<g style="animation: surge 0.7s ease-out 0.1s both; --dy: 14px"><text x="60" y="66" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" letter-spacing="3" fill="#7dd3fc">FRONT-END</text></g>
+<g style="animation: surge 0.8s ease-out 0.3s both; --dy: 18px"><text x="58" y="132" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="52" font-weight="800" fill="#fff">Front-end em React</text></g>
+<rect x="60" y="150" width="0" height="5" rx="2.5" fill="#7dd3fc"><animate attributeName="width" values="0;140" begin="0.6s" dur="0.9s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/></rect>
+<g style="animation: surge 0.7s ease-out 0.9s both; --dy: 14px"><text x="60" y="194" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="19" fill="#cbd5e1">React 19 · Vite · TypeScript · Tailwind CSS</text></g>
+<g style="animation: surge 0.9s ease-out 0.5s both; --dy: 24px"><g transform="translate(1030 120)">
+<circle r="11" fill="#38bdf8"/>
+<g transform="rotate(0)"><ellipse rx="78" ry="28" fill="none" stroke="#38bdf8" stroke-width="3"/><circle r="6" fill="#fff"><animateMotion dur="2.6s" repeatCount="indefinite" path="M78 0 A78 28 0 1 1 -78 0 A78 28 0 1 1 78 0"/></circle></g>
+<g transform="rotate(60)"><ellipse rx="78" ry="28" fill="none" stroke="#38bdf8" stroke-width="3"/><circle r="6" fill="#fff"><animateMotion dur="3.0s" repeatCount="indefinite" path="M78 0 A78 28 0 1 1 -78 0 A78 28 0 1 1 78 0"/></circle></g>
+<g transform="rotate(120)"><ellipse rx="78" ry="28" fill="none" stroke="#38bdf8" stroke-width="3"/><circle r="6" fill="#fff"><animateMotion dur="3.4s" repeatCount="indefinite" path="M78 0 A78 28 0 1 1 -78 0 A78 28 0 1 1 78 0"/></circle></g>
+</g></g>
+</svg>

@@ -9,6 +9,10 @@
 </p>
 <!-- /nav:topo -->
 
+<p align="center">
+  <img src="../docs/assets/banner-web.svg" width="100%" alt="Front-end em React: React 19, Vite, TypeScript e Tailwind CSS">
+</p>
+
 # Front-end (React)
 
 A tela do Gerenciador de Tarefas, feita com **React + TypeScript + Tailwind CSS** e criada com **Vite**. Ela tem a tela de login e cadastro e a lista de tarefas de quem está logado: criar, concluir, excluir, buscar por título e filtrar por prioridade. Toda conversa com o servidor passa pela [API do Gerenciador](../docs/API.md#endpoints).
@@ -39,6 +43,24 @@ web/
 ```
 
 ## Como funciona
+
+```mermaid
+flowchart TD
+    main["main.tsx"] --> App["App.tsx<br/><i>dono do usuário logado</i>"]
+    App -->|sem usuário| Login["Login.tsx<br/><i>entrar ou criar conta</i>"]
+    App -->|com usuário| Tarefas["Tarefas.tsx<br/><i>lista, busca, filtro</i>"]
+    Login --> api["api.ts<br/><i>único lugar que fala com a API</i>"]
+    Tarefas --> api
+    App --> api
+    api -->|fetch + Bearer token| API[("API · server.ts")]
+
+    classDef tela fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+    classDef util fill:#f3e8ff,stroke:#7c3aed,color:#3b0764
+    classDef back fill:#dcfce7,stroke:#16a34a,color:#14532d
+    class main,App,Login,Tarefas tela
+    class api util
+    class API back
+```
 
 - **Login:** o token JWT que a API devolve fica guardado no navegador (`localStorage`) e vai junto em todo pedido, no cabeçalho `Authorization: Bearer <token>`.
 - **Busca:** só vai até a API quando a pessoa para de digitar por 400 ms (debounce), para não fazer um pedido a cada letra.
