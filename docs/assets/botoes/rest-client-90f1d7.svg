@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="87" height="22" viewBox="0 0 87 22" role="img" aria-label="REST Client">
+<defs>
+  <linearGradient id="f90f1d7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#082949"/><stop offset="1" stop-color="#0a182e"/></linearGradient>
+  <linearGradient id="b90f1d7" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <clipPath id="c90f1d7"><rect x="0.65" y="0.65" width="85.7" height="20.7" rx="6"/></clipPath>
+</defs>
+<rect x="0.65" y="0.65" width="85.7" height="20.7" rx="6" fill="url(#f90f1d7)" stroke="#4ca2db" stroke-opacity="0.85" stroke-width="1.3"/>
+<g clip-path="url(#c90f1d7)"><rect x="-60" y="0" width="50" height="22" fill="url(#b90f1d7)" transform="skewX(-20)"><animate attributeName="x" values="-60;127;127" keyTimes="0;0.3;1" dur="6s" begin="4s" repeatCount="indefinite"/></rect></g>
+<text x="8.0" y="15.0" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="0.2" fill="#ffffff">REST Client</text>
+</svg>

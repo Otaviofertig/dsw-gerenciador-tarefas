@@ -1,11 +1,11 @@
 <!-- nav:topo -->
 <p align="center">
-  <a href="../README.md"><img src="https://img.shields.io/badge/In%C3%ADcio-24292f?style=for-the-badge&logo=github&logoColor=white" alt="Início"></a>
-  <a href="../docs/API.md"><img src="https://img.shields.io/badge/API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="API Gerenciador"></a>
-  <img src="https://img.shields.io/badge/voc%C3%AA_est%C3%A1_aqui-Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="Você está aqui: Front React">
-  <a href="../diario-de-bordo/README.md"><img src="https://img.shields.io/badge/Di%C3%A1rio_de_bordo-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="Diário de bordo"></a>
-  <a href="../docs/GUIA_DE_ESTUDOS.md"><img src="https://img.shields.io/badge/Guia_de_estudos-d97706?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Guia de estudos"></a>
-  <a href="../extras/README.md"><img src="https://img.shields.io/badge/Extras-6e7781?style=for-the-badge&logo=files&logoColor=white" alt="Extras"></a>
+  <a href="../README.md"><img src="../docs/assets/botoes/incio-06c559.svg" alt="Início"></a>
+  <a href="../docs/API.md"><img src="../docs/assets/botoes/api-gerenciador-4e8698.svg" alt="API Gerenciador"></a>
+  <img src="../docs/assets/botoes/voc-est-aqui-front-react-84dfb6.svg" alt="Você está aqui: Front React">
+  <a href="../diario-de-bordo/README.md"><img src="../docs/assets/botoes/dirio-de-bordo-b821ca.svg" alt="Diário de bordo"></a>
+  <a href="../docs/GUIA_DE_ESTUDOS.md"><img src="../docs/assets/botoes/guia-de-estudos-abf8ad.svg" alt="Guia de estudos"></a>
+  <a href="../extras/README.md"><img src="../docs/assets/botoes/extras-4a886c.svg" alt="Extras"></a>
 </p>
 <!-- /nav:topo -->
 
@@ -20,10 +20,10 @@ A tela do Gerenciador de Tarefas, feita com **React + TypeScript + Tailwind CSS*
 **Aulas que construíram estas telas** (clique para abrir o diário):
 
 <p>
-  <a href="../diario-de-bordo/2026-10-07.md"><img src="https://img.shields.io/badge/07_out-Intro_ao_React-8250df?style=for-the-badge" alt="07 out: Intro ao React"></a>
-  <a href="../diario-de-bordo/2026-10-14.md"><img src="https://img.shields.io/badge/14_out-Estado_no_React-8250df?style=for-the-badge" alt="14 out: Estado no React"></a>
-  <a href="../diario-de-bordo/2026-10-28.md"><img src="https://img.shields.io/badge/28_out-Laborat%C3%B3rio-8250df?style=for-the-badge" alt="28 out: Laboratório"></a>
-  <a href="../diario-de-bordo/2026-11-18.md"><img src="https://img.shields.io/badge/18_nov-Leitura_e_an%C3%A1lise-8250df?style=for-the-badge" alt="18 nov: Leitura e análise"></a>
+  <a href="../diario-de-bordo/2026-10-07.md"><img src="../docs/assets/botoes/07-out-intro-ao-react-4edffd.svg" alt="07 out: Intro ao React"></a>
+  <a href="../diario-de-bordo/2026-10-14.md"><img src="../docs/assets/botoes/14-out-estado-no-react-5dd445.svg" alt="14 out: Estado no React"></a>
+  <a href="../diario-de-bordo/2026-10-28.md"><img src="../docs/assets/botoes/28-out-laboratrio-05e1cc.svg" alt="28 out: Laboratório"></a>
+  <a href="../diario-de-bordo/2026-11-18.md"><img src="../docs/assets/botoes/18-nov-leitura-e-anlise-8ef076.svg" alt="18 nov: Leitura e análise"></a>
 </p>
 
 ## Arquivos
@@ -101,8 +101,8 @@ Se a API não estiver ligada, a tela mostra o erro de conexão.
 ---
 
 <p align="center">
-  <a href="../docs/API.md"><img src="https://img.shields.io/badge/%E2%86%90_anterior-API_Gerenciador-6e7781?style=for-the-badge" alt="← anterior"></a>
-  <a href="#top"><img src="https://img.shields.io/badge/%E2%AC%86_voltar_ao_topo-6e7781?style=for-the-badge" alt="⬆ voltar ao topo"></a>
-  <a href="../diario-de-bordo/README.md"><img src="https://img.shields.io/badge/pr%C3%B3ximo_%E2%86%92-Di%C3%A1rio_de_bordo-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="próximo →"></a>
+  <a href="../docs/API.md"><img src="../docs/assets/botoes/anterior-api-gerenciador-b03e91.svg" alt="← anterior"></a>
+  <a href="#top"><img src="../docs/assets/botoes/voltar-ao-topo-5af198.svg" alt="⬆ voltar ao topo"></a>
+  <a href="../diario-de-bordo/README.md"><img src="../docs/assets/botoes/prximo-dirio-de-bordo-27355a.svg" alt="próximo →"></a>
 </p>
 <!-- /nav:rodape -->

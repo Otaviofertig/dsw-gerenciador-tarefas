@@ -11,9 +11,9 @@
 -->
 <!-- nav:topo -->
 <p align="center">
-  <a href="../README.md"><img src="https://img.shields.io/badge/In%C3%ADcio-24292f?style=for-the-badge&logo=github&logoColor=white" alt="Início"></a>
-  <a href="README.md"><img src="https://img.shields.io/badge/Di%C3%A1rio_de_bordo-%C3%ADndice-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="Diário de bordo"></a>
-  <a href="../docs/API.md#ANCORA"><img src="https://img.shields.io/badge/ver_no_projeto-API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="ver no projeto"></a>
+  <a href="../README.md"><img src="../docs/assets/botoes/incio-06c559.svg" alt="Início"></a>
+  <a href="README.md"><img src="../docs/assets/botoes/dirio-de-bordo-ndice-a9aa8f.svg" alt="Diário de bordo"></a>
+  <a href="../docs/API.md#ANCORA"><img src="../docs/assets/botoes/ver-no-projeto-api-gerenciador-7dde9e.svg" alt="ver no projeto"></a>
 </p>
 <!-- /nav:topo -->
 
@@ -39,7 +39,7 @@ Opcional: outros problemas ou dúvidas que ficaram para a próxima aula.
 ---
 
 <p align="center">
-  <a href="AAAA-MM-DD-ANTERIOR.md"><img src="https://img.shields.io/badge/%E2%86%90_DD_MES-TEMA_CURTO-6e7781?style=for-the-badge" alt="← aula anterior"></a>
-  <a href="README.md"><img src="https://img.shields.io/badge/%C3%ADndice_do_di%C3%A1rio-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="índice do diário"></a>
+  <a href="AAAA-MM-DD-ANTERIOR.md"><img src="../docs/assets/botoes/dd-mes-tema-curto-ddb39b.svg" alt="← aula anterior"></a>
+  <a href="README.md"><img src="../docs/assets/botoes/ndice-do-dirio-02a182.svg" alt="índice do diário"></a>
 </p>
 <!-- /nav:rodape -->

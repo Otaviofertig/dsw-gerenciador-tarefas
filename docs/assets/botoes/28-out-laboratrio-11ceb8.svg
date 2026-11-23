@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="188" height="30" viewBox="0 0 188 30" role="img" aria-label="28 OUT LABORATÓRIO">
+<defs>
+  <linearGradient id="f11ceb8" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a2a40"/><stop offset="1" stop-color="#0b192b"/></linearGradient>
+  <linearGradient id="b11ceb8" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <clipPath id="c11ceb8"><rect x="0.65" y="0.65" width="186.7" height="28.7" rx="8"/></clipPath>
+</defs>
+<rect x="0.65" y="0.65" width="186.7" height="28.7" rx="8" fill="url(#f11ceb8)" stroke="#52a5bf" stroke-opacity="0.85" stroke-width="1.3"/>
+<g clip-path="url(#c11ceb8)"><rect x="-60" y="0" width="50" height="30" fill="url(#b11ceb8)" transform="skewX(-20)"><animate attributeName="x" values="-60;228;228" keyTimes="0;0.3;1" dur="6s" begin="6s" repeatCount="indefinite"/></rect></g>
+<text x="12.0" y="19.1" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="11.5" font-weight="700" letter-spacing="1.3" fill="#cbd5e1" fill-opacity="0.75">28 OUT</text>
+<line x1="68.5" y1="8.4" x2="68.5" y2="21.6" stroke="#52a5bf" stroke-opacity="0.45"/>
+<text x="74.5" y="19.1" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="11.5" font-weight="700" letter-spacing="1.3" fill="#52a5bf">LABORATÓRIO</text>
+</svg>

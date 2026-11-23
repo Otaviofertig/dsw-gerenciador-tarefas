@@ -1,11 +1,11 @@
 <!-- nav:topo -->
 <p align="center">
-  <a href="../README.md"><img src="https://img.shields.io/badge/In%C3%ADcio-24292f?style=for-the-badge&logo=github&logoColor=white" alt="Início"></a>
-  <img src="https://img.shields.io/badge/voc%C3%AA_est%C3%A1_aqui-API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Você está aqui: API Gerenciador">
-  <a href="../web/README.md"><img src="https://img.shields.io/badge/Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="Front React"></a>
-  <a href="../diario-de-bordo/README.md"><img src="https://img.shields.io/badge/Di%C3%A1rio_de_bordo-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="Diário de bordo"></a>
-  <a href="GUIA_DE_ESTUDOS.md"><img src="https://img.shields.io/badge/Guia_de_estudos-d97706?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Guia de estudos"></a>
-  <a href="../extras/README.md"><img src="https://img.shields.io/badge/Extras-6e7781?style=for-the-badge&logo=files&logoColor=white" alt="Extras"></a>
+  <a href="../README.md"><img src="assets/botoes/incio-06c559.svg" alt="Início"></a>
+  <img src="assets/botoes/voc-est-aqui-api-gerenciador-a4b1b7.svg" alt="Você está aqui: API Gerenciador">
+  <a href="../web/README.md"><img src="assets/botoes/front-react-1df9b7.svg" alt="Front React"></a>
+  <a href="../diario-de-bordo/README.md"><img src="assets/botoes/dirio-de-bordo-b821ca.svg" alt="Diário de bordo"></a>
+  <a href="GUIA_DE_ESTUDOS.md"><img src="assets/botoes/guia-de-estudos-abf8ad.svg" alt="Guia de estudos"></a>
+  <a href="../extras/README.md"><img src="assets/botoes/extras-4a886c.svg" alt="Extras"></a>
 </p>
 <!-- /nav:topo -->
 
@@ -35,13 +35,13 @@ dsw-gerenciador-tarefas/
 **Aulas que construíram esta API** (clique para abrir o diário):
 
 <p>
-  <a href="../diario-de-bordo/2026-09-02.md"><img src="https://img.shields.io/badge/02_set-Erros_e_ataques-8250df?style=for-the-badge" alt="02 set: Erros e ataques"></a>
-  <a href="../diario-de-bordo/2026-09-09.md"><img src="https://img.shields.io/badge/09_set-Busca_segura-8250df?style=for-the-badge" alt="09 set: Busca segura"></a>
-  <a href="../diario-de-bordo/2026-09-16.md"><img src="https://img.shields.io/badge/16_set-Rotas_de_escrita-8250df?style=for-the-badge" alt="16 set: Rotas de escrita"></a>
-  <a href="../diario-de-bordo/2026-09-23.md"><img src="https://img.shields.io/badge/23_set-Autentica%C3%A7%C3%A3o-8250df?style=for-the-badge" alt="23 set: Autenticação"></a>
-  <a href="../diario-de-bordo/2026-10-28.md"><img src="https://img.shields.io/badge/28_out-Laborat%C3%B3rio-8250df?style=for-the-badge" alt="28 out: Laboratório"></a>
-  <a href="../diario-de-bordo/2026-11-04.md"><img src="https://img.shields.io/badge/04_nov-Banco_em_nuvem-8250df?style=for-the-badge" alt="04 nov: Banco em nuvem"></a>
-  <a href="../diario-de-bordo/2026-11-11.md"><img src="https://img.shields.io/badge/11_nov-Deploy_no_Render-8250df?style=for-the-badge" alt="11 nov: Deploy no Render"></a>
+  <a href="../diario-de-bordo/2026-09-02.md"><img src="assets/botoes/02-set-erros-e-ataques-b04de8.svg" alt="02 set: Erros e ataques"></a>
+  <a href="../diario-de-bordo/2026-09-09.md"><img src="assets/botoes/09-set-busca-segura-98e0fa.svg" alt="09 set: Busca segura"></a>
+  <a href="../diario-de-bordo/2026-09-16.md"><img src="assets/botoes/16-set-rotas-de-escrita-a2893a.svg" alt="16 set: Rotas de escrita"></a>
+  <a href="../diario-de-bordo/2026-09-23.md"><img src="assets/botoes/23-set-autenticao-5f6539.svg" alt="23 set: Autenticação"></a>
+  <a href="../diario-de-bordo/2026-10-28.md"><img src="assets/botoes/28-out-laboratrio-05e1cc.svg" alt="28 out: Laboratório"></a>
+  <a href="../diario-de-bordo/2026-11-04.md"><img src="assets/botoes/04-nov-banco-em-nuvem-b02520.svg" alt="04 nov: Banco em nuvem"></a>
+  <a href="../diario-de-bordo/2026-11-11.md"><img src="assets/botoes/11-nov-deploy-no-render-a892c7.svg" alt="11 nov: Deploy no Render"></a>
 </p>
 
 ## Como rodar a API
@@ -301,8 +301,8 @@ Já feito: middleware de autenticação, tarefas por usuário, front React consu
 ---
 
 <p align="center">
-  <a href="../README.md"><img src="https://img.shields.io/badge/%E2%86%90_anterior-In%C3%ADcio-6e7781?style=for-the-badge" alt="← anterior"></a>
-  <a href="#top"><img src="https://img.shields.io/badge/%E2%AC%86_voltar_ao_topo-6e7781?style=for-the-badge" alt="⬆ voltar ao topo"></a>
-  <a href="../web/README.md"><img src="https://img.shields.io/badge/pr%C3%B3ximo_%E2%86%92-Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="próximo →"></a>
+  <a href="../README.md"><img src="assets/botoes/anterior-incio-a80fe3.svg" alt="← anterior"></a>
+  <a href="#top"><img src="assets/botoes/voltar-ao-topo-5af198.svg" alt="⬆ voltar ao topo"></a>
+  <a href="../web/README.md"><img src="assets/botoes/prximo-front-react-918e42.svg" alt="próximo →"></a>
 </p>
 <!-- /nav:rodape -->

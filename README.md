@@ -1,11 +1,11 @@
 <!-- nav:topo -->
 <p align="center">
-  <img src="https://img.shields.io/badge/voc%C3%AA_est%C3%A1_aqui-In%C3%ADcio-24292f?style=for-the-badge&logo=github&logoColor=white" alt="Você está aqui: Início">
-  <a href="docs/API.md"><img src="https://img.shields.io/badge/API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="API Gerenciador"></a>
-  <a href="web/README.md"><img src="https://img.shields.io/badge/Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="Front React"></a>
-  <a href="diario-de-bordo/README.md"><img src="https://img.shields.io/badge/Di%C3%A1rio_de_bordo-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="Diário de bordo"></a>
-  <a href="docs/GUIA_DE_ESTUDOS.md"><img src="https://img.shields.io/badge/Guia_de_estudos-d97706?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Guia de estudos"></a>
-  <a href="extras/README.md"><img src="https://img.shields.io/badge/Extras-6e7781?style=for-the-badge&logo=files&logoColor=white" alt="Extras"></a>
+  <img src="docs/assets/botoes/voc-est-aqui-incio-bb48ba.svg" alt="Você está aqui: Início">
+  <a href="docs/API.md"><img src="docs/assets/botoes/api-gerenciador-4e8698.svg" alt="API Gerenciador"></a>
+  <a href="web/README.md"><img src="docs/assets/botoes/front-react-1df9b7.svg" alt="Front React"></a>
+  <a href="diario-de-bordo/README.md"><img src="docs/assets/botoes/dirio-de-bordo-b821ca.svg" alt="Diário de bordo"></a>
+  <a href="docs/GUIA_DE_ESTUDOS.md"><img src="docs/assets/botoes/guia-de-estudos-abf8ad.svg" alt="Guia de estudos"></a>
+  <a href="extras/README.md"><img src="docs/assets/botoes/extras-4a886c.svg" alt="Extras"></a>
 </p>
 <!-- /nav:topo -->
 
@@ -16,11 +16,11 @@
 # DSW: Gerenciador de Tarefas
 
 <p>
-  <a href="https://gerenciador-de-tarefas.onrender.com"><img src="https://img.shields.io/badge/deploy-Render-46e3b7?style=flat-square&logo=render&logoColor=black" alt="deploy: Render"></a>
-  <img src="https://img.shields.io/badge/aulas_no_di%C3%A1rio-10-8250df?style=flat-square&logo=bookstack&logoColor=white" alt="aulas no diário: 10">
-  <img src="https://img.shields.io/badge/Node.js-24-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js 24">
-  <img src="https://img.shields.io/badge/React-19-087ea4?style=flat-square&logo=react&logoColor=white" alt="React 19">
-  <img src="https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
+  <a href="https://gerenciador-de-tarefas.onrender.com"><img src="docs/assets/botoes/deploy-render-e9b770.svg" alt="deploy: Render"></a>
+  <img src="docs/assets/botoes/aulas-no-dirio-10-a0413c.svg" alt="aulas no diário: 10">
+  <img src="docs/assets/botoes/node-js-24-a7f8d6.svg" alt="Node.js 24">
+  <img src="docs/assets/botoes/react-19-75d94c.svg" alt="React 19">
+  <img src="docs/assets/botoes/typescript-strict-4da69d.svg" alt="TypeScript">
 </p>
 
 **Estudante:** Otávio Fertig<br>
@@ -33,7 +33,7 @@ Um **gerenciador de tarefas multiusuário**: cada pessoa cria a sua conta, entra
 
 O sistema está publicado no **Render**:
 
-[![Abrir o sistema publicado](https://img.shields.io/badge/abrir_o_sistema-no_ar_no_Render-46e3b7?style=for-the-badge&logo=render&logoColor=black)](https://gerenciador-de-tarefas.onrender.com) [![Como foi o deploy](https://img.shields.io/badge/como_foi_o_deploy-passo_a_passo-24292f?style=for-the-badge&logo=render&logoColor=white)](#deploy-no-render)
+[![Abrir o sistema publicado](docs/assets/botoes/abrir-o-sistema-no-ar-no-render-680507.svg)](https://gerenciador-de-tarefas.onrender.com) [![Como foi o deploy](docs/assets/botoes/como-foi-o-deploy-passo-a-passo-4330cf.svg)](#deploy-no-render)
 
 **Nesta página:** [Funcionalidades](#o-que-o-sistema-faz) · [Comece por aqui](#comece-por-aqui) · [Estrutura](#estrutura-do-projeto) · [Como rodar](#como-rodar) · [Deploy](#deploy-no-render) · [Tecnologias](#tecnologias) · [Andamento](#andamento-por-aula)
 
@@ -52,17 +52,17 @@ O sistema está publicado no **Render**:
 
 | Eu quero... | Vá para |
 | --- | --- |
-| Abrir o sistema publicado na internet | [![Render](https://img.shields.io/badge/Render-46e3b7?style=for-the-badge&logo=render&logoColor=black)](https://gerenciador-de-tarefas.onrender.com) |
-| Rodar o projeto na minha máquina | [![Como rodar](https://img.shields.io/badge/Como_rodar-24292f?style=for-the-badge&logo=gnubash&logoColor=white)](#como-rodar) |
-| Entender como o sistema foi publicado (deploy) | [![Deploy](https://img.shields.io/badge/Deploy_no_Render-24292f?style=for-the-badge&logo=render&logoColor=white)](#deploy-no-render) |
-| Entender a API: rotas, banco e segurança | [![API Gerenciador](https://img.shields.io/badge/API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](docs/API.md) |
-| Ver a lista de rotas e o que cada uma responde | [![Endpoints](https://img.shields.io/badge/Endpoints-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](docs/API.md#endpoints) |
-| Testar as rotas no VS Code | [![requests.http](https://img.shields.io/badge/requests.http-339933?style=for-the-badge)](requests.http) |
-| Ver como a tela foi feita | [![Front React](https://img.shields.io/badge/Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white)](web/README.md) |
-| Revisar o que aprendi em cada aula | [![Diário de bordo](https://img.shields.io/badge/Di%C3%A1rio_de_bordo-8250df?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/README.md) |
-| Ler a aula mais recente | [![Última aula](https://img.shields.io/badge/%C3%9Altima_aula-18_nov:_Leitura_e_an%C3%A1lise-8250df?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-11-18.md) |
-| Estudar os conceitos com calma, com glossário | [![Guia de estudos](https://img.shields.io/badge/Guia_de_estudos-d97706?style=for-the-badge&logo=readthedocs&logoColor=white)](docs/GUIA_DE_ESTUDOS.md) |
-| Ver os trabalhos de outras aulas (Tailwind, primeiro app React) | [![Extras](https://img.shields.io/badge/Extras-6e7781?style=for-the-badge&logo=files&logoColor=white)](extras/README.md) |
+| Abrir o sistema publicado na internet | [![Render](docs/assets/botoes/render-20a379.svg)](https://gerenciador-de-tarefas.onrender.com) |
+| Rodar o projeto na minha máquina | [![Como rodar](docs/assets/botoes/como-rodar-5dfde1.svg)](#como-rodar) |
+| Entender como o sistema foi publicado (deploy) | [![Deploy](docs/assets/botoes/deploy-no-render-ba0ab5.svg)](#deploy-no-render) |
+| Entender a API: rotas, banco e segurança | [![API Gerenciador](docs/assets/botoes/api-gerenciador-4e8698.svg)](docs/API.md) |
+| Ver a lista de rotas e o que cada uma responde | [![Endpoints](docs/assets/botoes/endpoints-5126ad.svg)](docs/API.md#endpoints) |
+| Testar as rotas no VS Code | [![requests.http](docs/assets/botoes/requests-http-24c378.svg)](requests.http) |
+| Ver como a tela foi feita | [![Front React](docs/assets/botoes/front-react-1df9b7.svg)](web/README.md) |
+| Revisar o que aprendi em cada aula | [![Diário de bordo](docs/assets/botoes/dirio-de-bordo-b821ca.svg)](diario-de-bordo/README.md) |
+| Ler a aula mais recente | [![Última aula](docs/assets/botoes/ltima-aula-18-nov-leitura-e-anlise-3e130d.svg)](diario-de-bordo/2026-11-18.md) |
+| Estudar os conceitos com calma, com glossário | [![Guia de estudos](docs/assets/botoes/guia-de-estudos-abf8ad.svg)](docs/GUIA_DE_ESTUDOS.md) |
+| Ver os trabalhos de outras aulas (Tailwind, primeiro app React) | [![Extras](docs/assets/botoes/extras-4a886c.svg)](extras/README.md) |
 
 ## Estrutura do projeto
 
@@ -119,7 +119,7 @@ Sobe a API e o Vite num terminal só. A tela atualiza sozinha quando você salva
 npm run dev:all
 ```
 
-[![Abrir a tela](https://img.shields.io/badge/abrir_a_tela-localhost:5173-087ea4?style=for-the-badge&logo=react&logoColor=white)](http://localhost:5173) [![Abrir a API](https://img.shields.io/badge/health_da_API-localhost:3000-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](http://localhost:3000/api/health)
+[![Abrir a tela](docs/assets/botoes/abrir-a-tela-localhost-5173-3f8f40.svg)](http://localhost:5173) [![Abrir a API](docs/assets/botoes/health-da-api-localhost-3000-206be6.svg)](http://localhost:3000/api/health)
 
 ### 3. Igual ao Render (a API entrega a tela)
 
@@ -130,7 +130,7 @@ npm run build      # instala a tela, gera web/dist e confere os tipos
 npm start
 ```
 
-[![Abrir a aplicação](https://img.shields.io/badge/abrir_a_aplica%C3%A7%C3%A3o-localhost:3000-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](http://localhost:3000)
+[![Abrir a aplicação](docs/assets/botoes/abrir-a-aplicao-localhost-3000-c65fb4.svg)](http://localhost:3000)
 
 ### 4. Só a API
 
@@ -149,7 +149,7 @@ npm run dev
 
 **Deploy** é colocar o sistema na internet, num endereço que qualquer pessoa consegue abrir. O **Render** pega o código do GitHub, prepara tudo numa máquina dele e deixa o site no ar. Os dados continuam no **Turso**, então nada se perde quando o Render reinicia ou atualiza o servidor.
 
-[![Abrir o sistema](https://img.shields.io/badge/abrir_o_sistema-46e3b7?style=for-the-badge&logo=render&logoColor=black)](https://gerenciador-de-tarefas.onrender.com) [![health](https://img.shields.io/badge/GET-/api/health-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://gerenciador-de-tarefas.onrender.com/api/health) [![db-check](https://img.shields.io/badge/GET-/api/db--check-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://gerenciador-de-tarefas.onrender.com/api/db-check)
+[![Abrir o sistema](docs/assets/botoes/abrir-o-sistema-d5893e.svg)](https://gerenciador-de-tarefas.onrender.com) [![health](docs/assets/botoes/get-api-health-5e438c.svg)](https://gerenciador-de-tarefas.onrender.com/api/health) [![db-check](docs/assets/botoes/get-api-db-check-21c8ea.svg)](https://gerenciador-de-tarefas.onrender.com/api/db-check)
 
 > [!NOTE]
 > O plano gratuito do Render "dorme" depois de 15 minutos sem visitas. O primeiro acesso depois disso pode demorar perto de 1 minuto: é o servidor acordando, não um erro.
@@ -242,10 +242,10 @@ Um endereço só entrega a tela e a API. Por isso, em produção, a tela não pr
 
 | Área | Tecnologias |
 | --- | --- |
-| Back-end | ![Node.js](https://img.shields.io/badge/Node.js_24-339933?style=flat-square&logo=nodedotjs&logoColor=white) ![Express 5](https://img.shields.io/badge/Express_5-000000?style=flat-square&logo=express&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178c6?style=flat-square&logo=typescript&logoColor=white) ![Turso](https://img.shields.io/badge/Turso_(libSQL)-4ff8d2?style=flat-square&logo=turso&logoColor=black) ![JWT](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens&logoColor=white) ![bcrypt](https://img.shields.io/badge/bcryptjs-6e7781?style=flat-square) ![CORS](https://img.shields.io/badge/cors-6e7781?style=flat-square) |
-| Front-end | ![React 19](https://img.shields.io/badge/React_19-087ea4?style=flat-square&logo=react&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-646cff?style=flat-square&logo=vite&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178c6?style=flat-square&logo=typescript&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-0ea5e9?style=flat-square&logo=tailwindcss&logoColor=white) |
-| Deploy | ![Render](https://img.shields.io/badge/Render-46e3b7?style=flat-square&logo=render&logoColor=black) ![Turso](https://img.shields.io/badge/Turso-4ff8d2?style=flat-square&logo=turso&logoColor=black) ![GitHub](https://img.shields.io/badge/GitHub-24292f?style=flat-square&logo=github&logoColor=white) |
-| Ferramentas | ![npm](https://img.shields.io/badge/npm-cb3837?style=flat-square&logo=npm&logoColor=white) ![tsx](https://img.shields.io/badge/tsx-6e7781?style=flat-square) ![ESLint](https://img.shields.io/badge/ESLint-4b32c3?style=flat-square&logo=eslint&logoColor=white) ![REST Client](https://img.shields.io/badge/REST_Client-007acc?style=flat-square) |
+| Back-end | ![Node.js](docs/assets/botoes/node-js-24-0aeae6.svg) ![Express 5](docs/assets/botoes/express-5-9178c1.svg) ![TypeScript](docs/assets/botoes/typescript-68ed4a.svg) ![Turso](docs/assets/botoes/turso-libsql-80730e.svg) ![JWT](docs/assets/botoes/jwt-bee6ab.svg) ![bcrypt](docs/assets/botoes/bcryptjs-511cfe.svg) ![CORS](docs/assets/botoes/cors-d7d0dc.svg) |
+| Front-end | ![React 19](docs/assets/botoes/react-19-da2d67.svg) ![Vite](docs/assets/botoes/vite-859d86.svg) ![TypeScript](docs/assets/botoes/typescript-68ed4a.svg) ![Tailwind CSS](docs/assets/botoes/tailwind-css-5ff3b8.svg) |
+| Deploy | ![Render](docs/assets/botoes/render-bac91c.svg) ![Turso](docs/assets/botoes/turso-b9565d.svg) ![GitHub](docs/assets/botoes/github-888a05.svg) |
+| Ferramentas | ![npm](docs/assets/botoes/npm-0907c7.svg) ![tsx](docs/assets/botoes/tsx-20d487.svg) ![ESLint](docs/assets/botoes/eslint-1f8b1a.svg) ![REST Client](docs/assets/botoes/rest-client-90f1d7.svg) |
 
 ## Andamento por aula
 
@@ -264,18 +264,18 @@ As aulas de setembro em diante seguem a numeração do material do professor (Au
 
 | Aula | Tema | Diário |
 | :---: | --- | :---: |
-| 00 | Tratamento de erros e testes de ataque | [![02 set](https://img.shields.io/badge/02_set-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-09-02.md) |
-| 01 | Sanitização da busca e prepared statements | [![09 set](https://img.shields.io/badge/09_set-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-09-09.md) |
-| 02 | Type guards, allowlists e transações nas rotas de escrita | [![16 set](https://img.shields.io/badge/16_set-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-09-16.md) |
-| 03 | Autenticação: registro, login, bcrypt e JWT | [![23 set](https://img.shields.io/badge/23_set-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-09-23.md) |
-| 04 | Protegendo rotas: middleware `authenticate` e tarefas por usuário | 30 set |
-| 05 | Introdução ao React: componentes, `useState`, `useEffect`, `fetch` e CORS | [![07 out](https://img.shields.io/badge/07_out-087ea4?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-10-07.md) |
-| 06 | Lista de tarefas com estado, formulário controlado e componente `Tarefa` | [![14 out](https://img.shields.io/badge/14_out-087ea4?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-10-14.md) |
-| 07 | Lista de tarefas ligada à API: debounce na busca, `useRef` e modal acessível | 21 out |
-| 08 | Laboratório: Tailwind, lacunas de lógica e o back servindo o front (`express.static` e SPA fallback) | [![28 out](https://img.shields.io/badge/28_out-087ea4?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-10-28.md) |
-| 09 | Banco em nuvem: `@libsql/client` (Turso), `.env` com detecção de BOM, `db.batch()` e rotas assíncronas | [![04 nov](https://img.shields.io/badge/04_nov-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-11-04.md) |
-| 10 | Deploy no Render: `render.yaml`, build que instala a tela, `/api/db-check` e variáveis de ambiente | [![11 nov](https://img.shields.io/badge/11_nov-339933?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-11-11.md) |
-| 11 | Leitura e análise do front (questionário ENADE), caça ao bug e filtro por prioridade com `useMemo` | [![18 nov](https://img.shields.io/badge/18_nov-087ea4?style=for-the-badge&logo=bookstack&logoColor=white)](diario-de-bordo/2026-11-18.md) |
+| 00 | Tratamento de erros e testes de ataque | [![02 set](docs/assets/botoes/02-set-48d263.svg)](diario-de-bordo/2026-09-02.md) |
+| 01 | Sanitização da busca e prepared statements | [![09 set](docs/assets/botoes/09-set-2228e8.svg)](diario-de-bordo/2026-09-09.md) |
+| 02 | Type guards, allowlists e transações nas rotas de escrita | [![16 set](docs/assets/botoes/16-set-d5841b.svg)](diario-de-bordo/2026-09-16.md) |
+| 03 | Autenticação: registro, login, bcrypt e JWT | [![23 set](docs/assets/botoes/23-set-9b649a.svg)](diario-de-bordo/2026-09-23.md) |
+| 04 | Protegendo rotas: middleware `authenticate` e tarefas por usuário | [![30 set: sem diário, ver no código](docs/assets/botoes/30-set-ver-no-cdigo-6af2b8.svg)](docs/API.md#fluxo-de-autenticação) |
+| 05 | Introdução ao React: componentes, `useState`, `useEffect`, `fetch` e CORS | [![07 out](docs/assets/botoes/07-out-f8ca98.svg)](diario-de-bordo/2026-10-07.md) |
+| 06 | Lista de tarefas com estado, formulário controlado e componente `Tarefa` | [![14 out](docs/assets/botoes/14-out-1a2f2b.svg)](diario-de-bordo/2026-10-14.md) |
+| 07 | Lista de tarefas ligada à API: debounce na busca, `useRef` e modal acessível | [![21 out: sem diário, ver no código](docs/assets/botoes/21-out-ver-no-cdigo-27b45a.svg)](web/README.md#como-funciona) |
+| 08 | Laboratório: Tailwind, lacunas de lógica e o back servindo o front (`express.static` e SPA fallback) | [![28 out](docs/assets/botoes/28-out-2b8bd4.svg)](diario-de-bordo/2026-10-28.md) |
+| 09 | Banco em nuvem: `@libsql/client` (Turso), `.env` com detecção de BOM, `db.batch()` e rotas assíncronas | [![04 nov](docs/assets/botoes/04-nov-7cf6ad.svg)](diario-de-bordo/2026-11-04.md) |
+| 10 | Deploy no Render: `render.yaml`, build que instala a tela, `/api/db-check` e variáveis de ambiente | [![11 nov](docs/assets/botoes/11-nov-85394d.svg)](diario-de-bordo/2026-11-11.md) |
+| 11 | Leitura e análise do front (questionário ENADE), caça ao bug e filtro por prioridade com `useMemo` | [![18 nov](docs/assets/botoes/18-nov-831c5b.svg)](diario-de-bordo/2026-11-18.md) |
 
 Os pontos em aberto e os próximos passos estão na [documentação da API](docs/API.md#limitações-atuais).
 
@@ -287,7 +287,7 @@ Espaço reservado para as observações e os ajustes solicitados pelo professor 
 ---
 
 <p align="center">
-  <a href="#top"><img src="https://img.shields.io/badge/%E2%AC%86_voltar_ao_topo-6e7781?style=for-the-badge" alt="⬆ voltar ao topo"></a>
-  <a href="docs/API.md"><img src="https://img.shields.io/badge/pr%C3%B3ximo_%E2%86%92-API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="próximo →"></a>
+  <a href="#top"><img src="docs/assets/botoes/voltar-ao-topo-5af198.svg" alt="⬆ voltar ao topo"></a>
+  <a href="docs/API.md"><img src="docs/assets/botoes/prximo-api-gerenciador-abc8fd.svg" alt="próximo →"></a>
 </p>
 <!-- /nav:rodape -->

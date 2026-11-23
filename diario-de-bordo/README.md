@@ -1,11 +1,11 @@
 <!-- nav:topo -->
 <p align="center">
-  <a href="../README.md"><img src="https://img.shields.io/badge/In%C3%ADcio-24292f?style=for-the-badge&logo=github&logoColor=white" alt="Início"></a>
-  <a href="../docs/API.md"><img src="https://img.shields.io/badge/API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="API Gerenciador"></a>
-  <a href="../web/README.md"><img src="https://img.shields.io/badge/Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="Front React"></a>
-  <img src="https://img.shields.io/badge/voc%C3%AA_est%C3%A1_aqui-Di%C3%A1rio_de_bordo-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="Você está aqui: Diário de bordo">
-  <a href="../docs/GUIA_DE_ESTUDOS.md"><img src="https://img.shields.io/badge/Guia_de_estudos-d97706?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Guia de estudos"></a>
-  <a href="../extras/README.md"><img src="https://img.shields.io/badge/Extras-6e7781?style=for-the-badge&logo=files&logoColor=white" alt="Extras"></a>
+  <a href="../README.md"><img src="../docs/assets/botoes/incio-06c559.svg" alt="Início"></a>
+  <a href="../docs/API.md"><img src="../docs/assets/botoes/api-gerenciador-4e8698.svg" alt="API Gerenciador"></a>
+  <a href="../web/README.md"><img src="../docs/assets/botoes/front-react-1df9b7.svg" alt="Front React"></a>
+  <img src="../docs/assets/botoes/voc-est-aqui-dirio-de-bordo-b3b557.svg" alt="Você está aqui: Diário de bordo">
+  <a href="../docs/GUIA_DE_ESTUDOS.md"><img src="../docs/assets/botoes/guia-de-estudos-abf8ad.svg" alt="Guia de estudos"></a>
+  <a href="../extras/README.md"><img src="../docs/assets/botoes/extras-4a886c.svg" alt="Extras"></a>
 </p>
 <!-- /nav:topo -->
 
@@ -20,16 +20,16 @@ Anotações curtas do que aprendi em cada aula de DSW, escritas com as minhas pa
 **Linha do tempo** (clique para abrir a aula). Dentro de cada aula, os botões do rodapé levam para a anterior e para a próxima, e o botão "ver no projeto" abre a parte do código ou do README que aquela aula construiu.
 
 <p>
-  <a href="2026-09-02.md"><img src="https://img.shields.io/badge/02_set-Erros_e_ataques-339933?style=for-the-badge" alt="02 set: Erros e ataques"></a>
-  <a href="2026-09-09.md"><img src="https://img.shields.io/badge/09_set-Busca_segura-339933?style=for-the-badge" alt="09 set: Busca segura"></a>
-  <a href="2026-09-16.md"><img src="https://img.shields.io/badge/16_set-Rotas_de_escrita-339933?style=for-the-badge" alt="16 set: Rotas de escrita"></a>
-  <a href="2026-09-23.md"><img src="https://img.shields.io/badge/23_set-Autentica%C3%A7%C3%A3o-339933?style=for-the-badge" alt="23 set: Autenticação"></a>
-  <a href="2026-10-07.md"><img src="https://img.shields.io/badge/07_out-Intro_ao_React-087ea4?style=for-the-badge" alt="07 out: Intro ao React"></a>
-  <a href="2026-10-14.md"><img src="https://img.shields.io/badge/14_out-Estado_no_React-087ea4?style=for-the-badge" alt="14 out: Estado no React"></a>
-  <a href="2026-10-28.md"><img src="https://img.shields.io/badge/28_out-Laborat%C3%B3rio-087ea4?style=for-the-badge" alt="28 out: Laboratório"></a>
-  <a href="2026-11-04.md"><img src="https://img.shields.io/badge/04_nov-Banco_em_nuvem-339933?style=for-the-badge" alt="04 nov: Banco em nuvem"></a>
-  <a href="2026-11-11.md"><img src="https://img.shields.io/badge/11_nov-Deploy_no_Render-339933?style=for-the-badge" alt="11 nov: Deploy no Render"></a>
-  <a href="2026-11-18.md"><img src="https://img.shields.io/badge/18_nov-Leitura_e_an%C3%A1lise-087ea4?style=for-the-badge" alt="18 nov: Leitura e análise"></a>
+  <a href="2026-09-02.md"><img src="../docs/assets/botoes/02-set-erros-e-ataques-1e4c2a.svg" alt="02 set: Erros e ataques"></a>
+  <a href="2026-09-09.md"><img src="../docs/assets/botoes/09-set-busca-segura-c531bb.svg" alt="09 set: Busca segura"></a>
+  <a href="2026-09-16.md"><img src="../docs/assets/botoes/16-set-rotas-de-escrita-17507e.svg" alt="16 set: Rotas de escrita"></a>
+  <a href="2026-09-23.md"><img src="../docs/assets/botoes/23-set-autenticao-01c3a6.svg" alt="23 set: Autenticação"></a>
+  <a href="2026-10-07.md"><img src="../docs/assets/botoes/07-out-intro-ao-react-a1f8bb.svg" alt="07 out: Intro ao React"></a>
+  <a href="2026-10-14.md"><img src="../docs/assets/botoes/14-out-estado-no-react-3e064f.svg" alt="14 out: Estado no React"></a>
+  <a href="2026-10-28.md"><img src="../docs/assets/botoes/28-out-laboratrio-11ceb8.svg" alt="28 out: Laboratório"></a>
+  <a href="2026-11-04.md"><img src="../docs/assets/botoes/04-nov-banco-em-nuvem-56c0ec.svg" alt="04 nov: Banco em nuvem"></a>
+  <a href="2026-11-11.md"><img src="../docs/assets/botoes/11-nov-deploy-no-render-bd4331.svg" alt="11 nov: Deploy no Render"></a>
+  <a href="2026-11-18.md"><img src="../docs/assets/botoes/18-nov-leitura-e-anlise-e7f7f7.svg" alt="18 nov: Leitura e análise"></a>
 </p>
 
 Verde = back-end (API) · azul = front-end (React).
@@ -67,8 +67,8 @@ Verde = back-end (API) · azul = front-end (React).
 ---
 
 <p align="center">
-  <a href="../web/README.md"><img src="https://img.shields.io/badge/%E2%86%90_anterior-Front_React-6e7781?style=for-the-badge" alt="← anterior"></a>
-  <a href="#top"><img src="https://img.shields.io/badge/%E2%AC%86_voltar_ao_topo-6e7781?style=for-the-badge" alt="⬆ voltar ao topo"></a>
-  <a href="../docs/GUIA_DE_ESTUDOS.md"><img src="https://img.shields.io/badge/pr%C3%B3ximo_%E2%86%92-Guia_de_estudos-d97706?style=for-the-badge&logo=readthedocs&logoColor=white" alt="próximo →"></a>
+  <a href="../web/README.md"><img src="../docs/assets/botoes/anterior-front-react-557132.svg" alt="← anterior"></a>
+  <a href="#top"><img src="../docs/assets/botoes/voltar-ao-topo-5af198.svg" alt="⬆ voltar ao topo"></a>
+  <a href="../docs/GUIA_DE_ESTUDOS.md"><img src="../docs/assets/botoes/prximo-guia-de-estudos-68c135.svg" alt="próximo →"></a>
 </p>
 <!-- /nav:rodape -->
