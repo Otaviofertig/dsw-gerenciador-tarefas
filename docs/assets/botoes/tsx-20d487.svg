@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="22" viewBox="0 0 34 22" role="img" aria-label="tsx">
+<defs>
+  <linearGradient id="f20d487" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#232937"/><stop offset="1" stop-color="#131828"/></linearGradient>
+  <linearGradient id="b20d487" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <clipPath id="c20d487"><rect x="0.65" y="0.65" width="32.7" height="20.7" rx="6"/></clipPath>
+</defs>
+<rect x="0.65" y="0.65" width="32.7" height="20.7" rx="6" fill="url(#f20d487)" stroke="#9aa0a7" stroke-opacity="0.85" stroke-width="1.3"/>
+<g clip-path="url(#c20d487)"><rect x="-60" y="0" width="50" height="22" fill="url(#b20d487)" transform="skewX(-20)"><animate attributeName="x" values="-60;74;74" keyTimes="0;0.3;1" dur="6s" begin="4s" repeatCount="indefinite"/></rect></g>
+<text x="8.0" y="15.0" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="0.2" fill="#ffffff">tsx</text>
+</svg>

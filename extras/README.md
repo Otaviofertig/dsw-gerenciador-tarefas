@@ -1,11 +1,11 @@
 <!-- nav:topo -->
 <p align="center">
-  <a href="../README.md"><img src="https://img.shields.io/badge/In%C3%ADcio-24292f?style=for-the-badge&logo=github&logoColor=white" alt="Início"></a>
-  <a href="../docs/API.md"><img src="https://img.shields.io/badge/API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="API Gerenciador"></a>
-  <a href="../web/README.md"><img src="https://img.shields.io/badge/Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="Front React"></a>
-  <a href="../diario-de-bordo/README.md"><img src="https://img.shields.io/badge/Di%C3%A1rio_de_bordo-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="Diário de bordo"></a>
-  <a href="../docs/GUIA_DE_ESTUDOS.md"><img src="https://img.shields.io/badge/Guia_de_estudos-d97706?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Guia de estudos"></a>
-  <img src="https://img.shields.io/badge/voc%C3%AA_est%C3%A1_aqui-Extras-6e7781?style=for-the-badge&logo=files&logoColor=white" alt="Você está aqui: Extras">
+  <a href="../README.md"><img src="../docs/assets/botoes/incio-06c559.svg" alt="Início"></a>
+  <a href="../docs/API.md"><img src="../docs/assets/botoes/api-gerenciador-4e8698.svg" alt="API Gerenciador"></a>
+  <a href="../web/README.md"><img src="../docs/assets/botoes/front-react-1df9b7.svg" alt="Front React"></a>
+  <a href="../diario-de-bordo/README.md"><img src="../docs/assets/botoes/dirio-de-bordo-b821ca.svg" alt="Diário de bordo"></a>
+  <a href="../docs/GUIA_DE_ESTUDOS.md"><img src="../docs/assets/botoes/guia-de-estudos-abf8ad.svg" alt="Guia de estudos"></a>
+  <img src="../docs/assets/botoes/voc-est-aqui-extras-b82594.svg" alt="Você está aqui: Extras">
 </p>
 <!-- /nav:topo -->
 
@@ -43,14 +43,14 @@ npm run lint    # oxlint
 
 Não precisam de servidor: abra o arquivo `.html` direto no navegador.
 
-[![Card responsivo](https://img.shields.io/badge/exerc%C3%ADcio-card_responsivo-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white)](tailwind/desafio-card-responsivo.html) [![CSS vs Tailwind](https://img.shields.io/badge/exerc%C3%ADcio-CSS_vs_Tailwind-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white)](tailwind/css-puro-vs-tailwind.html) [![Dicas](https://img.shields.io/badge/tabela-CSS_%E2%86%92_Tailwind-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white)](tailwind/dicas.md)
+[![Card responsivo](../docs/assets/botoes/exerccio-card-responsivo-25736d.svg)](tailwind/desafio-card-responsivo.html) [![CSS vs Tailwind](../docs/assets/botoes/exerccio-css-vs-tailwind-c188ee.svg)](tailwind/css-puro-vs-tailwind.html) [![Dicas](../docs/assets/botoes/tabela-css-tailwind-3d98bb.svg)](tailwind/dicas.md)
 
 <!-- nav:rodape -->
 ---
 
 <p align="center">
-  <a href="../docs/GUIA_DE_ESTUDOS.md"><img src="https://img.shields.io/badge/%E2%86%90_anterior-Guia_de_estudos-6e7781?style=for-the-badge" alt="← anterior"></a>
-  <a href="#top"><img src="https://img.shields.io/badge/%E2%AC%86_voltar_ao_topo-6e7781?style=for-the-badge" alt="⬆ voltar ao topo"></a>
-  <a href="../README.md"><img src="https://img.shields.io/badge/in%C3%ADcio_%E2%86%92-24292f?style=for-the-badge&logo=github&logoColor=white" alt="início →"></a>
+  <a href="../docs/GUIA_DE_ESTUDOS.md"><img src="../docs/assets/botoes/anterior-guia-de-estudos-7fb2c4.svg" alt="← anterior"></a>
+  <a href="#top"><img src="../docs/assets/botoes/voltar-ao-topo-5af198.svg" alt="⬆ voltar ao topo"></a>
+  <a href="../README.md"><img src="../docs/assets/botoes/incio-3f3c4d.svg" alt="início →"></a>
 </p>
 <!-- /nav:rodape -->

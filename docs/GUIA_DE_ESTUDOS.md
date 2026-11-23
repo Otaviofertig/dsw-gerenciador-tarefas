@@ -1,11 +1,11 @@
 <!-- nav:topo -->
 <p align="center">
-  <a href="../README.md"><img src="https://img.shields.io/badge/In%C3%ADcio-24292f?style=for-the-badge&logo=github&logoColor=white" alt="Início"></a>
-  <a href="API.md"><img src="https://img.shields.io/badge/API_Gerenciador-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="API Gerenciador"></a>
-  <a href="../web/README.md"><img src="https://img.shields.io/badge/Front_React-087ea4?style=for-the-badge&logo=react&logoColor=white" alt="Front React"></a>
-  <a href="../diario-de-bordo/README.md"><img src="https://img.shields.io/badge/Di%C3%A1rio_de_bordo-8250df?style=for-the-badge&logo=bookstack&logoColor=white" alt="Diário de bordo"></a>
-  <img src="https://img.shields.io/badge/voc%C3%AA_est%C3%A1_aqui-Guia_de_estudos-d97706?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Você está aqui: Guia de estudos">
-  <a href="../extras/README.md"><img src="https://img.shields.io/badge/Extras-6e7781?style=for-the-badge&logo=files&logoColor=white" alt="Extras"></a>
+  <a href="../README.md"><img src="assets/botoes/incio-06c559.svg" alt="Início"></a>
+  <a href="API.md"><img src="assets/botoes/api-gerenciador-4e8698.svg" alt="API Gerenciador"></a>
+  <a href="../web/README.md"><img src="assets/botoes/front-react-1df9b7.svg" alt="Front React"></a>
+  <a href="../diario-de-bordo/README.md"><img src="assets/botoes/dirio-de-bordo-b821ca.svg" alt="Diário de bordo"></a>
+  <img src="assets/botoes/voc-est-aqui-guia-de-estudos-056475.svg" alt="Você está aqui: Guia de estudos">
+  <a href="../extras/README.md"><img src="assets/botoes/extras-4a886c.svg" alt="Extras"></a>
 </p>
 <!-- /nav:topo -->
 
@@ -20,10 +20,10 @@
 > **Até onde este guia vai:** ele explica com calma o back-end até a aula de autenticação (23/09). As aulas seguintes (React, front servido pela API e banco em nuvem) estão no diário de bordo, e o estado atual do código está no [README do Gerenciador](API.md).
 
 <p>
-  <a href="../diario-de-bordo/2026-10-07.md"><img src="https://img.shields.io/badge/07_out-Intro_ao_React-8250df?style=for-the-badge" alt="07 out: Intro ao React"></a>
-  <a href="../diario-de-bordo/2026-10-14.md"><img src="https://img.shields.io/badge/14_out-Estado_no_React-8250df?style=for-the-badge" alt="14 out: Estado no React"></a>
-  <a href="../diario-de-bordo/2026-10-28.md"><img src="https://img.shields.io/badge/28_out-Laborat%C3%B3rio-8250df?style=for-the-badge" alt="28 out: Laboratório"></a>
-  <a href="../diario-de-bordo/2026-11-04.md"><img src="https://img.shields.io/badge/04_nov-Banco_em_nuvem-8250df?style=for-the-badge" alt="04 nov: Banco em nuvem"></a>
+  <a href="../diario-de-bordo/2026-10-07.md"><img src="assets/botoes/07-out-intro-ao-react-4edffd.svg" alt="07 out: Intro ao React"></a>
+  <a href="../diario-de-bordo/2026-10-14.md"><img src="assets/botoes/14-out-estado-no-react-5dd445.svg" alt="14 out: Estado no React"></a>
+  <a href="../diario-de-bordo/2026-10-28.md"><img src="assets/botoes/28-out-laboratrio-05e1cc.svg" alt="28 out: Laboratório"></a>
+  <a href="../diario-de-bordo/2026-11-04.md"><img src="assets/botoes/04-nov-banco-em-nuvem-b02520.svg" alt="04 nov: Banco em nuvem"></a>
 </p>
 
 **Nesta página:** [Introdução](#introdução) · [Fundamentos](#fundamentos-do-servidor) · [CRUD](#crud-de-tarefas) · [Validação e SQL Injection](#validação-sanitização-e-prepared-statements) · [Autenticação](#autenticação-bcrypt-e-jwt) · [Resumo e glossário](#resumo-e-glossário)
@@ -198,8 +198,8 @@ O token já é gerado corretamente, mas **nenhuma rota ainda exige ele** — `/a
 ---
 
 <p align="center">
-  <a href="../diario-de-bordo/README.md"><img src="https://img.shields.io/badge/%E2%86%90_anterior-Di%C3%A1rio_de_bordo-6e7781?style=for-the-badge" alt="← anterior"></a>
-  <a href="#top"><img src="https://img.shields.io/badge/%E2%AC%86_voltar_ao_topo-6e7781?style=for-the-badge" alt="⬆ voltar ao topo"></a>
-  <a href="../extras/tailwind/dicas.md"><img src="https://img.shields.io/badge/pr%C3%B3ximo_%E2%86%92-Tailwind-0ea5e9?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="próximo →"></a>
+  <a href="../diario-de-bordo/README.md"><img src="assets/botoes/anterior-dirio-de-bordo-342972.svg" alt="← anterior"></a>
+  <a href="#top"><img src="assets/botoes/voltar-ao-topo-5af198.svg" alt="⬆ voltar ao topo"></a>
+  <a href="../extras/tailwind/dicas.md"><img src="assets/botoes/prximo-tailwind-3f19ab.svg" alt="próximo →"></a>
 </p>
 <!-- /nav:rodape -->

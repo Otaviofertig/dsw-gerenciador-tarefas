@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="113" height="22" viewBox="0 0 113 22" role="img" aria-label="Tailwind CSS">
+<defs>
+  <linearGradient id="f5ff3b8" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c3450"/><stop offset="1" stop-color="#0b1c30"/></linearGradient>
+  <linearGradient id="b5ff3b8" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <clipPath id="c5ff3b8"><rect x="0.65" y="0.65" width="111.7" height="20.7" rx="6"/></clipPath>
+</defs>
+<rect x="0.65" y="0.65" width="111.7" height="20.7" rx="6" fill="url(#f5ff3b8)" stroke="#56c0f0" stroke-opacity="0.85" stroke-width="1.3"/>
+<g clip-path="url(#c5ff3b8)"><rect x="-60" y="0" width="50" height="22" fill="url(#b5ff3b8)" transform="skewX(-20)"><animate attributeName="x" values="-60;153;153" keyTimes="0;0.3;1" dur="6s" begin="2s" repeatCount="indefinite"/></rect></g>
+<g transform="translate(8 5.0) scale(0.5)"><path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z" fill="#56c0f0"/></g>
+<text x="27.0" y="15.0" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="0.2" fill="#ffffff">Tailwind CSS</text>
+</svg>
