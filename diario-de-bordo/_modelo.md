@@ -17,15 +17,23 @@
 </p>
 <!-- /nav:topo -->
 
-# Diário de bordo: DD/MM/AAAA
+# Aula NN — TEMA DA AULA (DD/MM/AAAA)
 
-**Tema:** assunto principal da aula  
-**Módulo:** Back-end (API) | Front-end (React)
-
-## O que aprendi
+## ✅ O que eu aprendi
 
 - Um aprendizado por item, com as suas palavras.
-- Se algo deu errado, anote o erro e como resolveu.
+
+## 🧩 Principal dificuldade
+
+O que mais travou nesta aula.
+
+## 🔧 Como eu resolvi
+
+O que fiz para resolver e por que funcionou.
+
+## 💡 Observações
+
+Opcional: outros problemas ou dúvidas que ficaram para a próxima aula.
 
 <!-- nav:rodape -->
 ---

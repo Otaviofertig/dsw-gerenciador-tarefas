@@ -55,7 +55,7 @@ Verde = back-end (API) · azul = front-end (React).
 ## Como registrar uma nova aula
 
 1. Copie o [modelo](_modelo.md) para um arquivo com a data da aula no formato `AAAA-MM-DD.md` (ex.: `2026-10-21.md`). Assim os arquivos ficam em ordem cronológica na pasta.
-2. Preencha a data, o tema, o módulo e os aprendizados.
+2. Preencha o número da aula, o tema, a data e as seções do modelo: o que eu aprendi, principal dificuldade, como eu resolvi e observações (opcional).
 3. Ajuste os botões do modelo: "ver no projeto" aponta para a seção que a aula construiu, e o "←" do rodapé aponta para a aula anterior. Na aula anterior, acrescente o botão "→" para a nova.
 4. Adicione uma linha na tabela do módulo correspondente e um botão na linha do tempo, aqui no índice. Atualize também o botão "Última aula" do [README principal](../README.md#comece-por-aqui).
 
